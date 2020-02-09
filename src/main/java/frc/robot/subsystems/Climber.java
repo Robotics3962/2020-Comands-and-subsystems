@@ -37,6 +37,10 @@ public class Climber extends Subsystem {
      *      move to hook up to giant hanger
      *      call retract()
      *      continue to call isRetracted() until it returns true
+     * 
+     * NOTE: the first line in the commands execute() function
+     * should be a call to periodic()
+     *
      */
 
     /**

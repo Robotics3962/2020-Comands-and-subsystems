@@ -9,10 +9,13 @@ public class Spinner extends Subsystem {
     /**
      * Users Guide
      * 
-     * To start the ball lift, call start().  The speed
-     * the motors move is defined in robotmap
+     * To spin the motor slowly forward call moveSlowForward()
      * 
-     * To stop the ball lif call stop()
+     * To spin the motor quickly forward call moveFastForward()
+     * 
+     * To spin the motor slowly backward call moveSlowBackward()
+     * 
+     * To spin the motor quickly backward call moveFastBackward()
      * 
      * To see if the motor is spinning call isSpinning()
      * 
@@ -20,6 +23,9 @@ public class Spinner extends Subsystem {
      * readColor().  This will return a constant indicating
      * one of the colors that is predefined or other if
      * the color sensor is on a transition between pie slices
+     * 
+     * NOTE: the first line in the commands execute() function
+     * should be a call to periodic()
      */
 
     /**
@@ -107,7 +113,7 @@ public class Spinner extends Subsystem {
     }
 
     public void periodic(){
-        // check colors here
+        
     }
 
     @Override

@@ -124,6 +124,7 @@ public class RobotMap {
      */
     public static int Spinner_SparkMotor_ID = UNKNOWN_VALUE;
     public static int Spinner_ColorSensor_ID = UNKNOWN_VALUE;
-    public static double Spinner_MotorSpeed = 0;
+    public static double Spinner_FastMotorSpeed = 0;
+    public static double Spinner_SlowMotorSpeed = 0;
     public static int Spinner_Pneumatic_Forward_Solenoid_ID = UNKNOWN_VALUE;
 }

@@ -10,7 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.RobotDrive;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Spinner;
 
 
 /**
@@ -27,6 +32,15 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   /**
+   * variables for each subsystem
+   */
+  public static Climber climberSubsystem = null;
+  public static Shooter shooterSubsystem = null;
+  public static Intake  intaleSubsystem = null;
+  public static Spinner spinnerSubsystem = null;
+  public static Lift    liftSubsystem = null;
+
+  /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
@@ -35,7 +49,13 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-  }
+
+    climberSubsystem = new Climber();
+    shooterSubsystem = new Shooter();
+    intaleSubsystem = new Intake();
+    spinnerSubsystem = new Spinner();
+    liftSubsystem = new Lift();
+    }
 
   /**
    * This function is called every robot packet, no matter the mode. Use

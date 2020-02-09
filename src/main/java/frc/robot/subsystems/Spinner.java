@@ -41,7 +41,6 @@ public class Spinner extends Subsystem {
      * declare variables tracking current state of intake
      * and initialize them
      */
-    private double speed = RobotMap.Spinner_MotorSpeed;
     private MotorStates motorState = MotorStates.STOPPED;
     private SolenoidStates solenoidState = SolenoidStates.NOT_EXTENDED;
     /**
@@ -60,8 +59,23 @@ public class Spinner extends Subsystem {
         solenoid = new Solenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Spinner_Pneumatic_Forward_Solenoid_ID);
     }
 
-    public void start(){
-        motor.set(speed);
+    public void moveSlowForward(){
+        motor.set(RobotMap.Spinner_SlowMotorSpeed);
+        motorState = MotorStates.RUNNING;
+    }
+
+    public void moveFastForward(){
+        motor.set(RobotMap.Spinner_FastMotorSpeed);
+        motorState = MotorStates.RUNNING;
+    }
+
+    public void moveSlowBackward(){
+        motor.set(RobotMap.Spinner_SlowMotorSpeed * -1);
+        motorState = MotorStates.RUNNING;
+    }
+
+    public void moveFastBackward(){
+        motor.set(RobotMap.Spinner_FastMotorSpeed * -1);
         motorState = MotorStates.RUNNING;
     }
 
@@ -90,6 +104,10 @@ public class Spinner extends Subsystem {
 
     public boolean isExtended(){
         return (solenoidState == SolenoidStates.EXTENDED);
+    }
+
+    public void periodic(){
+        // check colors here
     }
 
     @Override

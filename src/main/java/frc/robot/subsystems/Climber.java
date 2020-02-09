@@ -55,6 +55,7 @@ public class Climber extends Subsystem {
      */
     private MotorStates motorState = MotorStates.STOPPED;
     private Commands currCommand = Commands.NONE;
+
     /**
      * this is the controller for the motor
      */
@@ -111,6 +112,12 @@ public class Climber extends Subsystem {
         // if elevated or retracted, stop the motor
 
         return lowerLimitSwitchState;
+    }
+
+    public void periodic(){
+        if (! isMoving()){
+            // stop the motors
+        }
     }
 
     @Override

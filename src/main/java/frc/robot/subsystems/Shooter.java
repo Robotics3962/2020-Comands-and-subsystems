@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class Shooter extends Subsystem {
+public class Shooter extends SubsystemBase {
 
     /**
      * Users guide
@@ -121,9 +121,5 @@ public class Shooter extends Subsystem {
 
     public int getAdjusterPosition(){
         return 0; //read encoder
-    }
-
-    @Override
-    protected void initDefaultCommand() {
     }
 }

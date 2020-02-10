@@ -1,10 +1,10 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class Lift extends Subsystem {
+public class Lift extends SubsystemBase {
     /**
      * Users Guide
      * 
@@ -55,9 +55,5 @@ public class Lift extends Subsystem {
 
     public boolean isNNotSpinning(){
         return (motorState == MotorStates.STOPPED);
-    }
-
-    @Override
-    protected void initDefaultCommand() {
     }
 }

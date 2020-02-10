@@ -8,13 +8,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
 public class DeployCmd extends CommandBase {
   /**
    * Creates a new DeployCmd.
    */
   public DeployCmd() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Robot.intakeSubsystem);
+    addRequirements(Robot.climberSubsystem);
   }
 
   // Called when the command is initially scheduled.

@@ -65,22 +65,22 @@ public class Spinner extends SubsystemBase {
         solenoid = new Solenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Spinner_Pneumatic_Forward_Solenoid_ID);
     }
 
-    public void moveSlowForward(){
+    public void spinSlowCw(){
         motor.set(RobotMap.Spinner_SlowMotorSpeed);
         motorState = MotorStates.RUNNING;
     }
 
-    public void moveFastForward(){
+    public void spinFastCw(){
         motor.set(RobotMap.Spinner_FastMotorSpeed);
         motorState = MotorStates.RUNNING;
     }
 
-    public void moveSlowBackward(){
+    public void spinSlowCCW(){
         motor.set(RobotMap.Spinner_SlowMotorSpeed * -1);
         motorState = MotorStates.RUNNING;
     }
 
-    public void moveFastBackward(){
+    public void spinFastCCW(){
         motor.set(RobotMap.Spinner_FastMotorSpeed * -1);
         motorState = MotorStates.RUNNING;
     }

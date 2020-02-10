@@ -10,24 +10,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 
-/**
- * this command should be the first command run in telop or autonomouse mode.
- * It lowers the collector and extends the spinner arm
- */
-public class DeployCmd extends InstantCommand {
-  public DeployCmd() {
-    addRequirements(Robot.intakeSubsystem);
-    addRequirements(Robot.climberSubsystem);
+public class SpinnerDeployCmd extends InstantCommand {
+  public SpinnerDeployCmd() {
+    addRequirements(Robot.spinnerSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    // lower the intake so it can collect balls
-    Robot.intakeSubsystem.lower();
-
-    // extend the spinner so it can spin the wheels
     Robot.spinnerSubsystem.extend();
   }
 }

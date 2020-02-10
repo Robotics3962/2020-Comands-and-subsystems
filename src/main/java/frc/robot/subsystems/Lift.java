@@ -56,4 +56,9 @@ public class Lift extends SubsystemBase {
     public boolean isNNotSpinning(){
         return (motorState == MotorStates.STOPPED);
     }
+
+    @Override
+    public void periodic(){
+        
+    }
 }

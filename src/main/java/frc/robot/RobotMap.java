@@ -128,12 +128,47 @@ public class RobotMap {
     public static double Spinner_SlowMotorSpeed = 0;
     public static int Spinner_Pneumatic_Forward_Solenoid_ID = UNKNOWN_VALUE;
 
+
+    /**
+     * 
+     * This section contains constants to define the drive motors
+     * 
+     */
+    public static final int Drive_TalonLeftFront_ID = UNKNOWN_VALUE;
+    public static final int Drive_TalonLeftRear_ID  = UNKNOWN_VALUE;
+    public static final int Drive_TalonRightFront_ID = UNKNOWN_VALUE;
+    public static final int Drive_TalonRightRear_ID = UNKNOWN_VALUE;
+    
+    /**
+     * These scale factors are used to scale the values from the
+     * joystick.  The joystick will return a value between -1.0 and 1.0
+     * 
+     * -1.0 and 1.0 are powering the motors at full speed.  Full speed
+     * can be too fast and damange the roobot (make it fall over, etc)
+     * 
+     * Applying these scale factor will effectively scale the joystick
+     * value from 0 to the scale factor in each direction.  t
+     * 
+     * The scale factor isn't a max limit.  It scales all of the values
+     * from 0 to 1.0 (or -1.0) to 0 to scalefactor (or -scalefactor)
+     * which allows finer control of the robot
+     */
+    public static final double Drive_SpeedScaleFactor = 0.85;
+    public static final double Drive_RotationScaleFactor = 0.65;
+    
+    /**
+     * 
+     * This section defines constants for configuring the joy sticks
+     * 
+     **/
+
+
     // Joystick to use
     public static final int Joystick0Id = 0;
     public static final int Joystick1Id = 1;
 
     // these are controller button ids (on joystick)
-    public static final int JoystickButtonA = 1;
+    public static final int JoystickButtonA = 1;    
     public static final int JoystickButtonB = 2;
     public static final int JoystickButtonX = 3;
     public static final int JoystickButtonY = 4;
@@ -146,4 +181,5 @@ public class RobotMap {
     public static final int JoystickAxisSpeed = 0;
     public static final int JoystickAxisRotation = 1;
     public static final double JoystickDeadZone = 0.05;
+
 }

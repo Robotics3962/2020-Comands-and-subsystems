@@ -42,6 +42,8 @@ public class Robot extends TimedRobot {
   public static Spinner spinnerSubsystem = null;
   public static Lift    liftSubsystem = null;
 
+  public static JoystickControl joystickControl = null;
+
   private Command m_autonomousCommand;
 
   /**
@@ -59,6 +61,7 @@ public class Robot extends TimedRobot {
     intakeSubsystem = new Intake();
     spinnerSubsystem = new Spinner();
     liftSubsystem = new Lift();
+    joystickControl = new JoystickControl();
     }
 
   /**

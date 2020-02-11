@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
   public static Spinner spinnerSubsystem = null;
   public static Lift    liftSubsystem = null;
 
-  public static JoystickControl joystickControl = null;
+  public static JoyStickControl joystickControl = null;
 
   private Command m_autonomousCommand;
 
@@ -61,8 +61,8 @@ public class Robot extends TimedRobot {
     intakeSubsystem = new Intake();
     spinnerSubsystem = new Spinner();
     liftSubsystem = new Lift();
-    joystickControl = new JoystickControl();
-    }
+    joystickControl = new JoyStickControl();
+  }
 
   /**
    * This function is called every robot packet, no matter the mode. Use

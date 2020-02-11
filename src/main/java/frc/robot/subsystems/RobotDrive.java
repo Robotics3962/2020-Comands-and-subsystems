@@ -7,47 +7,53 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-//import frc.robot.commands.DiffDriveCommand;
 import frc.robot.Robot;
+import frc.robot.JoyStickControl;
 import frc.robot.RobotMap;
 
 public class RobotDrive extends SubsystemBase {
-    private WPI_TalonSRX  leftFrontTalonSRX = null;
-    private WPI_TalonSRX  leftRearTalonSRX = null;
-    private WPI_TalonSRX  rightFrontTalonSRX = null;
-    private WPI_TalonSRX  rightRearTalonSRX = null;
-    private SpeedControllerGroup leftMotors = null;
-    private SpeedControllerGroup rightMotors = null;
-    private DifferentialDrive differentialDrive = null;
 
-    public RobotDrive(){
-        leftFrontTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftFront_ID);
-        leftRearTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftRear_ID);
+  enum DriveModes {MANUAL,AUTONOMOUS};
 
-        rightFrontTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonRightFront_ID);
-        rightRearTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonRightRear_ID);
+  private DriveModes driveMode;
 
-        leftMotors = new SpeedControllerGroup(leftFrontTalonSRX, leftRearTalonSRX);
-        rightMotors = new SpeedControllerGroup(rightFrontTalonSRX, rightRearTalonSRX);
+  private WPI_TalonSRX  leftFrontTalonSRX = null;
+  private WPI_TalonSRX  leftRearTalonSRX = null;
+  private WPI_TalonSRX  rightFrontTalonSRX = null;
+  private WPI_TalonSRX  rightRearTalonSRX = null;
+  private SpeedControllerGroup leftMotors = null;
+  private SpeedControllerGroup rightMotors = null;
+  private DifferentialDrive differentialDrive = null;
 
-        // tells the left side that is should be inverted so that we drive straight with each side having positive motor values.
-        rightFrontTalonSRX.setInverted(true);
-        rightRearTalonSRX.setInverted(true); 
+  public RobotDrive(){
+    driveMode = MANUAL;
 
-        //Config all talons
-        DiffConfigTalons(rightFrontTalonSRX);
-        DiffConfigTalons(rightRearTalonSRX);
-        DiffConfigTalons(leftFrontTalonSRX);
-        DiffConfigTalons(leftRearTalonSRX);
+    leftFrontTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftFront_ID);
+    leftRearTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftRear_ID);
 
-        differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
+    rightFrontTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonRightFront_ID);
+    rightRearTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonRightRear_ID);
+
+    leftMotors = new SpeedControllerGroup(leftFrontTalonSRX, leftRearTalonSRX);
+    rightMotors = new SpeedControllerGroup(rightFrontTalonSRX, rightRearTalonSRX);
+
+    // tells the left side that is should be inverted so that we drive straight with each side having positive motor values.
+    rightFrontTalonSRX.setInverted(true);
+    rightRearTalonSRX.setInverted(true); 
+
+    //Config all talons
+    DiffConfigTalons(rightFrontTalonSRX);
+    DiffConfigTalons(rightRearTalonSRX);
+    DiffConfigTalons(leftFrontTalonSRX);
+    DiffConfigTalons(leftRearTalonSRX);
+
+    differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
   }
   
   public void DiffConfigTalons(WPI_TalonSRX talon){
@@ -66,6 +72,10 @@ public class RobotDrive extends SubsystemBase {
     //Tells the talon that is should only appy 12 volts or less to the motor.
     talon.configVoltageCompSaturation(12,0);
   }
+
+public boolean isAutomouseMode(){
+  return (driveMode == DriveModes.AUTONOMOUS);
+}
 
   /** 
    * 

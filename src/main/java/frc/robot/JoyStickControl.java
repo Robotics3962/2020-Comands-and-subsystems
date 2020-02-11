@@ -7,13 +7,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.RobotMap;
 
-class JoystickControl {
+public class JoyStickControl {
   // get both drive and operational joysticks
   Joystick driveJoystick = null;
   Joystick operationJoyStick = null; 
   
-  public JoystickControl(){
+  public JoyStickControl(){
     Joystick driveJoystick = new Joystick(RobotMap.Joystick0Id);
     Joystick operationJoyStick = new Joystick(RobotMap.Joystick1Id);
     

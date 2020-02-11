@@ -32,7 +32,7 @@ public class RobotDrive extends SubsystemBase {
   private DifferentialDrive differentialDrive = null;
 
   public RobotDrive(){
-    driveMode = MANUAL;
+    driveMode = DriveModes.MANUAL;
 
     leftFrontTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftFront_ID);
     leftRearTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftRear_ID);

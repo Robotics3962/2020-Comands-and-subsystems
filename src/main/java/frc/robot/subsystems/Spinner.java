@@ -95,7 +95,7 @@ public class Spinner extends SubsystemBase {
      * if we have 1 sample of n that is different, then we transitioned
      */
     private final int MaxSamples = RobotMap.Spinner_SampleCount;
-    private final int SameColorSampleCount = RobotMap.Spinner_ContiuousColorsForTransition;
+    private final int SameColorSampleCount = RobotMap.Spinner_ContinuousColorsForTransition;
     private ArrayList<Color> samples;
     private enum CommandStates { NOT_RUNNING, RUNNING, MOVING_TO_CENTER_OF_WEDGE, COMPLETE };
     private CommandStates commandStatus;

@@ -129,7 +129,7 @@ public class RobotMap {
     public static final double Spinner_Revolution_TimeMs = UNKNOWN_VALUE;
     public static final int Spinner_TargetColorTransitions = 7;
     public static final int Spinner_SampleCount = 8;
-    public static final int Spinner_ContiuousColorsForTransition = 3;
+    public static final int Spinner_ContinuousColorsForTransition = 3;
     /**
      * 
      * This section contains constants to define the drive motors

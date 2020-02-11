@@ -7,10 +7,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotMap;
-import frc.robot.commands.SpinnerEnableDisplayColorInfoCmd;
-import frc.robot.commands.SpinnerDisableDisplayColorCmd;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.commands.SpinnerGetSensorColorCmd;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
@@ -32,7 +31,7 @@ public class JoyStickControl {
     JoystickButton driveButtonStart = new JoystickButton(driveJoystick, Button.kStart.value);
 
     // assign drive joystick buttons to commands
-    driveButtonA.whileHeld(new SpinnerEnableDisplayColorInfoCmd());
+    //driveButtonA.whileHeld(new SpinnerEnableDisplayColorInfoCmd());
     //driveButtonBack.whileHeld(new GrabBallCmd());
 
 
@@ -47,7 +46,7 @@ public class JoyStickControl {
     JoystickButton opButtonStart = new JoystickButton(operationJoyStick, Button.kStart.value);
 
     //opButtonA.whenPressed(new LockWristCmd());
-    //opButtonLS.whileHeld(new ElevatorDownCmd());
+    opButtonLS.whileHeld(new SpinnerGetSensorColorCmd());
   }
     
   public double getLeftThrottle() {

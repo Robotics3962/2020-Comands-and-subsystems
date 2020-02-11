@@ -6,8 +6,11 @@ package frc.robot;
  */
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotMap;
+import frc.robot.commands.SpinnerEnableDisplayColorInfoCmd;
+import frc.robot.commands.SpinnerDisableDisplayColorCmd;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import static edu.wpi.first.wpilibj.XboxController.Button;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
@@ -19,29 +22,29 @@ public class JoyStickControl {
     Joystick operationJoyStick = new Joystick(RobotMap.Joystick1Id);
     
     // get the buttons on the drive joystick
-    JoystickButton driveButtonA = new JoystickButton(driveJoystick, RobotMap.JoystickButtonA);
-    JoystickButton driveButtonB = new JoystickButton(driveJoystick, RobotMap.JoystickButtonB);
-    JoystickButton driveButtonX = new JoystickButton(driveJoystick, RobotMap.JoystickButtonX);
-    JoystickButton driveButtonY = new JoystickButton(driveJoystick, RobotMap.JoystickButtonY);
-    JoystickButton driveButtonLS = new JoystickButton(driveJoystick, RobotMap.JoystickButtonShoulderLeft);
-    JoystickButton driveButtonRS = new JoystickButton(driveJoystick, RobotMap.JoystickButtonShoulderRight);
-    JoystickButton driveButtonBack = new JoystickButton(driveJoystick, RobotMap.JoystickButtonBack);
-    JoystickButton driveButtonStart = new JoystickButton(driveJoystick, RobotMap.JoystickButtonStart);
+    JoystickButton driveButtonA = new JoystickButton(driveJoystick, Button.kA.value);
+    JoystickButton driveButtonB = new JoystickButton(driveJoystick, Button.kB.value);
+    JoystickButton driveButtonX = new JoystickButton(driveJoystick, Button.kX.value);
+    JoystickButton driveButtonY = new JoystickButton(driveJoystick, Button.kY.value);
+    JoystickButton driveButtonLS = new JoystickButton(driveJoystick, Button.kBumperLeft.value);
+    JoystickButton driveButtonRS = new JoystickButton(driveJoystick, Button.kBumperRight.value);
+    JoystickButton driveButtonBack = new JoystickButton(driveJoystick, Button.kBack.value);
+    JoystickButton driveButtonStart = new JoystickButton(driveJoystick, Button.kStart.value);
 
     // assign drive joystick buttons to commands
-    //driveButtonA.whileHeld(new DumpInfoCmd());
+    driveButtonA.whileHeld(new SpinnerEnableDisplayColorInfoCmd());
     //driveButtonBack.whileHeld(new GrabBallCmd());
 
 
     // second joystick I'm calling it operational - no command mapping yet
-    JoystickButton opButtonA = new JoystickButton(operationJoyStick, RobotMap.JoystickButtonA);
-    JoystickButton opButtonB = new JoystickButton(operationJoyStick, RobotMap.JoystickButtonB);
-    JoystickButton opButtonX = new JoystickButton(operationJoyStick, RobotMap.JoystickButtonX);
-    JoystickButton opButtonY = new JoystickButton(operationJoyStick, RobotMap.JoystickButtonY);
-    JoystickButton opButtonLS = new JoystickButton(operationJoyStick, RobotMap.JoystickButtonShoulderLeft);
-    JoystickButton opButtonRS = new JoystickButton(operationJoyStick, RobotMap.JoystickButtonShoulderRight);
-    JoystickButton opButtonBack = new JoystickButton(operationJoyStick, RobotMap.JoystickButtonBack);
-    JoystickButton opButtonStart = new JoystickButton(operationJoyStick, RobotMap.JoystickButtonStart);
+    JoystickButton opButtonA = new JoystickButton(operationJoyStick, Button.kA.value);
+    JoystickButton opButtonB = new JoystickButton(operationJoyStick, Button.kB.value);
+    JoystickButton opButtonX = new JoystickButton(operationJoyStick, Button.kX.value);
+    JoystickButton opButtonY = new JoystickButton(operationJoyStick, Button.kY.value);
+    JoystickButton opButtonLS = new JoystickButton(operationJoyStick, Button.kBumperLeft.value);
+    JoystickButton opButtonRS = new JoystickButton(operationJoyStick, Button.kBumperRight.value);
+    JoystickButton opButtonBack = new JoystickButton(operationJoyStick, Button.kBack.value);
+    JoystickButton opButtonStart = new JoystickButton(operationJoyStick, Button.kStart.value);
 
     //opButtonA.whenPressed(new LockWristCmd());
     //opButtonLS.whileHeld(new ElevatorDownCmd());

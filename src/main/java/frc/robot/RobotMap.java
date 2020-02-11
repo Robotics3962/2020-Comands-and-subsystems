@@ -122,13 +122,14 @@ public class RobotMap {
      * Spinner_MotorSpeed is a value between -1.0 and 1.0 which
      * is the speed the spinner motor runs at
      */
-    public static int Spinner_SparkMotor_ID = UNKNOWN_VALUE;
-    public static int Spinner_ColorSensor_ID = UNKNOWN_VALUE;
-    public static double Spinner_FastMotorSpeed = 0;
-    public static double Spinner_SlowMotorSpeed = 0;
-    public static int Spinner_Pneumatic_Forward_Solenoid_ID = UNKNOWN_VALUE;
-
-
+    public static final int Spinner_SparkMotor_ID = UNKNOWN_VALUE;
+    public static final int Spinner_ColorSensor_ID = UNKNOWN_VALUE;
+    public static final double Spinner_MotorSpeed = 0;
+    public static final int Spinner_Pneumatic_Forward_Solenoid_ID = UNKNOWN_VALUE;
+    public static final double Spinner_Revolution_TimeMs = UNKNOWN_VALUE;
+    public static final int Spinner_TargetColorTransitions = 7;
+    public static final int Spinner_SampleCount = 8;
+    public static final int Spinner_ContiuousColorsForTransition = 3;
     /**
      * 
      * This section contains constants to define the drive motors
@@ -167,19 +168,8 @@ public class RobotMap {
     public static final int Joystick0Id = 0;
     public static final int Joystick1Id = 1;
 
-    // these are controller button ids (on joystick)
-    public static final int JoystickButtonA = 1;    
-    public static final int JoystickButtonB = 2;
-    public static final int JoystickButtonX = 3;
-    public static final int JoystickButtonY = 4;
-    public static final int JoystickButtonShoulderLeft = 5;
-    public static final int JoystickButtonShoulderRight = 6;
-    public static final int JoystickButtonBack = 7;
-    public static final int JoystickButtonStart = 8;
-    
     // joystick axis mapping
     public static final int JoystickAxisSpeed = 0;
     public static final int JoystickAxisRotation = 1;
     public static final double JoystickDeadZone = 0.05;
-
 }

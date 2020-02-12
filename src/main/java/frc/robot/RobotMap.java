@@ -128,8 +128,7 @@ public class RobotMap {
     public static final int Spinner_Pneumatic_Forward_Solenoid_ID = UNKNOWN_VALUE;
     public static final double Spinner_Revolution_TimeMs = UNKNOWN_VALUE;
     public static final int Spinner_TargetColorTransitions = 7;
-    public static final int Spinner_SampleCount = 8;
-    public static final int Spinner_ContinuousColorsForTransition = 3;
+
     /**
      * 
      * This section contains constants to define the drive motors

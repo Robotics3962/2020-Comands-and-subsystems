@@ -28,7 +28,7 @@ public class SpinnerGetSensorColorCmd extends CommandBase {
   @Override
   public void execute() {
     Robot.spinnerSubsystem.enableDisplayColor();
-    Color color = Robot.spinnerSubsystem.getSensorColor();
+    Robot.spinnerSubsystem.getMatchedSensorColor();
   }
 
   // Called once the command ends or is interrupted.

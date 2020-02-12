@@ -71,14 +71,13 @@ public class Spinner extends SubsystemBase {
     private ColorMatch colorMatcher = new ColorMatch();
 
     /**
-     * This is our best guess of the rgb values of each color
-     * They are used as a starting point, and filled in by manually
-     * checking the sensor
+     * Calibrated blue, green, red values for the swatches swatch.
+     * this was stolen from https://github.com/REVrobotics/Color-Sensor-v3/commit/34469e7c21dc4495b06e6f31fb3df02e2335c8de#diff-3bfa73a3527f6f2d2159702ac78e5165
      */
-    private final Color detectorCyanColor = ColorMatch.makeColor(0, 255, 255);
-    private final Color detectorGreenColor = ColorMatch.makeColor(0, 255, 0);
-    private final Color detectorRedColor = ColorMatch.makeColor(255, 0, 0);
-    private final Color detectorYellowColor = ColorMatch.makeColor(255, 255, 0);
+    private final Color detectorCyanColor = ColorMatch.makeColor(0.133, 0.415, 0.435);
+    private final Color detectorGreenColor = ColorMatch.makeColor(0.189, 0.548, 0.241);
+    private final Color detectorRedColor = ColorMatch.makeColor(0.540, 0.319, 0.117);
+    private final Color detectorYellowColor = ColorMatch.makeColor(0.189, 0.529, 0.112);
 
     /**
      * set to true to display the color under the robot sensor
@@ -94,8 +93,8 @@ public class Spinner extends SubsystemBase {
      * this tracks the last number of samples from the color detector
      * if we have 1 sample of n that is different, then we transitioned
      */
-    private final int MaxSamples = RobotMap.Spinner_SampleCount;
-    private final int SameColorSampleCount = RobotMap.Spinner_ContinuousColorsForTransition;
+    //private final int MaxSamples = RobotMap.Spinner_SampleCount;
+    //private final int SameColorSampleCount = RobotMap.Spinner_ContinuousColorsForTransition;
     private ArrayList<Color> samples;
     private enum CommandStates { NOT_RUNNING, RUNNING, MOVING_TO_CENTER_OF_WEDGE, COMPLETE };
     private CommandStates commandStatus;
@@ -104,6 +103,7 @@ public class Spinner extends SubsystemBase {
     private int samplesBetweenTransitions;
     private int periodicCallsBeforeStop;
     private int transitionsNeededToTargetColor;
+    private int sampleCount;
 
     public Spinner(){
 
@@ -114,6 +114,7 @@ public class Spinner extends SubsystemBase {
         commandStatus = CommandStates.NOT_RUNNING;
         samples = new ArrayList<Color>();
         targetColor = new Color(0,0,0);
+        sampleCount = 0;
 
         /**
          * indicate the motors have not been started
@@ -183,12 +184,13 @@ public class Spinner extends SubsystemBase {
     /**
      * utility functions
      */
-    public Color getSensorColor(){
+    public Color getMatchedSensorColor(){
         Color detectedColor = colorSensor.getColor();
     
         /**
          * match the color read from the sensor to one of the
-         * pre defined ones
+         * pre defined ones.  if the color is black, then there is
+         * no match
          */
         ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
@@ -243,7 +245,7 @@ public class Spinner extends SubsystemBase {
             targetColor = colorDetectorToRobotSensorMap.get(color);
         }
         else{
-            targetColor = new Color(0.0, 0.0, 0.0);
+            targetColor = Color.kBlack;
         }
         return success;
     }
@@ -267,6 +269,7 @@ public class Spinner extends SubsystemBase {
             transitionsNeededToTargetColor = RobotMap.Spinner_TargetColorTransitions;
             transitionCount = 0;
             samplesBetweenTransitions = 0;
+            sampleCount = 0;
     
             /**
              * clear out the samples from previous runs
@@ -331,17 +334,33 @@ public class Spinner extends SubsystemBase {
             }
             
             // collect a sample
-            Color detectedColor = getSensorColor();
-            samples.add(detectedColor);
+            Color detectedColor = getMatchedSensorColor();
+            sampleCount++;
 
-            // check if we have enough samples to process
-            if(samples.size() <= MaxSamples){
+            /**
+             * black is returned when there is no closest
+             * match to the color sensor. This can occur when
+             * the sensor is on a transition between two color wedges
+             * and there is no close match.
+             */
+            if (detectedColor == Color.kBlack){
                 break;
             }
 
-            // throw away the first sample as we have a new one to
-            // replace it we added to the end of the list
-            samples.remove(0);        
+            samples.add(detectedColor);
+
+            // we need to have collected a min of 2 samples to process
+            if(samples.size() < 2){
+                break;
+            }
+
+            /**
+             * we only need two samples, so if we have more get rid
+             * of the first one
+             */
+            if (samples.size() > 2){
+                samples.remove(0);
+            }        
 
             /**
              * we have enough samples to process.
@@ -350,13 +369,6 @@ public class Spinner extends SubsystemBase {
              * is different from the last sample, and the last N samples
              * are the same
              */
-
-            // if MaxSamples is 1, this will throw an exception
-            // but a MaxSamples of 1 makes no sense
-            if (MaxSamples <= 1){
-                int y = 2/0;
-            }
-
             Color firstSampleColor = samples.get(0);
             Color lastSampleColor = samples.get(samples.size()-1);
 
@@ -365,53 +377,11 @@ public class Spinner extends SubsystemBase {
             if (firstSampleColor == lastSampleColor){
                 break;
             }
-
-            if (SameColorSampleCount >= MaxSamples){
-                // panic as this should never happen
-                int y = 2 / 0;
-                break;
-            }
-
-            int matchingSampleCount = 0;
-
-            // walk the array backwards looking for a color change
-            for (int idx = samples.size(); idx > 0; idx--){
-                // correct index because 0 is the first array index
-                int index = idx - 1;
-
-                // check if the sample is the same color as the last sample
-                if (samples.get(index) == lastSampleColor){
-                    matchingSampleCount++;
-                    break;
-                }   
-            }
-
-            /**
-             * now matching same count holds the number of contigious samples
-             * starting from the end of the samples that match the last
-             * sample collected. 
-             */
-
-            /**
-             * we need to get SameColorSampleCount samples
-             * to meet the definition of making a transition.
-             * If there are less than that, we cannot be at a transition
-             * so stop processing
-             */
-            if (matchingSampleCount < SameColorSampleCount){
-                break;
-            }
              
             /**
-             * at this point we know we encounted a transition. Samples would be 
-             * something like   Red,Red, purple, BLUE, BLUE, BLUE
-             * we moved from a red wedge to a blue wedge and the third value
-             * was sampled when both the red and blue wedge were under the sensor.
-             * 
-             * because we have 3 blues in a row we know we are in a blue wedge and 
-             * transitioned from a red wedge.
-             */
-            
+             * at this point we know we encounted a transition because the
+             * previous sample and the current sample are different 
+             */            
             transitionCount++;
     
             /**
@@ -426,8 +396,10 @@ public class Spinner extends SubsystemBase {
              * throw off our calculations.
              */
             if(transitionCount > 1){
-                samplesBetweenTransitions += matchingSampleCount;
+                samplesBetweenTransitions += sampleCount;
             }
+
+            sampleCount = 0;
 
             /** 
              * at this point we know we encountered a transition from one wedget to another.
@@ -484,6 +456,7 @@ public class Spinner extends SubsystemBase {
              */
             periodicCallsBeforeStop = (samplesBetweenTransitions/(transitionCount-1))/2;
             commandStatus = CommandStates.MOVING_TO_CENTER_OF_WEDGE;
+            collectSamples = false;
 
         } while(false);
     }

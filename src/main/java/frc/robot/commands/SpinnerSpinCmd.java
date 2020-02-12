@@ -28,7 +28,7 @@ public class SpinnerSpinCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.spinnerSubsystem.getSensorColor();
+    Robot.spinnerSubsystem.getMatchedSensorColor();
   }
 
   // Called once the command ends or is interrupted.

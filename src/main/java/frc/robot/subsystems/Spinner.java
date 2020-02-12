@@ -107,6 +107,84 @@ public class Spinner extends SubsystemBase {
 
     public Spinner(){
 
+        /**
+         * User Guide
+         * 
+         * external References:
+         *      Spinner_MotorSpeed is the speed to spin the motor
+         *      Spinner_SparkMotor_ID is the id of the spark controllers
+         *          used for the motor
+         *      Spinner_Pneumatic_Forward_Solenoid_ID is the id of the single action
+         *          solenoid used to deploy the arm with the color sensor and wheel/motor
+         *      Spinner_TargetColorTransitions is the number of transitions to the target
+         *          color we need to hit in order to complete the charge-up task
+         * 
+         * interrupt():
+         *      this class does runs a state machine in its periodic function.  Because
+         *      of this, if a command is interrupted it will not stop this subsystem from
+         *      continuing to execute the current task (if any).  To alleviate this situation
+         *      any Command which requires this subsystem needs to call this function when
+         *      the command is interrupted.
+         * 
+         * spinCW():
+         *      this function will spin the motor clockwise.  Please note this results
+         *      in the actual control station wheel spinning counter-clockwise. For this
+         *      class direction really doesn't matter much as the spinToTarget() function is
+         *      direction agnostic.
+         * 
+         * spinCCw():
+         *      this function will spin the motor counter-clockwise.  Please note this reuslt
+         *      in the actual control station wheel spinning clockwise. It spins at the preset
+         *      speed.
+         * 
+         * stop():
+         *      this function will stop the motor from spinning
+         * 
+         * isSpinning():
+         *      this function returns true if the motor is spinnand and false if the
+         *      motor is stopped
+         * 
+         * extend():
+         *      this function is called to extend the arm holding the sensor and the motor
+         * 
+         * isExtended():
+         *      this function returns true if the arm is extended and false if it is not
+         * 
+         * getMatchedSensorColor():
+         *      this function will return the preset color (red,green,cyan,yellow) that is
+         *      closest to the color under the sensor.  If there is no match, black will be
+         *      returned.  If display of color data is enabled, it will update the shuffleboard
+         *      (via network tables) with the detected color and the matched color.
+         *      it return the matched color.
+         * 
+         * spinToTarget():
+         *      this function is called to start  the spinner executing the controlstation
+         *      changeup task.  It does the following tasks:
+         *          1.) gets the color that needs to be under the control station color sensor
+         *              at the completion of the chargeup-task.
+         *          2.) maps it to the color that needs to be under the robots color sensor
+         *              in order for the right color to be under the control stations sensor
+         *          3.) starts the wheel spining.
+         *      all of the rest of the work is implemented as a state machine in periodic()
+         *      which is called every 20 millseconds (20ms)
+         * 
+         * spinToTargetComplete():
+         *      this function returns true if the spinToTarget has completed, and false
+         *      if it is still in progress or has never started.
+         * 
+         * updateDashboardWithSensorColor():
+         *      this function checks to see if displaying colors is enabled (see enabledDisplayColor)
+         *      if it is, it will push out the colors via network tables to the shuffleboard
+         *      and driverstation.
+         * 
+         * enableDisplayColor():
+         *      this function will enable the display of color information via network tables
+         * 
+         * disableDisplayColor():
+         *      this function will disable the display of color information via network tables.
+         * 
+         */
+
         transitionsNeededToTargetColor = RobotMap.Spinner_TargetColorTransitions;
         transitionCount = 0;
         samplesBetweenTransitions = 0;
@@ -144,6 +222,17 @@ public class Spinner extends SubsystemBase {
         solenoid = new Solenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Spinner_Pneumatic_Forward_Solenoid_ID);
     }
 
+    /** 
+     * because work is done in the periodic function, when a command which uses this 
+     * subsystem is interrupted, we need to call this function to stop periodic() from
+     * executing any actions.
+     */
+    public void interrupt(){
+        // stop the motor
+        commandStatus = CommandStates.NOT_RUNNING;
+        stop();
+
+    }
 
     public void spinCw(){
         motor.set(RobotMap.Spinner_MotorSpeed);
@@ -162,10 +251,6 @@ public class Spinner extends SubsystemBase {
 
     public boolean isSpinning(){
         return (motorState == MotorStates.RUNNING);
-    }
-
-    public boolean isNNotSpinning(){
-        return (motorState == MotorStates.STOPPED);
     }
 
     /**
@@ -201,7 +286,7 @@ public class Spinner extends SubsystemBase {
         return match.color;
     }
 
-    public boolean setTargetColor(){
+    private boolean setTargetColor(){
         boolean success = true;
         Color color = new Color(0,0,0);
 
@@ -472,6 +557,10 @@ public class Spinner extends SubsystemBase {
             stop();
             commandStatus = CommandStates.COMPLETE;
         }
+    }
+
+    public boolean spinToTargetComplete(){
+        return (commandStatus == CommandStates.COMPLETE);
     }
 
     @Override

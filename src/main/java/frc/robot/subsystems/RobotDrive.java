@@ -8,20 +8,18 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Robot;
-import frc.robot.JoyStickControl;
 import frc.robot.RobotMap;
 
 public class RobotDrive extends SubsystemBase {
 
-  enum DriveModes {MANUAL,AUTONOMOUS};
+  private enum DriveModes {MANUAL, AUTO};
 
-  private DriveModes driveMode;
+  private DriveModes driveMode = DriveModes.MANUAL;
 
   private WPI_TalonSRX  leftFrontTalonSRX = null;
   private WPI_TalonSRX  leftRearTalonSRX = null;
@@ -32,8 +30,6 @@ public class RobotDrive extends SubsystemBase {
   private DifferentialDrive differentialDrive = null;
 
   public RobotDrive(){
-    driveMode = DriveModes.MANUAL;
-
     leftFrontTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftFront_ID);
     leftRearTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftRear_ID);
 
@@ -73,10 +69,6 @@ public class RobotDrive extends SubsystemBase {
     talon.configVoltageCompSaturation(12,0);
   }
 
-public boolean isAutomouseMode(){
-  return (driveMode == DriveModes.AUTONOMOUS);
-}
-
   /** 
    * 
    * NB: Oddly enought, when called, the params are reversed, so 
@@ -108,5 +100,14 @@ public boolean isAutomouseMode(){
     double rotation = Robot.joystickControl.getRightRotation() * 1;
 
     setSpeedAndRotationScaled(rotation, speed);
+  }
+
+  @Override
+  public void periodic(){
+    // if we are in manual mode, allow the robot to be controlled
+    // with the joystick
+    if(driveMode == DriveModes.MANUAL){
+      MoveWithJoystick();
+    }
   }
 }

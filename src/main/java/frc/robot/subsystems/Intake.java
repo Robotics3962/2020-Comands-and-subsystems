@@ -67,11 +67,6 @@ public class Intake extends SubsystemBase {
         intakePosition = IntakePositions.DOWN;
     }
 
-    public void raise(){
-        solenoid.set(false);
-        intakePosition = IntakePositions.UP;
-    }
-
     public boolean armUp(){
         return (intakePosition == IntakePositions.UP);
     }

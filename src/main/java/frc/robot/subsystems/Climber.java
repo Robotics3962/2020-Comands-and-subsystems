@@ -86,7 +86,7 @@ public class Climber extends SubsystemBase {
 
     public void retract(){
         currCommand = Commands.RETRACT;
-        motor1.set(ControlMode.PercentOutput, RobotMap.Climber_MotorSpeed);
+        motor1.set(ControlMode.PercentOutput, -RobotMap.Climber_MotorSpeed);
         motorState = MotorStates.RUNNING;
     }
 
@@ -105,6 +105,7 @@ public class Climber extends SubsystemBase {
 
         // read state of limit switch
         // if elevated or retracted, stop the motor
+        
 
         return upperLimitSwitchState;
     }
@@ -120,7 +121,7 @@ public class Climber extends SubsystemBase {
     @Override
     public void periodic(){
         if (! isMoving()){
-            // stop the motors
+            motor1.stopMotor();
         }
     }
 }

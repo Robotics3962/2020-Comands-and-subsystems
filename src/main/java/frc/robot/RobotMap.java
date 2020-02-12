@@ -89,9 +89,14 @@ public class RobotMap {
      * 
      * Lift_MotorSpeed is the speed between -1.0 and 1.0 that the
      *      ball lift motor will spin at
+     * 
+     * Lifs_IndexTimeMilliseconds is the amount of time the lift motor
+     *      will run to move a ball up to make room for another ball.
+     *      This time will be rounded down to a multiple of 20 miliseconds
      */
     public static int Lift_SparkMotor_ID = UNKNOWN_VALUE;
     public static double Lift_MotorSpeed = 0;
+    public static int Lift_IndexTimeMilliSeconds = 40;
 
     /**
      * configuration for the climber.  The climber needs limit switches

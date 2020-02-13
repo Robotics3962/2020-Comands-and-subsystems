@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -27,6 +28,7 @@ public class RobotDrive extends SubsystemBase {
   private WPI_TalonSRX  rightRearTalonSRX = null;
   private SpeedControllerGroup leftMotors = null;
   private SpeedControllerGroup rightMotors = null;
+  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
   private DifferentialDrive differentialDrive = null;
 
   public RobotDrive(){
@@ -39,9 +41,12 @@ public class RobotDrive extends SubsystemBase {
     leftMotors = new SpeedControllerGroup(leftFrontTalonSRX, leftRearTalonSRX);
     rightMotors = new SpeedControllerGroup(rightFrontTalonSRX, rightRearTalonSRX);
 
-    // tells the left side that is should be inverted so that we drive straight with each side having positive motor values.
-    rightFrontTalonSRX.setInverted(true);
-    rightRearTalonSRX.setInverted(true); 
+    // tells the left side that is should be inverted so that we drive straight with
+    // each side having positive motor values.
+    rightFrontTalonSRX.setInverted(false); // 3
+    rightRearTalonSRX.setInverted(false); // 4
+    leftFrontTalonSRX.setInverted(true); // 2
+    leftRearTalonSRX.setInverted(true); // 1
 
     //Config all talons
     DiffConfigTalons(rightFrontTalonSRX);
@@ -50,6 +55,8 @@ public class RobotDrive extends SubsystemBase {
     DiffConfigTalons(leftRearTalonSRX);
 
     differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
+
+    gyro.calibrate();
   }
   
   public void DiffConfigTalons(WPI_TalonSRX talon){
@@ -109,5 +116,13 @@ public class RobotDrive extends SubsystemBase {
     if(driveMode == DriveModes.MANUAL){
       MoveWithJoystick();
     }
+    else{
+
+    }
   }
+
+  public double readGyro(){
+    return gyro.getAngle();
+  }
+
 }

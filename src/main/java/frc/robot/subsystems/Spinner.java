@@ -170,7 +170,7 @@ public class Spinner extends SubsystemBase {
          * 
          * spinToTargetComplete():
          *      this function returns true if the spinToTarget has completed, and false
-         *      if it is still in progress or has never started.
+         *      if it is still in progress or has never started. (this should be moved to a command)
          * 
          * updateDashboardWithSensorColor():
          *      this function checks to see if displaying colors is enabled (see enabledDisplayColor)

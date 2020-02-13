@@ -3,6 +3,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX; 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -38,9 +39,24 @@ public class Climber extends SubsystemBase {
      *      call retract()
      *      continue to call isRetracted() until it returns true
      * 
-     * NOTE: the first line in the commands execute() function
-     * should be a call to periodic()
-     *
+     * elevate(): 
+     *      this function is called to start elevating the climber
+     * 
+     * isElevated():
+     *      this function is called to see if the climber is fully elevated. It returns
+     *      true if the climber is completely elevated and false otherwise.
+     * 
+     * retract():
+     *      this function is called to start retracting the climber. 
+     * 
+     * isRetracted():
+     *      this funtion is called to see if the climber is fully retracted.  It returns
+     *      true if the climber is completely retracted and false otherwise.
+     * 
+     * isMoving():
+     *      this function is called to see if the climber is moving up or down.  It returns
+     *      true if it is not elevated, and it is not retracted, and the motor state
+     *      is moving.
      */
 
     /**
@@ -72,6 +88,8 @@ public class Climber extends SubsystemBase {
 		motor1 = new WPI_TalonSRX (RobotMap.Climber_TalonMotor1_ID);
         motor2 = new WPI_TalonSRX (RobotMap.Climber_TalonMotor2_ID);
         motor2.follow(motor1);
+        motor1.setNeutralMode(NeutralMode.Brake);
+        motor2.setNeutralMode(NeutralMode.Brake);
 
         /**
          * add motor initialization code here

@@ -136,10 +136,10 @@ public class RobotMap {
      * This section contains constants to define the drive motors
      * 
      */
-    public static final int Drive_TalonLeftFront_ID = UNKNOWN_VALUE;
-    public static final int Drive_TalonLeftRear_ID  = UNKNOWN_VALUE;
-    public static final int Drive_TalonRightFront_ID = UNKNOWN_VALUE;
-    public static final int Drive_TalonRightRear_ID = UNKNOWN_VALUE;
+    public static final int Drive_TalonLeftFront_ID = 2;
+    public static final int Drive_TalonLeftRear_ID  = 3;
+    public static final int Drive_TalonRightFront_ID = 4;
+    public static final int Drive_TalonRightRear_ID = 1;
     
     /**
      * These scale factors are used to scale the values from the
@@ -156,7 +156,7 @@ public class RobotMap {
      * which allows finer control of the robot
      */
     public static final double Drive_SpeedScaleFactor = 0.85;
-    public static final double Drive_RotationScaleFactor = 0.65;
+    public static final double Drive_RotationScaleFactor = 0.77;
     
     /**
      * 

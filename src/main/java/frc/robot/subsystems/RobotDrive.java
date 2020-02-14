@@ -103,7 +103,7 @@ public class RobotDrive extends SubsystemBase {
   }
 
   public void MoveWithJoystick(){
-    double speed = Robot.joystickControl.getLeftThrottle() * -1;
+    double speed = Robot.joystickControl.getLeftThrottle() * 1;
     double rotation = Robot.joystickControl.getRightRotation() * 1;
 
     setSpeedAndRotationScaled(rotation, speed);
@@ -119,6 +119,10 @@ public class RobotDrive extends SubsystemBase {
     else{
 
     }
+  }
+
+  public void dumpEncoderValues(){
+    System.out.println("right encoder val:" + rightRearTalonSRX.getSelectedSensorPosition() + " left encoder val:" + leftRearTalonSRX.getSelectedSensorPosition() + " angle:" + readGyro());
   }
 
   public double readGyro(){

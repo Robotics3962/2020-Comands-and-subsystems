@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class Spinner extends SubsystemBase {
     /**
      * used to keep track of if spinner is deployed
      */
-    private enum SolenoidStates { NOT_EXTENDED, EXTENDED};
+    private enum SolenoidStates { UNKNOWN, EXTENDED, RETRACTED};
 
      /**
      * used to keep track of current state
@@ -35,13 +35,13 @@ public class Spinner extends SubsystemBase {
      * and initialize them
      */
     private MotorStates motorState = MotorStates.STOPPED;
-    private SolenoidStates solenoidState = SolenoidStates.NOT_EXTENDED;
+    private SolenoidStates solenoidState = SolenoidStates.UNKNOWN;
 
     /**
      * these are the controllers for the motors 
      */
     private Spark motor;
-    private Solenoid solenoid;
+    private DoubleSolenoid solenoid;
 
     /**
      * used to map color under Control Panel sensor to color under
@@ -114,10 +114,16 @@ public class Spinner extends SubsystemBase {
          *      Spinner_MotorSpeed is the speed to spin the motor
          *      Spinner_SparkMotor_ID is the id of the spark controllers
          *          used for the motor
-         *      Spinner_Pneumatic_Forward_Solenoid_ID is the id of the single action
-         *          solenoid used to deploy the arm with the color sensor and wheel/motor
+         *      Spinner_Pneumatic_Forward_Solenoid_ID is the id of the forward action
+         *          of the solenoid used to deploy the arm with the color sensor and wheel/motor
+         *      Spinner_Pneumatic_Reverse_Solenoid_ID is the id of the reverse action
+         *          of the solenoid used to deploy the arm with the color sensor and wheel/motor
          *      Spinner_TargetColorTransitions is the number of transitions to the target
          *          color we need to hit in order to complete the charge-up task
+         * 
+         * init():
+         *      this function will put the spinner in its starting state:
+         *          *arm will be retracted
          * 
          * interrupt():
          *      this class does runs a state machine in its periodic function.  Because
@@ -149,6 +155,12 @@ public class Spinner extends SubsystemBase {
          * 
          * isExtended():
          *      this function returns true if the arm is extended and false if it is not
+         * 
+         * retract():
+         *      this function is called to retracet the arm holding the sensor and the motor.
+         * 
+         * isRetracted():
+         *      this function returns true of the arm is retracted and false if it is not
          * 
          * getMatchedSensorColor():
          *      this function will return the preset color (red,green,cyan,yellow) that is
@@ -219,7 +231,7 @@ public class Spinner extends SubsystemBase {
         motor.enableDeadbandElimination(true);
 
         // initialize the solenoid
-        solenoid = new Solenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Spinner_Pneumatic_Forward_Solenoid_ID);
+        solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Spinner_Pneumatic_Forward_Solenoid_ID, RobotMap.Spinner_Pneumatic_Reverse_Solenoid_ID);
     }
 
     /** 
@@ -258,7 +270,7 @@ public class Spinner extends SubsystemBase {
      * the arm
      */
     public void extend(){
-        solenoid.set(true);
+        solenoid.set(DoubleSolenoid.Value.kForward);
         solenoidState = SolenoidStates.EXTENDED;
     }
 
@@ -266,6 +278,15 @@ public class Spinner extends SubsystemBase {
         return (solenoidState == SolenoidStates.EXTENDED);
     }
 
+    public void retract(){
+        solenoid.set(DoubleSolenoid.Value.kReverse);
+        solenoidState = SolenoidStates.RETRACTED;
+    }
+
+    public boolean isRetracted(){
+        return (solenoidState == SolenoidStates.RETRACTED);
+    }
+    
     /**
      * utility functions
      */

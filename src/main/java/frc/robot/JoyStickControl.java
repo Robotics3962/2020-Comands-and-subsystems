@@ -11,11 +11,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.SpinnerGetSensorColorCmd;
 import frc.robot.commands.SpinnerSpinCmd;
+import frc.robot.commands.SpinnerSpinReverseCmd;
 import frc.robot.commands.IntakeSpinCmd;
 import frc.robot.commands.IntakeDeployCmd;
 import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;
 import frc.robot.commands.ShooterShootCmd;
+import frc.robot.commands.SpinnerExtendCmd;
+import frc.robot.commands.SpinnerRetractCmd;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
@@ -51,12 +54,10 @@ public class JoyStickControl {
     JoystickButton opButtonBack = new JoystickButton(operationJoyStick, Button.kBack.value);
     JoystickButton opButtonStart = new JoystickButton(operationJoyStick, Button.kStart.value);
 
-    opButtonA.whileHeld(new SpinnerGetSensorColorCmd());
+    opButtonA.whileHeld(new SpinnerSpinReverseCmd());
     opButtonB.whileHeld(new SpinnerSpinCmd());
-    opButtonX.whileHeld(new IntakeSpinCmd());
-    opButtonY.whenPressed(new IntakeDeployCmd());
-    opButtonBack.whenPressed(new LiftIndexCmd());
-    opButtonStart.whileHeld(new LiftRunCmd());
+    opButtonX.whenPressed(new SpinnerRetractCmd());
+    opButtonY.whenPressed(new SpinnerExtendCmd());
   }
     
   public double getLeftThrottle() {

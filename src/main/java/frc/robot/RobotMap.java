@@ -16,7 +16,7 @@ public class RobotMap {
     /**
      * this is the id of the pneumatic controller
      */
-    public static final int Pneumatic_Module_ID = UNKNOWN_VALUE; 
+    public static final int Pneumatic_Module_ID = 0; 
 
     /**
      * Configuration for the intake
@@ -127,9 +127,10 @@ public class RobotMap {
      * Spinner_MotorSpeed is a value between -1.0 and 1.0 which
      * is the speed the spinner motor runs at
      */
-    public static final int Spinner_SparkMotor_ID = UNKNOWN_VALUE;
-    public static final double Spinner_MotorSpeed = 0;
-    public static final int Spinner_Pneumatic_Forward_Solenoid_ID = UNKNOWN_VALUE;
+    public static final int Spinner_SparkMotor_ID = 1;
+    public static final double Spinner_MotorSpeed = 0.5;
+    public static final int Spinner_Pneumatic_Forward_Solenoid_ID = 1;
+    public static final int Spinner_Pneumatic_Reverse_Solenoid_ID = 2;
     public static final int Spinner_TargetColorTransitions = 7;
     /**
      * 

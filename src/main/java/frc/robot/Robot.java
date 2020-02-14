@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
   public static Intake  intakeSubsystem = null;
   public static Spinner spinnerSubsystem = null;
   public static Lift    liftSubsystem = null;
-
+  public static RobotDrive robotDrive = null;
   public static JoyStickControl joystickControl = null;
 
   private Command m_autonomousCommand;
@@ -56,11 +56,17 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    climberSubsystem = new Climber();
-    shooterSubsystem = new Shooter();
-    intakeSubsystem = new Intake();
+    /**
+     * Do not instantiate susbsystems where hardware does
+     * not exist yet.  it will cause all kinds of errors
+     * (which is intentional)
+     */
+    //climberSubsystem = new Climber();
+    //shooterSubsystem = new Shooter();
+    //intakeSubsystem = new Intake();
+    //liftSubsystem = new Lift();
     spinnerSubsystem = new Spinner();
-    liftSubsystem = new Lift();
+    robotDrive = new RobotDrive();
     joystickControl = new JoyStickControl();
   }
 

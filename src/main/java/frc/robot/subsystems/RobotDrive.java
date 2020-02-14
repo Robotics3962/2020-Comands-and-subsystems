@@ -28,10 +28,13 @@ public class RobotDrive extends SubsystemBase {
   private WPI_TalonSRX  rightRearTalonSRX = null;
   private SpeedControllerGroup leftMotors = null;
   private SpeedControllerGroup rightMotors = null;
-  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+  private ADXRS450_Gyro gyro = null;
   private DifferentialDrive differentialDrive = null;
 
   public RobotDrive(){
+    gyro = new ADXRS450_Gyro();
+    gyro.calibrate();
+
     leftFrontTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftFront_ID);
     leftRearTalonSRX = new WPI_TalonSRX(RobotMap.Drive_TalonLeftRear_ID);
 
@@ -74,6 +77,31 @@ public class RobotDrive extends SubsystemBase {
 
     //Tells the talon that is should only appy 12 volts or less to the motor.
     talon.configVoltageCompSaturation(12,0);
+  }
+
+  public void setTankDriveSpeed( double speedLeft, double speedRight){
+    differentialDrive.tankDrive(speedLeft, speedRight);
+  }
+
+  public void setTankDriveSpeedCapped(double speedLeft, double speedRight){
+      double cappedSpeedLeft = speedLeft; 
+      if (speedLeft < -RobotMap.Drive_SpeedScaleFactor){
+        cappedSpeedLeft = -RobotMap.Drive_SpeedScaleFactor;
+      }
+      
+      if (speedLeft > RobotMap.Drive_SpeedScaleFactor){
+        cappedSpeedLeft = RobotMap.Drive_SpeedScaleFactor;
+      }
+
+      double cappedSpeedRight = speedRight;
+      if (speedRight < -RobotMap.Drive_SpeedScaleFactor){
+        cappedSpeedRight = -RobotMap.Drive_SpeedScaleFactor;
+      }
+      
+      if (speedRight > RobotMap.Drive_SpeedScaleFactor){
+        cappedSpeedRight = RobotMap.Drive_SpeedScaleFactor;
+      }
+      setTankDriveSpeed(cappedSpeedLeft, cappedSpeedRight);
   }
 
   /** 

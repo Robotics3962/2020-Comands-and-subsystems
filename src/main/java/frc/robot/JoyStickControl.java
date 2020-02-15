@@ -56,7 +56,7 @@ public class JoyStickControl {
     opButtonA.whileHeld(new SpinnerSpinReverseCmd());
     opButtonB.whileHeld(new SpinnerSpinCmd());
     opButtonX.whenPressed(new SpinnerRetractCmd());
-    //opButtonY.whenPressed(new SpinnerExtendCmd());
+    opButtonY.whenPressed(new SpinnerExtendCmd());
   }
     
   public double getLeftThrottle() {

@@ -19,8 +19,8 @@ import frc.robot.commands.IntakeDeployCmd;
 import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;
 import frc.robot.commands.ShooterShootCmd;
-import frc.robot.commands.DriveMoveDistanceCmd;;
-
+import frc.robot.commands.DriveMoveDistanceCmd;
+import frc.robot.commands.SpinnerMove1TransitionCmd;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
@@ -59,6 +59,7 @@ public class JoyStickControl {
     opButtonX.whenPressed(new SpinnerRetractCmd());
     opButtonY.whenPressed(new SpinnerExtendCmd());
     opButtonStart.whenPressed(new DriveMoveDistanceCmd());
+    opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
   }
     
   public double getLeftThrottle() {

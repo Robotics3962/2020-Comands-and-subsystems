@@ -32,6 +32,7 @@ public class SpinnerSpinReverseCmd extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.robotDrive.setSpeedAndRotation(0, 0);
     Robot.spinnerSubsystem.stop();
   }
 

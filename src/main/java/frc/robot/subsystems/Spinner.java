@@ -79,6 +79,8 @@ public class Spinner extends SubsystemBase {
     private final Color detectorRedColor = ColorMatch.makeColor(0.540, 0.319, 0.117);
     private final Color detectorYellowColor = ColorMatch.makeColor(0.3208, 0.5607, 0.1201);
 
+    private HashMap<Color, String> colorNameMap;
+
     /**
      * set to true to display the color under the robot sensor
      */
@@ -104,6 +106,7 @@ public class Spinner extends SubsystemBase {
     private int periodicCallsBeforeStop;
     private int transitionsNeededToTargetColor;
     private int sampleCount;
+    private double speed;
 
     public Spinner(){
 
@@ -225,13 +228,25 @@ public class Spinner extends SubsystemBase {
         colorMatcher.addColorMatch(detectorGreenColor);
         colorMatcher.addColorMatch(detectorRedColor);
         colorMatcher.addColorMatch(detectorYellowColor);
-        colorMatcher.setConfidenceThreshold((0.94));
+        colorMatcher.setConfidenceThreshold((0.92));
         // initialize the motor
 		motor = new Spark(RobotMap.Spinner_SparkMotor_ID);
         motor.enableDeadbandElimination(true);
+        speed = RobotMap.Spinner_MotorSpeed;
 
         // initialize the solenoid
         solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Spinner_Pneumatic_Forward_Solenoid_ID, RobotMap.Spinner_Pneumatic_Reverse_Solenoid_ID);
+
+        colorNameMap = new HashMap<Color, String>();
+        colorNameMap.put(detectorCyanColor, "Blue");
+        colorNameMap.put(detectorRedColor, "Red");
+        colorNameMap.put(detectorGreenColor, "Green");
+        colorNameMap.put(detectorYellowColor, "Yellow");
+        colorNameMap.put(Color.kBlack, "Black");
+    }
+
+    public String colorName(Color color){
+        return colorNameMap.get(color);
     }
 
     /** 
@@ -246,13 +261,17 @@ public class Spinner extends SubsystemBase {
 
     }
 
+    public void setSpeed(double newSpeed){
+        speed = newSpeed;
+
+    }
     public void spinCw(){
-        motor.set(RobotMap.Spinner_MotorSpeed);
+        motor.set(speed);
         motorState = MotorStates.RUNNING;
     }
 
     public void spinCCw(){
-        motor.set(-RobotMap.Spinner_MotorSpeed);
+        motor.set(-speed);
         motorState = MotorStates.RUNNING;
     }
 

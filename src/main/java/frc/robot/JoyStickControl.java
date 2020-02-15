@@ -10,6 +10,8 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.SpinnerGetSensorColorCmd;
+import frc.robot.commands.SpinnerExtendCmd;
+import frc.robot.commands.SpinnerRetractCmd;
 import frc.robot.commands.SpinnerSpinCmd;
 import frc.robot.commands.SpinnerSpinReverseCmd;
 import frc.robot.commands.IntakeSpinCmd;
@@ -17,17 +19,14 @@ import frc.robot.commands.IntakeDeployCmd;
 import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;
 import frc.robot.commands.ShooterShootCmd;
-import frc.robot.commands.SpinnerExtendCmd;
-import frc.robot.commands.SpinnerRetractCmd;
+
 
 public class JoyStickControl {
   // get both drive and operational joysticks
-  Joystick driveJoystick = null;
-  Joystick operationJoyStick = null; 
+  Joystick driveJoystick = new Joystick(RobotMap.Joystick0Id);
+  Joystick operationJoyStick = new Joystick(RobotMap.Joystick1Id); 
   
   public JoyStickControl(){
-    Joystick driveJoystick = new Joystick(RobotMap.Joystick0Id);
-    Joystick operationJoyStick = new Joystick(RobotMap.Joystick1Id);
     
     // get the buttons on the drive joystick
     JoystickButton driveButtonA = new JoystickButton(driveJoystick, Button.kA.value);
@@ -57,7 +56,7 @@ public class JoyStickControl {
     opButtonA.whileHeld(new SpinnerSpinReverseCmd());
     opButtonB.whileHeld(new SpinnerSpinCmd());
     opButtonX.whenPressed(new SpinnerRetractCmd());
-    opButtonY.whenPressed(new SpinnerExtendCmd());
+    //opButtonY.whenPressed(new SpinnerExtendCmd());
   }
     
   public double getLeftThrottle() {

@@ -82,7 +82,7 @@ public class Spinner extends SubsystemBase {
     /**
      * set to true to display the color under the robot sensor
      */
-    private boolean displayColor = false;
+    private boolean displayColor = true;
 
     /**
      * keeps track of how many color transitions occurred
@@ -586,6 +586,7 @@ public class Spinner extends SubsystemBase {
 
     @Override
     public void periodic(){
+        getMatchedSensorColor();
         switch(commandStatus){
             case NOT_RUNNING:
                 // nothing to do

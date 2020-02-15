@@ -10,11 +10,16 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
+import javax.print.attribute.standard.JobHoldUntil;
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.JoyStickControl;
 
 public class RobotDrive extends SubsystemBase {
 
@@ -131,7 +136,7 @@ public class RobotDrive extends SubsystemBase {
   }
 
   public void MoveWithJoystick(){
-    double speed = Robot.joystickControl.getLeftThrottle() * 1;
+    double speed = Robot.joystickControl.getLeftThrottle() * -1;
     double rotation = Robot.joystickControl.getRightRotation() * 1;
 
     setSpeedAndRotationScaled(rotation, speed);
@@ -139,6 +144,12 @@ public class RobotDrive extends SubsystemBase {
 
   @Override
   public void periodic(){
+
+    if (!JoyStickControl.deadManSwitch()){
+      setSpeedAndRotation(0, 0);
+    } 
+
+    dumpEncoderValues();
     // if we are in manual mode, allow the robot to be controlled
     // with the joystick
     if(driveMode == DriveModes.MANUAL){
@@ -150,11 +161,19 @@ public class RobotDrive extends SubsystemBase {
   }
 
   public void dumpEncoderValues(){
-    System.out.println("right encoder val:" + rightRearTalonSRX.getSelectedSensorPosition() + " left encoder val:" + leftRearTalonSRX.getSelectedSensorPosition() + " angle:" + readGyro());
+    SmartDashboard.putNumber("right encoder val:", rightRearTalonSRX.getSelectedSensorPosition());
+    SmartDashboard.putNumber("left encoder val:", leftRearTalonSRX.getSelectedSensorPosition());
+    SmartDashboard.putNumber("angle:", readGyro());
+    SmartDashboard.putBoolean("dead man switch:", JoyStickControl.deadManSwitch());
   }
 
   public double readGyro(){
     return gyro.getAngle();
+  }
+
+  public double readLEncoder(){
+    return leftRearTalonSRX.getSelectedSensorPosition();
+
   }
 
 }

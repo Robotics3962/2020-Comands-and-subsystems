@@ -19,12 +19,13 @@ import frc.robot.commands.IntakeDeployCmd;
 import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;
 import frc.robot.commands.ShooterShootCmd;
+import frc.robot.commands.DriveMoveDistanceCmd;;
 
 
 public class JoyStickControl {
   // get both drive and operational joysticks
   Joystick driveJoystick = new Joystick(RobotMap.Joystick0Id);
-  Joystick operationJoyStick = new Joystick(RobotMap.Joystick1Id); 
+  static Joystick operationJoyStick = new Joystick(RobotMap.Joystick1Id); 
   
   public JoyStickControl(){
     
@@ -57,6 +58,7 @@ public class JoyStickControl {
     opButtonB.whileHeld(new SpinnerSpinCmd());
     opButtonX.whenPressed(new SpinnerRetractCmd());
     opButtonY.whenPressed(new SpinnerExtendCmd());
+    opButtonStart.whenPressed(new DriveMoveDistanceCmd());
   }
     
   public double getLeftThrottle() {
@@ -66,4 +68,9 @@ public class JoyStickControl {
 	public double getRightRotation() {
         return driveJoystick.getRawAxis(4);
     }
+
+  public static boolean deadManSwitch() {
+
+    return operationJoyStick.getRawButton(Button.kBumperLeft.value);
+  }
 }

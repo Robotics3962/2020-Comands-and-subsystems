@@ -77,7 +77,7 @@ public class Spinner extends SubsystemBase {
     private final Color detectorCyanColor = ColorMatch.makeColor(0.133, 0.415, 0.435);
     private final Color detectorGreenColor = ColorMatch.makeColor(0.189, 0.548, 0.241);
     private final Color detectorRedColor = ColorMatch.makeColor(0.540, 0.319, 0.117);
-    private final Color detectorYellowColor = ColorMatch.makeColor(0.189, 0.529, 0.112);
+    private final Color detectorYellowColor = ColorMatch.makeColor(0.3208, 0.5607, 0.1201);
 
     /**
      * set to true to display the color under the robot sensor
@@ -225,7 +225,7 @@ public class Spinner extends SubsystemBase {
         colorMatcher.addColorMatch(detectorGreenColor);
         colorMatcher.addColorMatch(detectorRedColor);
         colorMatcher.addColorMatch(detectorYellowColor);
-
+        colorMatcher.setConfidenceThreshold((0.94));
         // initialize the motor
 		motor = new Spark(RobotMap.Spinner_SparkMotor_ID);
         motor.enableDeadbandElimination(true);
@@ -292,19 +292,25 @@ public class Spinner extends SubsystemBase {
      */
     public Color getMatchedSensorColor(){
         Color detectedColor = colorSensor.getColor();
-    
+        Color matchedColor = Color.kBlack;
+        double confidence = 0;
+
         /**
          * match the color read from the sensor to one of the
          * pre defined ones.  if the color is black, then there is
          * no match
          */
-        ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+        ColorMatchResult match = colorMatcher.matchColor(detectedColor);
+        if (match != null){
+            matchedColor = match.color;
+            confidence = match.confidence;
+        }
 
         // display it on the dashboard
         updateDashboardWithSensorColor(detectedColor);
-        updateDashboardWithMatchedColor(match.color);
+        updateDashboardWithMatchedColor(matchedColor, confidence);
 
-        return match.color;
+        return matchedColor;
     }
 
     private boolean setTargetColor(){
@@ -415,11 +421,12 @@ public class Spinner extends SubsystemBase {
         }
     }
 
-    public void updateDashboardWithMatchedColor(Color color){
+    public void updateDashboardWithMatchedColor(Color color, double confidence){
         if (displayColor){
             SmartDashboard.putNumber("Matched-Red", color.red);
             SmartDashboard.putNumber("matched-Green", color.green);
             SmartDashboard.putNumber("Matched-Blue", color.blue);
+            SmartDashboard.putNumber("Matched-Confidence", confidence);
         }
     }
 

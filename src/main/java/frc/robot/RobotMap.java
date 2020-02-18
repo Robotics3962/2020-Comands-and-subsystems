@@ -8,6 +8,12 @@ package frc.robot;
  */
 public class RobotMap {
 
+
+    //limelight speed values
+   public static double rotation = 0.45;
+   public static double speed = 0.45;
+
+
     /**
      * This value is to make it clear I don't now the value
      */

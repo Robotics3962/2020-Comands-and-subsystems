@@ -8,8 +8,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.JoyStickControl;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class DriveMoveDistanceCmd extends CommandBase {
   /**
@@ -35,6 +38,33 @@ public class DriveMoveDistanceCmd extends CommandBase {
     System.out.println("RobotDriveMoveDist: moving from " + initialPosition + " to " + finalPosition);
     SmartDashboard.putNumber("init position:", initialPosition);
     SmartDashboard.putNumber("final position:", finalPosition);
+    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+    double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    double deadZoneX = 2.5;
+    double deadZoneY = .5;
+    double targetX = 0;
+    double targetY = -11;
+
+    if (JoyStickControl.driveJoystick.getRawButton(1)){
+      System.out.println("tx: " + tx + "ty: " + ty);
+
+      if (tx < (targetX - deadZoneX)){
+          RobotMap.rotation = .5;
+          RobotMap.speed = 0;
+        }
+      else if (tx > (targetX + deadZoneX)){
+        RobotMap.rotation = -.5;
+        RobotMap.speed = 0;
+      }
+      else if (ty < (targetY - deadZoneY)){
+        RobotMap.speed = -0.45;
+        RobotMap.rotation = 0;
+      }
+      else if (ty > (targetY + deadZoneY)){
+        RobotMap.speed = 0.45;
+        RobotMap.rotation = 0;
+      }
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

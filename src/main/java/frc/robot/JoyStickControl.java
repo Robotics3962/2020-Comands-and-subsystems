@@ -20,11 +20,11 @@ import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;
 import frc.robot.commands.ShooterShootCmd;
 import frc.robot.commands.DriveMoveDistanceCmd;
-import frc.robot.commands.SpinnerMove1TransitionCmd;
+//import frc.robot.commands.SpinnerMove1TransitionCmd;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
-  Joystick driveJoystick = new Joystick(RobotMap.Joystick0Id);
+  public static Joystick driveJoystick = new Joystick(RobotMap.Joystick0Id);
   static Joystick operationJoyStick = new Joystick(RobotMap.Joystick1Id); 
   
   public JoyStickControl(){
@@ -59,7 +59,7 @@ public class JoyStickControl {
     opButtonX.whenPressed(new SpinnerRetractCmd());
     opButtonY.whenPressed(new SpinnerExtendCmd());
     opButtonStart.whenPressed(new DriveMoveDistanceCmd());
-    opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
+    //opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
   }
     
   public double getLeftThrottle() {

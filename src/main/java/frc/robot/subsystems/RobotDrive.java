@@ -176,4 +176,7 @@ public class RobotDrive extends SubsystemBase {
 
   }
 
+  public void rotate(double angle){
+    
+  }
 }

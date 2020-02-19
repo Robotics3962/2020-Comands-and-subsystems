@@ -8,14 +8,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
-public class DriveRotateAngleCmd extends CommandBase {
+public class DriveRotateRelativeCmd extends CommandBase {
+  private double targetAngle = 0;
+
   /**
-   * Creates a new DriveRotateAngleCmd.
+   * Creates a new DriveRotateRelativeCmd.
    */
-
-  public DriveRotateAngleCmd(double angle) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public DriveRotateRelativeCmd(double degrees) {
+    double currAngle = Robot.robotDrive.readGyro();
+    targetAngle = currAngle + degrees;
   }
 
   // Called when the command is initially scheduled.

@@ -147,7 +147,20 @@ public class RobotMap {
     public static final int Drive_TalonLeftRear_ID  = 3;
     public static final int Drive_TalonRightFront_ID = 4;
     public static final int Drive_TalonRightRear_ID = 1;
-    
+    public static final double Drive_Auto_Distance_Pval = 0.1;
+    public static final double Drive_Auto_Distance_Ival = 0.0;
+    public static final double Drive_Auto_Distance_Dval = 0.0;
+    public static final double Drive_Auto_CountsPerInch = 218;
+    public static final double Drive_Auto_Distance_MinSpeed = 0.25;
+    public static final double Drive_Auto_Distance_MaxSpeed = 0.7;
+    public static final double Drive_Auto_Distance_DeadZone = Drive_Auto_CountsPerInch * 3; 
+    public static final double Drive_Auto_Angle_DeadZone = 2;
+    public static final double Drive_Auto_Angle_MinSpeed = 0.25;
+    public static final double Drive_Auto_Angle_MaxSpeed = 0.7;
+    public static final double Drive_Auto_Angle_Pval = 0.7;
+    public static final double Drive_Auto_Angle_Ival = 0.0;
+    public static final double Drive_Auto_Angle_Dval = 0.0;
+
     /**
      * These scale factors are used to scale the values from the
      * joystick.  The joystick will return a value between -1.0 and 1.0

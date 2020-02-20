@@ -20,7 +20,7 @@ import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;
 import frc.robot.commands.ShooterShootCmd;
 import frc.robot.commands.DriveMoveDistanceCmd;
-import frc.robot.commands.DriverMoveDistancePIDCmd;
+import frc.robot.commands.DriveMoveDistancePIDCmd;
 //import frc.robot.commands.SpinnerMove1TransitionCmd;
 import frc.robot.commands.DriveResetGyroCmd;
 import frc.robot.commands.DriveRotatePIDCmd;
@@ -61,8 +61,8 @@ public class JoyStickControl {
 
     //opButtonA.whileHeld(new SpinnerSpinReverseCmd());
     //opButtonB.whileHeld(new SpinnerSpinCmd());
-    opButtonA.whenPressed(new DriverMoveDistancePIDCmd(60));
-    opButtonB.whenPressed(new DriverMoveDistancePIDCmd(-60));
+    opButtonA.whenPressed(new DriveMoveDistancePIDCmd(60));
+    opButtonB.whenPressed(new DriveMoveDistancePIDCmd(-60));
     opButtonX.whenPressed(new DemoAutonomousCmdGroup());
     opButtonY.whenPressed(new DriveResetGyroCmd());
     opButtonStart.whenPressed(new DriveRotatePIDCmd(180));

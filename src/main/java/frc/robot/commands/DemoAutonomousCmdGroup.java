@@ -19,6 +19,6 @@ public class DemoAutonomousCmdGroup extends SequentialCommandGroup {
   public DemoAutonomousCmdGroup() {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new DriverMoveDistancePIDCmd(-60), new DriveRotatePIDCmd(180), new DriverMoveDistancePIDCmd(-60), new DriveRotatePIDCmd(0) );
+    super(new DriveMoveDistancePIDCmd(-60), new DriveRotatePIDCmd(180), new DriveMoveDistancePIDCmd(-60), new DriveRotatePIDCmd(0) );
   }
 }

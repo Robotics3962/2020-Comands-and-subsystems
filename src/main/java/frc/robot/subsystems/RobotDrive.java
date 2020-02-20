@@ -65,6 +65,9 @@ public class RobotDrive extends SubsystemBase {
     differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
 
     gyro.calibrate();
+
+    // configure the encoders
+    leftRearTalonSRX.setSensorPhase(true);
   }
   
   public void DiffConfigTalons(WPI_TalonSRX talon){
@@ -164,7 +167,6 @@ public class RobotDrive extends SubsystemBase {
     SmartDashboard.putNumber("right encoder val:", rightRearTalonSRX.getSelectedSensorPosition());
     SmartDashboard.putNumber("left encoder val:", leftRearTalonSRX.getSelectedSensorPosition());
     SmartDashboard.putNumber("angle:", readGyro());
-    SmartDashboard.putBoolean("dead man switch:", JoyStickControl.deadManSwitch());
   }
 
   public double readGyro(){
@@ -178,5 +180,9 @@ public class RobotDrive extends SubsystemBase {
 
   public void rotate(double angle){
     
+  }
+
+  public void resetGyro(){
+    gyro.calibrate();
   }
 }

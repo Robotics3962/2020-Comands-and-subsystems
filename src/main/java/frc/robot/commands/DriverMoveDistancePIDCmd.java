@@ -36,6 +36,8 @@ public class DriverMoveDistancePIDCmd extends CommandBase {
     targetPosition = initialPosition - (distance * RobotMap.Drive_Auto_CountsPerInch);
     SmartDashboard.putNumber("current position:", currentPosition);
     SmartDashboard.putNumber("final position:", targetPosition);
+    System.out.println("distance:" + distance);
+    System.out.println("MoveToPos: targetPos:" + targetPosition + " currpos:" + currentPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,9 +45,8 @@ public class DriverMoveDistancePIDCmd extends CommandBase {
   public void execute() {
     double speed = calculateSpeed();
     double currentPosition = Robot.robotDrive.readLEncoder();
-    SmartDashboard.putNumber("current position:", currentPosition);
-    SmartDashboard.putNumber("target position:", targetPosition);
-    SmartDashboard.putNumber("drive speed:", speed);
+    updateDashboard(currentPosition, targetPosition, speed);
+    //System.out.println("MoveToPos: targetPos:" + targetPosition + " currpos:" + currentPosition);
 
     // for some reason speed and rotation is reversed
     Robot.robotDrive.setSpeedAndRotation(0, speed);
@@ -55,6 +56,9 @@ public class DriverMoveDistancePIDCmd extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     Robot.robotDrive.stop();
+    double currentPosition = Robot.robotDrive.readLEncoder();
+    updateDashboard(currentPosition, targetPosition, 0);
+    System.out.println("MoveToPos: targetPos:" + targetPosition + " currpos:" + currentPosition);
   }
 
   // Returns true when the command should end.
@@ -94,7 +98,7 @@ public class DriverMoveDistancePIDCmd extends CommandBase {
 
   private double limit(double value){
     if (value <= 0){
-      if (value >= -RobotMap.Drive_Auto_Distance_MinSpeed){
+      if (value > -RobotMap.Drive_Auto_Distance_MinSpeed){
         value = -RobotMap.Drive_Auto_Distance_MinSpeed;
       } 
       else if (value < -RobotMap.Drive_Auto_Distance_MaxSpeed) {
@@ -111,5 +115,12 @@ public class DriverMoveDistancePIDCmd extends CommandBase {
     }
 
     return value;
+  }
+
+  private void updateDashboard(double currentPos, double targetPos, double speed){
+    SmartDashboard.putNumber("current position:", currentPos);
+    SmartDashboard.putNumber("target position:", targetPos);
+    SmartDashboard.putNumber("drive speed:", speed);
+
   }
 }

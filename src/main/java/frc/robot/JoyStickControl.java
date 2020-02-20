@@ -20,7 +20,12 @@ import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;
 import frc.robot.commands.ShooterShootCmd;
 import frc.robot.commands.DriveMoveDistanceCmd;
+import frc.robot.commands.DriverMoveDistancePIDCmd;
 //import frc.robot.commands.SpinnerMove1TransitionCmd;
+import frc.robot.commands.DriveResetGyroCmd;
+import frc.robot.commands.DriveRotatePIDCmd;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DemoAutonomousCmdGroup;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
@@ -54,11 +59,14 @@ public class JoyStickControl {
     JoystickButton opButtonBack = new JoystickButton(operationJoyStick, Button.kBack.value);
     JoystickButton opButtonStart = new JoystickButton(operationJoyStick, Button.kStart.value);
 
-    opButtonA.whileHeld(new SpinnerSpinReverseCmd());
-    opButtonB.whileHeld(new SpinnerSpinCmd());
-    opButtonX.whenPressed(new SpinnerRetractCmd());
-    opButtonY.whenPressed(new SpinnerExtendCmd());
-    opButtonStart.whenPressed(new DriveMoveDistanceCmd());
+    //opButtonA.whileHeld(new SpinnerSpinReverseCmd());
+    //opButtonB.whileHeld(new SpinnerSpinCmd());
+    opButtonA.whenPressed(new DriverMoveDistancePIDCmd(60));
+    opButtonB.whenPressed(new DriverMoveDistancePIDCmd(-60));
+    opButtonX.whenPressed(new DemoAutonomousCmdGroup());
+    opButtonY.whenPressed(new DriveResetGyroCmd());
+    opButtonStart.whenPressed(new DriveRotatePIDCmd(180));
+    opButtonBack.whenPressed(new DriveRotatePIDCmd(0));
     //opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
   }
     
@@ -71,7 +79,10 @@ public class JoyStickControl {
     }
 
   public static boolean deadManSwitch() {
-
-    return operationJoyStick.getRawButton(Button.kBumperLeft.value);
+    boolean active = false;
+    active = operationJoyStick.getRawButton(Button.kBumperLeft.value);
+    SmartDashboard.putBoolean("deadman switch:", active);
+    active = true;
+    return active;
   }
 }

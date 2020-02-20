@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.JoyStickControl;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -18,11 +19,14 @@ public class DriveRotatePIDCmd extends CommandBase {
   double distance;
   double aggregatedError;
   double prevError;
+  boolean done;
+  int msgCount = 0;
 
   /**
    * Creates a new DriveRotatePIDCmd.
    */
   public DriveRotatePIDCmd(double absoluteAngle) {
+    
     addRequirements(Robot.robotDrive);
     targetAngle =  absoluteAngle;
   }
@@ -33,6 +37,7 @@ public class DriveRotatePIDCmd extends CommandBase {
     aggregatedError = 0;
     prevError = 0;
     initialAngle = Robot.robotDrive.readGyro();
+    done = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,19 +45,26 @@ public class DriveRotatePIDCmd extends CommandBase {
   public void execute() {
     double speed = calculateSpeed();
     // for some reason speed and rotation is reversed
-    Robot.robotDrive.setSpeedAndRotation(0, speed);
+    if (JoyStickControl.deadManSwitch()){
+      Robot.robotDrive.setSpeedAndRotation(-speed, 0);
+    }
 
     double currentAngle = Robot.robotDrive.readGyro();
     SmartDashboard.putNumber("current angle:", currentAngle);
     SmartDashboard.putNumber("target angle:", targetAngle);
     SmartDashboard.putNumber("angular speed:", speed);
-
+    SmartDashboard.putBoolean("rotate complete:", done);
+    if ((msgCount++ % 5) == 0){
+      System.out.println("current angle:" + currentAngle + " target angle:" + targetAngle + " angular speed:" + speed);
+    }
 }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Robot.robotDrive.stop();
+    done = true;
+    SmartDashboard.putBoolean("rotate complete:", done);
   }
 
   // Returns true when the command should end.
@@ -77,6 +89,8 @@ public class DriveRotatePIDCmd extends CommandBase {
 
     speed = pidPval + pidIval + pidDval;
     double adjustedSpeed = limit(speed);
+
+    SmartDashboard.putNumber("unadjusted angular speed:", speed);
 
     return adjustedSpeed;
   }

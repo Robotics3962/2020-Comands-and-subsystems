@@ -38,6 +38,9 @@ public class DriveMoveDistanceCmd extends CommandBase {
     System.out.println("RobotDriveMoveDist: moving from " + initialPosition + " to " + finalPosition);
     SmartDashboard.putNumber("init position:", initialPosition);
     SmartDashboard.putNumber("final position:", finalPosition);
+
+    //*guided seeking
+    
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     double deadZoneX = 2.5;
@@ -65,6 +68,7 @@ public class DriveMoveDistanceCmd extends CommandBase {
         RobotMap.rotation = 0;
       }
     }
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -19,18 +19,21 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
    */
   int transitionCount = 0;
   Color initColor = Color.kBlack;
-  int maxTransitions;
-  double initSpeed = .3;
+  double maxTransitions;
+  double initSpeed = .2;
   double currSpeed = initSpeed;
   double finalSpeed = .15;
-  int reduceSpeedPeriods = 5;
+  int reduceSpeedPeriods = 1;
   int periodCount = 0;
+  double startTime;
+  double endTime;
 
-  public SpinnerMove1TransitionCmd(int numTransitions) {
+  public SpinnerMove1TransitionCmd(double numTransitions) {//set to seconds
     addRequirements(Robot.spinnerSubsystem);
     maxTransitions = numTransitions;
     periodCount = 0;
     currSpeed = initSpeed;
+    
   }
 
   // Called when the command is initially scheduled.
@@ -42,11 +45,15 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     currSpeed = initSpeed;
     Robot.spinnerSubsystem.setSpeed(currSpeed);
     Robot.spinnerSubsystem.spinCw();
+    startTime = Timer.getFPGATimestamp();
+    endTime = startTime + maxTransitions * 0.25;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+      
+   // System.out.println("startTime:"+startTime+" |||||| Endtime: "+endTime);
     periodCount++;
     double oldSpeed = currSpeed;
     if (periodCount == reduceSpeedPeriods){
@@ -63,12 +70,22 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     if (color==Color.kBlack){
       //System.out.println("Color is " + Robot.spinnerSubsystem.colorName(color));
     }
+
+    if (startTime < endTime){
+      //System.out.println("Start Time: "+startTime +";;;;; End Time: "+endTime);
+      Robot.spinnerSubsystem.setSpeed(currSpeed);
+      Robot.spinnerSubsystem.spinCw();
+      
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Robot.spinnerSubsystem.stop();
+    double seconds = Timer.getFPGATimestamp();
+    System.out.println("xStart Time: "+startTime +";;;;; End Time: "+endTime+ " delta: "+(seconds-endTime));
+
   }
 
   // Returns true when the command should end.
@@ -76,17 +93,23 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   public boolean isFinished() {
     Color currColor = Robot.spinnerSubsystem.getMatchedSensorColor();
     if ((currColor != Color.kBlack) && (currColor != initColor)){
-      transitionCount++;
+      //transitionCount++;
       double seconds = Timer.getFPGATimestamp();
-      System.out.println(transitionCount + " transitions detected " + seconds + "color " + Robot.spinnerSubsystem.colorName(currColor));
-      if (transitionCount > maxTransitions){
+     // System.out.println(transitionCount + " transitions detected " + seconds + "color " + Robot.spinnerSubsystem.colorName(currColor));
+      //if (transitionCount > maxTransitions){
           //Robot.spinnerSubsystem.setSpeed(currSpeed);
-          Robot.spinnerSubsystem.spinCCw();
-          return true;
-      }
-      else {
-        initColor = currColor;
-      }
+        //  Robot.spinnerSubsystem.spinCCw();
+          //return true;
+      //}
+      //else {
+        //initColor = currColor;
+      //}
+    }
+
+    double seconds = Timer.getFPGATimestamp();
+    if (seconds > endTime ){
+      System.out.println("Start Time: "+startTime +";;;;; End Time: "+endTime+ " delta: "+(seconds-endTime));
+      return true;
     }
     return false;
   }

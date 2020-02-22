@@ -10,6 +10,7 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.SpinnerGetSensorColorCmd;
+import frc.robot.commands.SpinnerMove1TransitionCmd;
 import frc.robot.commands.SpinnerExtendCmd;
 import frc.robot.commands.SpinnerRetractCmd;
 import frc.robot.commands.SpinnerSpinCmd;
@@ -71,8 +72,9 @@ public class JoyStickControl {
     opButtonBack.whenPressed(new DriveRotatePIDCmd(0));
     //opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
 
-    driveButtonA.whenPressed(new DriveSeekLimelightTargetCmd());
-    driveButtonB.whenPressed(new DriveFaceLimelightTargetCmd());
+    driveButtonA.whileHeld(new SpinnerSpinCmd());
+    driveButtonB.whileHeld(new SpinnerSpinReverseCmd());
+    driveButtonX.whenPressed(new SpinnerMove1TransitionCmd(1.0));
   }
     
   public double getLeftThrottle() {

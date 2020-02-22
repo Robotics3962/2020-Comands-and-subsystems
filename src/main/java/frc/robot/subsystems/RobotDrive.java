@@ -148,11 +148,8 @@ public class RobotDrive extends SubsystemBase {
   @Override
   public void periodic(){
 
-    if (!JoyStickControl.deadManSwitch()){
-      setSpeedAndRotation(0, 0);
-    } 
-
     dumpEncoderValues();
+
     // if we are in manual mode, allow the robot to be controlled
     // with the joystick
     if(driveMode == DriveModes.MANUAL){
@@ -178,11 +175,7 @@ public class RobotDrive extends SubsystemBase {
 
   }
 
-  public void rotate(double angle){
-    
-  }
-
   public void resetGyro(){
-    gyro.calibrate();
+    gyro.reset();
   }
 }

@@ -160,6 +160,7 @@ public class RobotMap {
     public static final double Drive_Auto_Angle_Pval = 0.25;
     public static final double Drive_Auto_Angle_Ival = 0.0;
     public static final double Drive_Auto_Angle_Dval = 0.0;
+    public static final double Drive_LimeLight_Search_RotateSpeed = 0.25;
 
     /**
      * These scale factors are used to scale the values from the

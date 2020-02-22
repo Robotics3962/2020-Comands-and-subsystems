@@ -147,7 +147,7 @@ public class RobotMap {
     public static final int Drive_TalonLeftRear_ID  = 3;
     public static final int Drive_TalonRightFront_ID = 4;
     public static final int Drive_TalonRightRear_ID = 1;
-    public static final double Drive_Auto_Distance_Pval = 0.1;
+    public static final double Drive_Auto_Distance_Pval = 0.18;//0.1
     public static final double Drive_Auto_Distance_Ival = 0.0;
     public static final double Drive_Auto_Distance_Dval = 0.0;
     public static final double Drive_Auto_CountsPerInch = 218;
@@ -160,7 +160,7 @@ public class RobotMap {
     public static final double Drive_Auto_Angle_Pval = 0.25;
     public static final double Drive_Auto_Angle_Ival = 0.0;
     public static final double Drive_Auto_Angle_Dval = 0.0;
-    public static final double Drive_LimeLight_Search_RotateSpeed = 0.25;
+    public static final double Drive_LimeLight_Search_RotateSpeed = 0.45;
 
     /**
      * These scale factors are used to scale the values from the

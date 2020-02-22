@@ -40,6 +40,7 @@ public class DriveSeekLimelightTargetCmd extends CommandBase {
   @Override
   public void execute() {
     Robot.robotDrive.setSpeedAndRotation(RobotMap.Drive_LimeLight_Search_RotateSpeed, 0);
+    System.out.println("Searching for target");
   }
 
   // Called once the command ends or is interrupted.
@@ -67,7 +68,7 @@ public class DriveSeekLimelightTargetCmd extends CommandBase {
     }
 
     SmartDashboard.putBoolean("LimeLight targeted", limelightFoundTarget);
-
+    System.out.println("is finished:");
     return done;
   }
 }

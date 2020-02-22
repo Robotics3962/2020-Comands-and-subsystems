@@ -24,8 +24,10 @@ import frc.robot.commands.DriveMoveDistancePIDCmd;
 //import frc.robot.commands.SpinnerMove1TransitionCmd;
 import frc.robot.commands.DriveResetGyroCmd;
 import frc.robot.commands.DriveRotatePIDCmd;
+import frc.robot.commands.DriveSeekLimelightTargetCmd;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DemoAutonomousCmdGroup;
+import frc.robot.commands.DriveFaceLimelightTargetCmd;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
@@ -68,6 +70,9 @@ public class JoyStickControl {
     opButtonStart.whenPressed(new DriveRotatePIDCmd(180));
     opButtonBack.whenPressed(new DriveRotatePIDCmd(0));
     //opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
+
+    driveButtonA.whenPressed(new DriveSeekLimelightTargetCmd());
+    driveButtonB.whenPressed(new DriveFaceLimelightTargetCmd());
   }
     
   public double getLeftThrottle() {

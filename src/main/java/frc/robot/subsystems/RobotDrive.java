@@ -140,7 +140,7 @@ public class RobotDrive extends SubsystemBase {
 
   public void MoveWithJoystick(){
     double speed = Robot.joystickControl.getLeftThrottle() * -1;
-    double rotation = Robot.joystickControl.getRightRotation() * 1;
+    double rotation = Robot.joystickControl.getRightRotation() * -1;
 
     setSpeedAndRotationScaled(rotation, speed);
   }

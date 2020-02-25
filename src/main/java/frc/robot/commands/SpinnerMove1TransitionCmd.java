@@ -27,18 +27,26 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   int periodCount = 0;
   double startTime;
   double endTime;
+  int sampleCount;
+  int maxSamples = 30;
+  int[] histogram;
+  int blacksPerTransition;
+  double[] blackRateHistogram;
 
   public SpinnerMove1TransitionCmd(double numTransitions) {//set to seconds
     addRequirements(Robot.spinnerSubsystem);
     maxTransitions = numTransitions;
     periodCount = 0;
     currSpeed = initSpeed;
-    
+    System.out.println("SpinnerMove1Transition being called::::::::::::::::::Constructor");
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    histogram = new int[maxSamples];
+    blackRateHistogram  = new double[maxSamples];
     transitionCount = 0;
     initColor = Robot.spinnerSubsystem.getMatchedSensorColor();
     periodCount = 0;
@@ -47,14 +55,19 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     Robot.spinnerSubsystem.spinCw();
     startTime = Timer.getFPGATimestamp();
     endTime = startTime + maxTransitions * 0.25;
+    blacksPerTransition = 0;
+
+    System.out.println("SpinnerMove1Transition being called::::::::::::::::::");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
       
-   // System.out.println("startTime:"+startTime+" |||||| Endtime: "+endTime);
+    //System.out.println("startTime:"+startTime+" |||||| Endtime: "+endTime);
     periodCount++;
+    sampleCount++;
     double oldSpeed = currSpeed;
     if (periodCount == reduceSpeedPeriods){
       currSpeed = finalSpeed;
@@ -85,31 +98,58 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     Robot.spinnerSubsystem.stop();
     double seconds = Timer.getFPGATimestamp();
     System.out.println("xStart Time: "+startTime +";;;;; End Time: "+endTime+ " delta: "+(seconds-endTime));
+    for (int i= 0; i< maxSamples; i++ ){
 
+
+      if(histogram[i] > 0){
+
+      System.out.println(i+": "+histogram[i]+" "+ (blackRateHistogram[i])); /// histogram[i]));
+      }
+    }
+
+    System.out.println("");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     Color currColor = Robot.spinnerSubsystem.getMatchedSensorColor();
+    if (currColor == Color.kBlack){
+      blacksPerTransition++;
+      if (blacksPerTransition > (maxSamples-1)) {
+
+        blacksPerTransition = maxSamples -1;
+      }
+    }
+
     if ((currColor != Color.kBlack) && (currColor != initColor)){
-      //transitionCount++;
+      if(sampleCount > (maxSamples-1)){
+        sampleCount = maxSamples - 1;
+      }
+      if (sampleCount < 0){
+        sampleCount = 0;
+      }
+
+      histogram[sampleCount]++;
+      blackRateHistogram[sampleCount] = blacksPerTransition;
+      sampleCount = 0;
+      transitionCount++;
       double seconds = Timer.getFPGATimestamp();
-     // System.out.println(transitionCount + " transitions detected " + seconds + "color " + Robot.spinnerSubsystem.colorName(currColor));
-      //if (transitionCount > maxTransitions){
-          //Robot.spinnerSubsystem.setSpeed(currSpeed);
-        //  Robot.spinnerSubsystem.spinCCw();
-          //return true;
-      //}
-      //else {
-        //initColor = currColor;
-      //}
+      System.out.println(transitionCount + " transitions detected " + seconds + "color " + Robot.spinnerSubsystem.colorName(currColor));
+      if (transitionCount > maxTransitions){
+          Robot.spinnerSubsystem.setSpeed(currSpeed);
+          Robot.spinnerSubsystem.spinCCw();
+          return true;
+      }
+      else {
+        initColor = currColor;
+      }
     }
 
     double seconds = Timer.getFPGATimestamp();
     if (seconds > endTime ){
-      System.out.println("Start Time: "+startTime +";;;;; End Time: "+endTime+ " delta: "+(seconds-endTime));
-      return true;
+      //System.out.println("Start Time: "+startTime +";;;;; End Time: "+endTime+ " delta: "+(seconds-endTime));
+      //return true;
     }
     return false;
   }

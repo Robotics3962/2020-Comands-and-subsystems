@@ -64,17 +64,18 @@ public class JoyStickControl {
 
     //opButtonA.whileHeld(new SpinnerSpinReverseCmd());
     //opButtonB.whileHeld(new SpinnerSpinCmd());
-    opButtonA.whenPressed(new DriveMoveDistancePIDCmd(60));
-    opButtonB.whenPressed(new DriveMoveDistancePIDCmd(-60));
-    opButtonX.whenPressed(new DemoAutonomousCmdGroup());
-    opButtonY.whenPressed(new DriveResetGyroCmd());
+    //opButtonA.whenPressed(new DriveMoveDistancePIDCmd(60));
+    //opButtonB.whenPressed(new DriveMoveDistancePIDCmd(-60));
+    //opButtonX.whenPressed(new DemoAutonomousCmdGroup());
+    //opButtonY.whenPressed(new DriveResetGyroCmd());
     opButtonStart.whenPressed(new DriveRotatePIDCmd(180));
     opButtonBack.whenPressed(new DriveRotatePIDCmd(0));
     //opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
+    opButtonX.whenPressed(new SpinnerMove1TransitionCmd(10.0));
+    System.out.println("11111111111111");
 
     driveButtonA.whileHeld(new SpinnerSpinCmd());
     driveButtonB.whileHeld(new SpinnerSpinReverseCmd());
-    driveButtonX.whenPressed(new SpinnerMove1TransitionCmd(1.0));
   }
     
   public double getLeftThrottle() {

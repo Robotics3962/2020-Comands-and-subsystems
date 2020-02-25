@@ -176,8 +176,8 @@ public class RobotMap {
      * from 0 to 1.0 (or -1.0) to 0 to scalefactor (or -scalefactor)
      * which allows finer control of the robot
      */
-    public static final double Drive_SpeedScaleFactor = 0.85;
-    public static final double Drive_RotationScaleFactor = 0.77;
+    public static final double Drive_SpeedScaleFactor = 0.5;
+    public static final double Drive_RotationScaleFactor = 0.5;
     
     /**
      * 

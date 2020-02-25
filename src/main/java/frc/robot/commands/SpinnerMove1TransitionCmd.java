@@ -14,6 +14,24 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 
 public class SpinnerMove1TransitionCmd extends CommandBase {
+  class DataToTrack{
+    int count;
+    int noMatches;
+    double minSampleInterval;
+    double maxSampleInterval;
+    double avgsampleInterval;
+    int sampleCount;
+
+    DataToTrack() {
+      count = 0;
+      noMatches = 0;
+      minSampleInterval = 0;
+      maxSampleInterval = 0;
+      avgsampleInterval = 0;
+      sampleCount = 0;
+    }
+  }
+
   /**
    * Creates a new SpinnerMove1TransitionCmd.
    */
@@ -29,9 +47,21 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   double endTime;
   int sampleCount;
   int maxSamples = 30;
-  int[] histogram;
+  DataToTrack[] histogram;
   int blacksPerTransition;
-  double[] blackRateHistogram;
+  int totalSampleCount;
+  double minSampleInterval;
+  double maxSampleInterval;
+  double avgSampleInterval;
+  double totalSampleTime;
+  double prevTimeInterval;
+
+  int localSampleCount;
+  double localMinSampleInterval;
+  double localMaxSampleInterval;
+  double localAvgSampleInterval;
+  double localTotalSampleTime;
+  double localPrevTimeInterval;
 
   public SpinnerMove1TransitionCmd(double numTransitions) {//set to seconds
     addRequirements(Robot.spinnerSubsystem);
@@ -45,8 +75,7 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    histogram = new int[maxSamples];
-    blackRateHistogram  = new double[maxSamples];
+    histogram = new DataToTrack[maxSamples];
     transitionCount = 0;
     initColor = Robot.spinnerSubsystem.getMatchedSensorColor();
     periodCount = 0;
@@ -56,6 +85,20 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     startTime = Timer.getFPGATimestamp();
     endTime = startTime + maxTransitions * 0.25;
     blacksPerTransition = 0;
+    totalSampleCount = 0;
+    minSampleInterval = 9999999;
+    maxSampleInterval = 0;
+    avgSampleInterval = 0;
+    totalSampleTime = 0;
+    prevTimeInterval = Timer.getFPGATimestamp();
+
+    localSampleCount = 0;
+    localMinSampleInterval = 999999999;
+    localMaxSampleInterval = 0;
+    localAvgSampleInterval = 0;
+    localTotalSampleTime = 0;
+    localPrevTimeInterval = Timer.getFPGATimestamp();
+
 
     System.out.println("SpinnerMove1Transition being called::::::::::::::::::");
   }
@@ -63,8 +106,31 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    totalSampleCount++;
+    double currTime = Timer.getFPGATimestamp();
+    double deltaTime = currTime - prevTimeInterval;
+    prevTimeInterval = currTime;
 
+    if (deltaTime < minSampleInterval){
+      minSampleInterval = deltaTime;
+    }
+    if (deltaTime > maxSampleInterval){
+      maxSampleInterval = deltaTime;
+    }
       
+    localSampleCount++;
+    double localDelta = currTime - localPrevTimeInterval;
+    if (localDelta < localMinSampleInterval){
+      localMinSampleInterval = localDelta;
+    }
+
+    if (localDelta > localMaxSampleInterval){
+      localMaxSampleInterval = localDelta;
+    }
+
+    localTotalSampleTime += localDelta;
+    localPrevTimeInterval = currTime;
+
     //System.out.println("startTime:"+startTime+" |||||| Endtime: "+endTime);
     periodCount++;
     sampleCount++;
@@ -101,9 +167,10 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     for (int i= 0; i< maxSamples; i++ ){
 
 
-      if(histogram[i] > 0){
+      if(histogram[i].count > 0){
 
-      System.out.println(i+": "+histogram[i]+" "+ (blackRateHistogram[i])); /// histogram[i]));
+      //System.out.println( i + ": "+histogram[i].count + " " + (histogram[i].noMatches)); /// histogram[i]));
+      System.out.println(i + "," + histogram[i].count + "," + histogram[i].noMatches + "," + histogram[i].minSampleInterval + "," + histogram[i].maxSampleInterval + "," + histogram[i].avgsampleInterval);
       }
     }
 
@@ -116,10 +183,6 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     Color currColor = Robot.spinnerSubsystem.getMatchedSensorColor();
     if (currColor == Color.kBlack){
       blacksPerTransition++;
-      if (blacksPerTransition > (maxSamples-1)) {
-
-        blacksPerTransition = maxSamples -1;
-      }
     }
 
     if ((currColor != Color.kBlack) && (currColor != initColor)){
@@ -130,11 +193,27 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
         sampleCount = 0;
       }
 
-      histogram[sampleCount]++;
-      blackRateHistogram[sampleCount] = blacksPerTransition;
+      histogram[sampleCount].count++;
+      histogram[sampleCount].noMatches = blacksPerTransition;
       sampleCount = 0;
       transitionCount++;
+
       double seconds = Timer.getFPGATimestamp();
+
+      histogram[sampleCount].count++;
+      histogram[sampleCount].noMatches = blacksPerTransition;
+      histogram[sampleCount].minSampleInterval = localMinSampleInterval;
+      histogram[sampleCount].maxSampleInterval = localMaxSampleInterval;
+      histogram[sampleCount].avgsampleInterval = localTotalSampleTime/localSampleCount;
+      histogram[sampleCount].sampleCount = localSampleCount;
+
+      localSampleCount = 0;
+      localMinSampleInterval = 999999999;
+      localMaxSampleInterval = 0;
+      localAvgSampleInterval = 0;
+      localTotalSampleTime = 0;
+      localPrevTimeInterval = Timer.getFPGATimestamp();
+  
       System.out.println(transitionCount + " transitions detected " + seconds + "color " + Robot.spinnerSubsystem.colorName(currColor));
       if (transitionCount > maxTransitions){
           Robot.spinnerSubsystem.setSpeed(currSpeed);

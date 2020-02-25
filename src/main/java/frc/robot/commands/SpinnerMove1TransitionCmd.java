@@ -32,6 +32,13 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   int[] histogram;
   int blacksPerTransition;
   double[] blackRateHistogram;
+  double minSampleTime;
+  double maxSampleTime;
+  int totalSampleCount;
+  double totalSampleTime;
+  double prevSampleTime;
+  double deltaSampleTime;
+  
 
   public SpinnerMove1TransitionCmd(double numTransitions) {//set to seconds
     addRequirements(Robot.spinnerSubsystem);
@@ -56,6 +63,11 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     startTime = Timer.getFPGATimestamp();
     endTime = startTime + maxTransitions * 0.25;
     blacksPerTransition = 0;
+    totalSampleTime = 0;
+    prevSampleTime = Timer.getFPGATimestamp();
+    minSampleTime = 9999;
+    maxSampleTime = 0;
+
 
     System.out.println("SpinnerMove1Transition being called::::::::::::::::::");
   }
@@ -68,6 +80,23 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     //System.out.println("startTime:"+startTime+" |||||| Endtime: "+endTime);
     periodCount++;
     sampleCount++;
+    totalSampleCount++;
+    double currTime = Timer.getFPGATimestamp();
+    double deltaTime = currTime - prevSampleTime;
+    prevSampleTime = currTime;
+    if (deltaTime < minSampleTime) {
+
+      minSampleTime = deltaTime;
+    }
+
+    if( deltaSampleTime > maxSampleTime){
+
+      maxSampleTime = deltaSampleTime;
+    }
+
+    totalSampleCount += deltaSampleTime;
+
+
     double oldSpeed = currSpeed;
     if (periodCount == reduceSpeedPeriods){
       currSpeed = finalSpeed;
@@ -97,6 +126,8 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   public void end(boolean interrupted) {
     Robot.spinnerSubsystem.stop();
     double seconds = Timer.getFPGATimestamp();
+    int averageSampleTime = (int) totalSampleTime / totalSampleCount;
+    System.out.println(totalSampleCount+":tsc, "+totalSampleTime+": tst, "+ averageSampleTime+": avgst, "+minSampleTime+": mst, "+maxSampleTime+": maxst." );
     System.out.println("xStart Time: "+startTime +";;;;; End Time: "+endTime+ " delta: "+(seconds-endTime));
     for (int i= 0; i< maxSamples; i++ ){
 
@@ -108,6 +139,8 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     }
 
     System.out.println("");
+
+
   }
 
   // Returns true when the command should end.

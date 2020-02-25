@@ -74,9 +74,9 @@ public class Spinner extends SubsystemBase {
      * Calibrated blue, green, red values for the swatches swatch.
      * this was stolen from https://github.com/REVrobotics/Color-Sensor-v3/commit/34469e7c21dc4495b06e6f31fb3df02e2335c8de#diff-3bfa73a3527f6f2d2159702ac78e5165
      */
-    private final Color detectorCyanColor = ColorMatch.makeColor(0.133, 0.415, 0.435);
-    private final Color detectorGreenColor = ColorMatch.makeColor(0.189, 0.548, 0.241);
-    private final Color detectorRedColor = ColorMatch.makeColor(0.540, 0.319, 0.117);
+    private final Color detectorCyanColor = ColorMatch.makeColor(0.1389, 0.4345, 0.4266);
+    private final Color detectorGreenColor = ColorMatch.makeColor(0.1851, 0.568, 0.2473);
+    private final Color detectorRedColor = ColorMatch.makeColor(0.5049, 0.3560, 0.1392);
     private final Color detectorYellowColor = ColorMatch.makeColor(0.3208, 0.5607, 0.1201);
 
     private HashMap<Color, String> colorNameMap;

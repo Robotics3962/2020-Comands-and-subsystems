@@ -71,7 +71,7 @@ public class JoyStickControl {
     opButtonStart.whenPressed(new DriveRotatePIDCmd(180));
     opButtonBack.whenPressed(new DriveRotatePIDCmd(0));
     //opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
-    opButtonX.whenPressed(new SpinnerMove1TransitionCmd(10.0));
+    opButtonX.whenPressed(new SpinnerMove1TransitionCmd(10,0));
     System.out.println("11111111111111");
 
     driveButtonA.whileHeld(new SpinnerSpinCmd());

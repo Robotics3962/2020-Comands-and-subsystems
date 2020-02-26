@@ -31,7 +31,7 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     }
   }
 
-  class TransitionData {
+  class TransitionDataClass {
       int sampleCount;
       int unmatchedCount;
       double minTimeInterval;
@@ -42,10 +42,10 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
       int longestMatchedColorRun;
       boolean valid;
 
-    public TransitionData() {
+    public TransitionDataClass() {
       sampleCount = 0;
       unmatchedCount = 0;
-      minTimeInterval = 9999999;
+      minTimeInterval = 999999;
       maxTimeInterval = 0;
       avgTimeInterval = 0;
       totalTime = 0;
@@ -90,7 +90,7 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     
     public void setColors(Color matched){
       matchedColor = Robot.spinnerSubsystem.colorName(matched);
-      if (matched == Color.kBlack){
+      if (matched == Color.kBlack) {
         unmatchedCount++;
       }
     }
@@ -104,7 +104,9 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   double finalSpeed = .15;
   int boostSpeedPeriods = 1;
   int periodCount = 0;
-  TransitionData[] transitionData;
+  //TransitionDataClass[]transitionData;
+  int transitionData;
+  int[] TransitionDataClass = {transitionData};
   Histogram[] histogram;
   double prevSampleTime;
   double startTime;
@@ -131,7 +133,7 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    transitionData = new TransitionData[maxTransitions + 1];
+    transitionData = new TransitionDataClass[maxTransitions + 1];
     histogram = new Histogram[30];
     transitionCount = 0;
     initColor = Robot.spinnerSubsystem.getMatchedSensorColor();
@@ -147,6 +149,7 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     currSpeed = initSpeed;
     Robot.spinnerSubsystem.setSpeed(currSpeed);
     Robot.spinnerSubsystem.spinCw();
+    System.out.println("Past the initialization phase:::::::::::::::::::::::::::::::::::::::::::::");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -159,6 +162,7 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     double currTime = Timer.getFPGATimestamp();
     double deltaTime = currTime - prevSampleTime;
     transitionData[transitionCount].setNewInterval(deltaTime);
+    System.out.println("Past the null exception at line 161");
     prevSampleTime = currTime;
 
     // boost speed for a certain number of periods to get the motor

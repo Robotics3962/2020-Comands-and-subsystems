@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class DriverMoveDistancePIDCmd extends CommandBase {
+public class DriveMoveDistancePIDCmd extends CommandBase {
   double initialPosition;
   double targetPosition;
   double distance;
@@ -22,7 +22,7 @@ public class DriverMoveDistancePIDCmd extends CommandBase {
   /**
    * Creates a new DriverMoveDistance1Cmd.
    */
-  public DriverMoveDistancePIDCmd(double distanceToMove) {
+  public DriveMoveDistancePIDCmd(double distanceToMove) {
     addRequirements(Robot.robotDrive);
     distance = distanceToMove;
   }

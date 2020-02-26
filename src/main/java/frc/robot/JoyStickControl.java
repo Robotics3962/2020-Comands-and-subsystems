@@ -10,6 +10,7 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.SpinnerGetSensorColorCmd;
+import frc.robot.commands.SpinnerMove1TransitionCmd;
 import frc.robot.commands.SpinnerExtendCmd;
 import frc.robot.commands.SpinnerRetractCmd;
 import frc.robot.commands.SpinnerSpinCmd;
@@ -20,12 +21,14 @@ import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;
 import frc.robot.commands.ShooterShootCmd;
 import frc.robot.commands.DriveMoveDistanceCmd;
-import frc.robot.commands.DriverMoveDistancePIDCmd;
+import frc.robot.commands.DriveMoveDistancePIDCmd;
 //import frc.robot.commands.SpinnerMove1TransitionCmd;
 import frc.robot.commands.DriveResetGyroCmd;
 import frc.robot.commands.DriveRotatePIDCmd;
+import frc.robot.commands.DriveSeekLimelightTargetCmd;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DemoAutonomousCmdGroup;
+import frc.robot.commands.DriveFaceLimelightTargetCmd;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
@@ -61,13 +64,18 @@ public class JoyStickControl {
 
     //opButtonA.whileHeld(new SpinnerSpinReverseCmd());
     //opButtonB.whileHeld(new SpinnerSpinCmd());
-    opButtonA.whenPressed(new DriverMoveDistancePIDCmd(60));
-    opButtonB.whenPressed(new DriverMoveDistancePIDCmd(-60));
-    opButtonX.whenPressed(new DemoAutonomousCmdGroup());
-    opButtonY.whenPressed(new DriveResetGyroCmd());
+    //opButtonA.whenPressed(new DriveMoveDistancePIDCmd(60));
+    //opButtonB.whenPressed(new DriveMoveDistancePIDCmd(-60));
+    //opButtonX.whenPressed(new DemoAutonomousCmdGroup());
+    //opButtonY.whenPressed(new DriveResetGyroCmd());
     opButtonStart.whenPressed(new DriveRotatePIDCmd(180));
     opButtonBack.whenPressed(new DriveRotatePIDCmd(0));
     //opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
+    opButtonX.whenPressed(new SpinnerMove1TransitionCmd(10,0));
+    System.out.println("11111111111111");
+
+    driveButtonA.whileHeld(new SpinnerSpinCmd());
+    driveButtonB.whileHeld(new SpinnerSpinReverseCmd());
   }
     
   public double getLeftThrottle() {

@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import java.util.HashMap;
-import java.util.ArrayList;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -93,15 +92,11 @@ public class Spinner extends SubsystemBase {
 
     private HashMap<Color, String> colorNameMap;
     private HashMap<String, Color> name2ColorMap;
+
     /**
      * set to true to display the color under the robot sensor
      */
     private boolean displayColor = true;
-
-    /**
-     * keeps track of how many color transitions occurred
-     */
-    private Color targetColor;
 
     /** 
      * this tracks the last number of samples from the color detector
@@ -109,15 +104,7 @@ public class Spinner extends SubsystemBase {
      */
     //private final int MaxSamples = RobotMap.Spinner_SampleCount;
     //private final int SameColorSampleCount = RobotMap.Spinner_ContinuousColorsForTransition;
-    private ArrayList<Color> samples;
-    private enum CommandStates { NOT_RUNNING, RUNNING, MOVING_TO_CENTER_OF_WEDGE, COMPLETE };
-    private CommandStates commandStatus;
-    private boolean collectSamples;
-    private int transitionCount;
-    private int samplesBetweenTransitions;
-    private int periodicCallsBeforeStop;
-    private int transitionsNeededToTargetColor;
-    private int sampleCount;
+    //private enum CommandStates { NOT_RUNNING, RUNNING, MOVING_TO_CENTER_OF_WEDGE, COMPLETE };
     private double speed;
 
     public Spinner(){
@@ -139,13 +126,6 @@ public class Spinner extends SubsystemBase {
          * init():
          *      this function will put the spinner in its starting state:
          *          *arm will be retracted
-         * 
-         * interrupt():
-         *      this class does runs a state machine in its periodic function.  Because
-         *      of this, if a command is interrupted it will not stop this subsystem from
-         *      continuing to execute the current task (if any).  To alleviate this situation
-         *      any Command which requires this subsystem needs to call this function when
-         *      the command is interrupted.
          * 
          * spinCW():
          *      this function will spin the motor clockwise.  Please note this results
@@ -184,21 +164,6 @@ public class Spinner extends SubsystemBase {
          *      (via network tables) with the detected color and the matched color.
          *      it return the matched color.
          * 
-         * spinToTarget():
-         *      this function is called to start  the spinner executing the controlstation
-         *      changeup task.  It does the following tasks:
-         *          1.) gets the color that needs to be under the control station color sensor
-         *              at the completion of the chargeup-task.
-         *          2.) maps it to the color that needs to be under the robots color sensor
-         *              in order for the right color to be under the control stations sensor
-         *          3.) starts the wheel spining.
-         *      all of the rest of the work is implemented as a state machine in periodic()
-         *      which is called every 20 millseconds (20ms)
-         * 
-         * spinToTargetComplete():
-         *      this function returns true if the spinToTarget has completed, and false
-         *      if it is still in progress or has never started. (this should be moved to a command)
-         * 
          * updateDashboardWithSensorColor():
          *      this function checks to see if displaying colors is enabled (see enabledDisplayColor)
          *      if it is, it will push out the colors via network tables to the shuffleboard
@@ -211,15 +176,6 @@ public class Spinner extends SubsystemBase {
          *      this function will disable the display of color information via network tables.
          * 
          */
-
-        transitionsNeededToTargetColor = RobotMap.Spinner_TargetColorTransitions;
-        transitionCount = 0;
-        samplesBetweenTransitions = 0;
-        collectSamples = false;
-        commandStatus = CommandStates.NOT_RUNNING;
-        samples = new ArrayList<Color>();
-        targetColor = new Color(0,0,0);
-        sampleCount = 0;
 
         /**
          * indicate the motors have not been started
@@ -270,18 +226,6 @@ public class Spinner extends SubsystemBase {
 
     public Color nameToColor(String name){
         return name2ColorMap.get(name);
-    }
-
-    /** 
-     * because work is done in the periodic function, when a command which uses this 
-     * subsystem is interrupted, we need to call this function to stop periodic() from
-     * executing any actions.
-     */
-    public void interrupt(){
-        // stop the motor
-        commandStatus = CommandStates.NOT_RUNNING;
-        stop();
-
     }
 
     public void setSpeed(double newSpeed){
@@ -381,8 +325,9 @@ public class Spinner extends SubsystemBase {
         return matchedColor;
     }
 
-    private boolean setTargetColor(){
+    public Color getControlStationTargetColor(){
         boolean success = true;
+
         Color color = new Color(0,0,0);
 
         /**
@@ -420,65 +365,11 @@ public class Spinner extends SubsystemBase {
         }
 
         if (success){
-            // color is the color under the control panel sensor
-            // we need to get the color under the robot sensor
-            targetColor = colorDetectorToRobotSensorMap.get(color);
+            return color;
         }
-        else{
-            targetColor = Color.kBlack;
+        else {
+            return Color.kBlack;
         }
-        return success;
-    }
-
-    public boolean spinToTarget(){
-        boolean success = false;
-
-        // if the motor is spinning stop it
-        if (commandStatus == CommandStates.RUNNING){
-            stop();
-            commandStatus = CommandStates.NOT_RUNNING;
-        }
-
-        success = setTargetColor();
-        if (success){
-
-            /**
-             * reset variables holding calculations from a
-             * previous run
-             */
-            transitionsNeededToTargetColor = RobotMap.Spinner_TargetColorTransitions;
-            transitionCount = 0;
-            samplesBetweenTransitions = 0;
-            sampleCount = 0;
-    
-            /**
-             * clear out the samples from previous runs
-             */
-            samples.clear();
-
-            // indicate the command is not running
-            commandStatus = CommandStates.RUNNING;
-
-            // start the motor
-            spinCw();
-
-            // start taking samples
-            collectSamples = true;
-
-            /**
-             * all of the work is done in the state machine run by 
-             * the periodic function.  The periodic function should
-             * (more or less) be called every 20 milliseconds.  so
-             * the processing to spin the wheel may not happen for 20ms.
-             * 
-             * this is actually ok, because it will give time for the motor
-             * to get up to speed (20ms is probably too short, but it's
-             * better then nothing)
-             */
-            success = true;
-        }
-
-        return success;
     }
 
     public void updateDashboardWithSensorColor(Color color){
@@ -506,176 +397,8 @@ public class Spinner extends SubsystemBase {
         displayColor = false;
     }
 
-    void executeRunningState(){
-
-        do {
-            // check if we are supposed to collect samples
-            if (!collectSamples){
-                break;
-            }
-            
-            // collect a sample
-            Color detectedColor = getMatchedSensorColor();
-            sampleCount++;
-
-            /**
-             * black is returned when there is no closest
-             * match to the color sensor. This can occur when
-             * the sensor is on a transition between two color wedges
-             * and there is no close match.
-             */
-            if (detectedColor == Color.kBlack){
-                break;
-            }
-
-            samples.add(detectedColor);
-
-            // we need to have collected a min of 2 samples to process
-            if(samples.size() < 2){
-                break;
-            }
-
-            /**
-             * we only need two samples, so if we have more get rid
-             * of the first one
-             */
-            if (samples.size() > 2){
-                samples.remove(0);
-            }        
-
-            /**
-             * we have enough samples to process.
-             * 
-             * a transition occurs when the first sample
-             * is different from the last sample, and the last N samples
-             * are the same
-             */
-            Color firstSampleColor = samples.get(0);
-            Color lastSampleColor = samples.get(samples.size()-1);
-
-            // if the first color and the last color are the same
-            // we can't possible have hit a transition
-            if (firstSampleColor == lastSampleColor){
-                break;
-            }
-             
-            /**
-             * at this point we know we encounted a transition because the
-             * previous sample and the current sample are different 
-             */            
-            transitionCount++;
-    
-            /**
-             * we want to keep track of the number of samples taken between transitions.
-             * this is effectively the number of times periodic has been called between
-             * transitions.
-             * 
-             * we use this to get some idea of the distance/time it takes to traverse a wedge.
-             * 
-             * we need to ignore the first transition because we don't know where in the wedge
-             * the robot sensor started.  It could be right next to a transition which would
-             * throw off our calculations.
-             */
-            if(transitionCount > 1){
-                samplesBetweenTransitions += sampleCount;
-            }
-
-            sampleCount = 0;
-
-            /** 
-             * at this point we know we encountered a transition from one wedget to another.
-             * 
-             * there are two wedges on the wheel for each color.  The same colored wedges
-             * are 180 degrees apart. So to spin the wheel once we need to transition to a
-             * color twice.
-             * 
-             * to spin the wheel 3 times we need to transition to a color 6 times.
-             * 
-             * we know the color that we want to end up under our sensor so we need to 
-             * keep spinning until the robot sensor is over the target color.
-             * 
-             * To make this code simpler, are going to transition to the target color
-             * 7 times.  This may mean we spin the wheel an extra half spin, but that is ok
-             * because we can spin the wheel up to 5 times.
-             */
-
-            /**
-             * the color under the sensor is not the one we are lookng for
-             * (thinks about some comment about droids) so quit
-             */
-             if (detectedColor != targetColor){
-                break;
-            }
-            
-            /** 
-             * we did transition to our target color, we need to check if we are done.
-             */
-            transitionsNeededToTargetColor--;
-            
-            /**
-             * we are done when we have transitioned x number of times
-             * if we haven't quit
-             */
-            if (transitionsNeededToTargetColor > 0){
-                break;
-            }
-
-            /**
-             * At this point, we have spun the wheel upf to 3.5 times and want to
-             * center our sensor in the color wedge.
-             * 
-             * to do this we transition the state from RUNNING to MOVING _TO_CENTER_OF_WEDGE
-             * and quit.
-             * 
-             * How do we know how far to move to the center of the wedge?
-             * 
-             * All along we have been keeping track of the number of calls to periodic through
-             * our samples array.  We keep accumulating the results in samplesBetweenTransitions.
-             * Now we divide that by the number of transitions - 1. (-1 because we need to ignore
-             * the first transition which may not have traversed the entire wedge).  Because we only
-             * want to move to the center of the wedge, we divide that number by 2
-             */
-            periodicCallsBeforeStop = (samplesBetweenTransitions/(transitionCount-1))/2;
-            commandStatus = CommandStates.MOVING_TO_CENTER_OF_WEDGE;
-            collectSamples = false;
-
-        } while(false);
-    }
-
-    private void executeMoveToOffsetState(){
-        /** 
-         * stop the motor have a certain number of calls.  this should stop 
-         * wheel where the robot sensor in approximately in the middle of the 
-         * target color wedge
-         */
-        periodicCallsBeforeStop--;
-        if (periodicCallsBeforeStop <= 0){
-            stop();
-            commandStatus = CommandStates.COMPLETE;
-        }
-    }
-
-    public boolean spinToTargetComplete(){
-        return (commandStatus == CommandStates.COMPLETE);
-    }
-
     @Override
     public void periodic(){
         getMatchedSensorColor();
-        switch(commandStatus){
-            case NOT_RUNNING:
-                // nothing to do
-                break;
-            case RUNNING:
-                executeRunningState();
-                break;
-            case COMPLETE:
-                // nothing to do
-                break;
-            case MOVING_TO_CENTER_OF_WEDGE:
-                executeMoveToOffsetState();
-                break;
-        }        
     }
-
 }

@@ -9,12 +9,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.util.Color;
-
-import java.util.prefs.BackingStoreException;
-
 import edu.wpi.first.wpilibj.Timer;
-
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class SpinnerMove1TransitionCmd extends CommandBase {
   class Histogram {
@@ -45,7 +42,7 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     public TransitionDataClass() {
       sampleCount = 0;
       unmatchedCount = 0;
-      minTimeInterval = 999999;
+      minTimeInterval = 999999; // some large number
       maxTimeInterval = 0;
       avgTimeInterval = 0;
       totalTime = 0;
@@ -70,7 +67,7 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
       System.out.print("total:" + totalTime + " ");
       System.out.print("color:" + matchedColor + " ");
       System.out.print("longest color run:" + longestMatchedColorRun + " ");
-      System.out.print("complete:" + valid);
+      System.out.println("complete:" + valid);
     }
 
     public void setNewInterval(double interval){
@@ -99,18 +96,15 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   int transitionCount = 0;
   Color initColor = Color.kBlack;
   int maxTransitions;
-  double initSpeed = .2;
+  double initSpeed = RobotMap.Spinner_MotorSpeed;
   double currSpeed = initSpeed;
-  double finalSpeed = .15;
+  double finalSpeed = RobotMap.Spinner_MotorSpeed;
   int boostSpeedPeriods = 1;
   int periodCount = 0;
-  //TransitionDataClass[]transitionData;
-  int transitionData;
-  int[] TransitionDataClass = {transitionData};
+  TransitionDataClass[] transitionData;
   Histogram[] histogram;
   double prevSampleTime;
   double startTime;
-  double endTime;
   double timeInterval;
   int sampleCount;
   int blackCount;
@@ -119,26 +113,28 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   /**
    * Creates a new SpinnerMove1TransitionCmd.
    */
-  public SpinnerMove1TransitionCmd(int numTransitions, double intervalMs) {
+  public SpinnerMove1TransitionCmd(int numTransitions) {
     addRequirements(Robot.spinnerSubsystem);
     maxTransitions = numTransitions;
-
-    if (intervalMs == 0){
-      intervalMs = 1000 * 90; // default to 90 seconds
-    }
-
-    timeInterval = intervalMs;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
     transitionData = new TransitionDataClass[maxTransitions + 1];
+    for(int i=0; i<maxTransitions; i++){
+      transitionData[i] = new TransitionDataClass();
+    }
+    
     histogram = new Histogram[30];
+    for(int i=0; i< 30; i++){
+      histogram[i] = new Histogram();
+    }
+
     transitionCount = 0;
     initColor = Robot.spinnerSubsystem.getMatchedSensorColor();
     startTime = Timer.getFPGATimestamp();
-    endTime = startTime = timeInterval * maxTransitions;
     prevSampleTime = startTime;
 
     periodCount = 0;
@@ -149,7 +145,6 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
     currSpeed = initSpeed;
     Robot.spinnerSubsystem.setSpeed(currSpeed);
     Robot.spinnerSubsystem.spinCw();
-    System.out.println("Past the initialization phase:::::::::::::::::::::::::::::::::::::::::::::");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -158,11 +153,10 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
 
     periodCount++;
     sampleCount++;
-    
+  
     double currTime = Timer.getFPGATimestamp();
     double deltaTime = currTime - prevSampleTime;
     transitionData[transitionCount].setNewInterval(deltaTime);
-    System.out.println("Past the null exception at line 161");
     prevSampleTime = currTime;
 
     // boost speed for a certain number of periods to get the motor
@@ -172,12 +166,6 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
       currSpeed = finalSpeed;
       Robot.spinnerSubsystem.setSpeed(currSpeed);
       System.out.println("changing speed from " + oldSpeed + " to " + currSpeed);
-    }
-
-    if (startTime < endTime){
-      //System.out.println("Start Time: "+startTime +";;;;; End Time: "+endTime);
-      Robot.spinnerSubsystem.setSpeed(currSpeed);
-      Robot.spinnerSubsystem.spinCw();      
     }
   }
 
@@ -215,33 +203,46 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
   @Override
   public boolean isFinished() {
     Color currColor = Robot.spinnerSubsystem.getMatchedSensorColor();
+    Color detColor = Robot.spinnerSubsystem.getLastDetectedColor();
     transitionData[transitionCount].setColors(currColor);
 
     if (currColor == Color.kBlack){
       blackCount++;
     }
+    double seconds = Timer.getFPGATimestamp();
+    System.out.println("sample:" + sampleCount + " color:" + Robot.spinnerSubsystem.colorName(currColor) + " seconds:" + seconds + " detected r:" + detColor.red + " g:" + detColor.green + " b:" + detColor.blue);
 
     // we can't have a transition to or from black
     if ((currColor != Color.kBlack) && (initColor != Color.kBlack)){
+
       if (currColor != initColor){
 
-        // transition is complete, so mark the entry as valid
-        transitionData[transitionCount].valid = true;
-
-        double seconds = Timer.getFPGATimestamp();
-        System.out.println(transitionCount + " transitions detected:" + seconds + " color:" + Robot.spinnerSubsystem.colorName(currColor));
-
-        // update the histogram
-        if (sampleCount >= histogram.length - 1){
-          sampleCount = histogram.length - 1;
+        // we know what the next color should be.  If it isn't that color there is a bad match
+        // so treat it as black
+        Color nextColor = Robot.spinnerSubsystem.getNextColor(initColor);
+        if (nextColor != currColor){
+          currColor = Color.kBlack;
+          System.out.println("last color match was bad");
         }
+        else {
+          // transition is complete, so mark the entry as valid
+          transitionData[transitionCount].valid = true;
 
-        histogram[sampleCount].count++;
-        histogram[sampleCount].blackCount += blackCount;
+          System.out.println(transitionCount + " transitions detected:" + seconds + " color:" + Robot.spinnerSubsystem.colorName(currColor));
 
-        transitionCount++;
-        blackCount = 0;
-        sampleCount = 0;
+          // update the histogram
+          if (sampleCount >= histogram.length - 1){
+            sampleCount = histogram.length - 1;
+          }
+
+          histogram[sampleCount].count++;
+          histogram[sampleCount].blackCount += blackCount;
+
+          transitionCount++;
+          blackCount = 0;
+          sampleCount = 0;
+          initColor = currColor;
+        }
       }
       else{
         // initColor and currColor are matching and nonblack, so increase color run
@@ -253,13 +254,12 @@ public class SpinnerMove1TransitionCmd extends CommandBase {
       // so update the longest if current is greater
       if (currColorRun >= transitionData[transitionCount].longestMatchedColorRun){
         transitionData[transitionCount].longestMatchedColorRun = currColorRun;
-
-        initColor = currColor;
       }
     }
 
     // We are done if we hit the transitions we wanted
     if (transitionCount >= maxTransitions){
+      System.out.println("isFinished: done");
       return true;
     }
     

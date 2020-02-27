@@ -29,6 +29,8 @@ import frc.robot.commands.DriveSeekLimelightTargetCmd;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DemoAutonomousCmdGroup;
 import frc.robot.commands.DriveFaceLimelightTargetCmd;
+import frc.robot.commands.SpinnerSeekColorCmd;
+import frc.robot.commands.SpinnerRotate3xFindColorCmd;
 
 public class JoyStickControl {
   // get both drive and operational joysticks
@@ -70,9 +72,8 @@ public class JoyStickControl {
     //opButtonY.whenPressed(new DriveResetGyroCmd());
     opButtonStart.whenPressed(new DriveRotatePIDCmd(180));
     opButtonBack.whenPressed(new DriveRotatePIDCmd(0));
-    //opButtonBack.whenPressed(new SpinnerMove1TransitionCmd(25));
-    opButtonX.whenPressed(new SpinnerMove1TransitionCmd(10,2));
-    System.out.println("11111111111111");
+    opButtonA.whenPressed(new SpinnerSeekColorCmd("Red"));
+    opButtonX.whenPressed(new SpinnerRotate3xFindColorCmd("Blue"));//orig (10,0)
 
     driveButtonA.whileHeld(new SpinnerSpinCmd());
     driveButtonB.whileHeld(new SpinnerSpinReverseCmd());

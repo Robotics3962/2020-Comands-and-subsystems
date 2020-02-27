@@ -134,7 +134,8 @@ public class RobotMap {
      * is the speed the spinner motor runs at
      */
     public static final int Spinner_SparkMotor_ID = 1;
-    public static final double Spinner_MotorSpeed = 0.2;
+    public static final double Spinner_MotorSpeed = 0.15;
+    public static final double Spinner_SlowMotorSpeed = 0.1;
     public static final int Spinner_Pneumatic_Forward_Solenoid_ID = 1;
     public static final int Spinner_Pneumatic_Reverse_Solenoid_ID = 2;
     public static final int Spinner_TargetColorTransitions = 7;

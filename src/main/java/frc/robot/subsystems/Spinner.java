@@ -74,13 +74,25 @@ public class Spinner extends SubsystemBase {
      * Calibrated blue, green, red values for the swatches swatch.
      * this was stolen from https://github.com/REVrobotics/Color-Sensor-v3/commit/34469e7c21dc4495b06e6f31fb3df02e2335c8de#diff-3bfa73a3527f6f2d2159702ac78e5165
      */
-    private final Color detectorCyanColor = ColorMatch.makeColor(0.1389, 0.4345, 0.4266);
-    private final Color detectorGreenColor = ColorMatch.makeColor(0.1851, 0.568, 0.2473);
-    private final Color detectorRedColor = ColorMatch.makeColor(0.5049, 0.3560, 0.1392);
-    private final Color detectorYellowColor = ColorMatch.makeColor(0.3208, 0.5607, 0.1201);
+    private final Color detectorCyanColor = ColorMatch.makeColor(0.12, 0.42, 0.45);
+    private final Color detectorGreenColor = ColorMatch.makeColor(0.16, 0.58, 0.25);
+    private final Color detectorRedColor = ColorMatch.makeColor(0.53, 0.56, 0.12);
+    private final Color detectorYellowColor = ColorMatch.makeColor(0.31, 0.5607, 0.1201);
+
+    // lights out color
+    // green .16, .58, .25
+    // cyan  .12, .42, .45
+    // yellow .31, .56, .12
+    // red .53, .34, .12
+
+    // lights on color
+    // green .16, .58, .25
+    // cyan  .12, .42, .45
+    // yellow .32, .56, .11
+    // red   .53, .34, .13
 
     private HashMap<Color, String> colorNameMap;
-
+    private HashMap<String, Color> name2ColorMap;
     /**
      * set to true to display the color under the robot sensor
      */
@@ -228,7 +240,7 @@ public class Spinner extends SubsystemBase {
         colorMatcher.addColorMatch(detectorGreenColor);
         colorMatcher.addColorMatch(detectorRedColor);
         colorMatcher.addColorMatch(detectorYellowColor);
-        colorMatcher.setConfidenceThreshold((0.92));
+        colorMatcher.setConfidenceThreshold((0.80));
         // initialize the motor
 		motor = new Spark(RobotMap.Spinner_SparkMotor_ID);
         motor.enableDeadbandElimination(true);
@@ -243,10 +255,21 @@ public class Spinner extends SubsystemBase {
         colorNameMap.put(detectorGreenColor, "Green");
         colorNameMap.put(detectorYellowColor, "Yellow");
         colorNameMap.put(Color.kBlack, "Black");
+
+        name2ColorMap = new HashMap<String, Color>();
+        name2ColorMap.put("Blue", detectorCyanColor);
+        name2ColorMap.put("Red", detectorRedColor);
+        name2ColorMap.put("Green", detectorGreenColor);
+        name2ColorMap.put("Yellow", detectorYellowColor);
+        name2ColorMap.put("Black", Color.kBlack);
     }
 
     public String colorName(Color color){
         return colorNameMap.get(color);
+    }
+
+    public Color nameToColor(String name){
+        return name2ColorMap.get(name);
     }
 
     /** 
@@ -309,8 +332,34 @@ public class Spinner extends SubsystemBase {
     /**
      * utility functions
      */
+
+    public Color getNextColor(Color currColor){
+        Color next = Color.kBlack;
+        String name = colorName(currColor);
+        switch (name){
+            case "Blue":
+                next = detectorYellowColor;
+                break;
+            case "Yellow":
+                next = detectorRedColor;
+                break;
+            case "Red":
+                next = detectorGreenColor;
+                break;
+            case "Green":
+                next = detectorCyanColor;
+                break;
+        }
+        return next;
+    } 
+
+    Color detectedColor = Color.kBlack;
+    public Color getLastDetectedColor(){
+        return detectedColor;
+    }
+
     public Color getMatchedSensorColor(){
-        Color detectedColor = colorSensor.getColor();
+        detectedColor = colorSensor.getColor();
         Color matchedColor = Color.kBlack;
         double confidence = 0;
 

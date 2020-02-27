@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -50,7 +50,7 @@ public class Intake extends SubsystemBase {
      * pneumatics
      */
     private Spark motor;
-    private Solenoid solenoid;
+    private DoubleSolenoid solenoid;
 
     public Intake(){
 
@@ -59,12 +59,17 @@ public class Intake extends SubsystemBase {
         motor.enableDeadbandElimination(true);
 
         // initialize the solenoid
-        solenoid = new Solenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Intake_Pneumatic_Forward_Solenoid_ID);
+        solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Intake_Pneumatic_Forward_Solenoid_ID);
     }
 
     public void lower(){
-        solenoid.set(true);
+        solenoid.set(DoubleSolenoid.Value.kForward);
         intakePosition = IntakePositions.DOWN;
+    }
+
+    public void raise(){
+        solenoid.set(DoubleSolenoid.Value.kReverse);
+        intakePosition = IntakePositions.UP;
     }
 
     public boolean armUp(){

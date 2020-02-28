@@ -13,7 +13,6 @@ public class RobotMap {
    public static double rotation = 0.45;
    public static double speed = 0.45;
 
-
     /**
      * This value is to make it clear I don't now the value
      */
@@ -34,7 +33,7 @@ public class RobotMap {
      *      forward and reverse, the further the value is from
      *      0, the greater the speed
      * 
-     * Intake_SparkMotor_Id is the id of the spark motor controller
+     * Intake_TalonkMotor_Id is the id of the talon motor controller
      * 
      * Intake_Pneumatic_Module_ID is the is the the pneumatics cotrol module
      *      (PCM)
@@ -45,9 +44,12 @@ public class RobotMap {
      *      the pushes the solenoid reverse is wired into 
      */
 
-    public static final double Intake_Motor_Speed = 0;
-    public static final int Intake_SparkMotor_Id = UNKNOWN_VALUE;
-    public static final int Intake_Pneumatic_Forward_Solenoid_ID = UNKNOWN_VALUE;
+    public static final double Intake_Motor_Speed = .5;
+    public static final int Intake_TalonMotor_Id = 5;
+    public static final boolean Intake_TalonMotor_Invert = false;
+    public static final int Intake_Pneumatic_Forward_Solenoid_ID = 4;
+    public static final int Intake_Pneumatic_Reverse_Solenoid_ID = 5;
+    public static final double Intake_Spin_TimeMs = .25;
 
     /**
      * Configuration for the shooter
@@ -79,13 +81,16 @@ public class RobotMap {
      * NOTE: the motor to move the adjuster needs to have limit switches wired into the
      *      talon so that we do not break the adjuster
      */
-    public static final int Shooter_SparkMotor1_ID = UNKNOWN_VALUE;
-    public static final int Shooter_SparkMotor2_ID = UNKNOWN_VALUE;
-    public static final double Shooter_Speed = 0;
-    public static final int Shooter_Talon_Motor_ID = UNKNOWN_VALUE;
+    public static final int Shooter_TalonMotor1_ID = 6;
+    public static final int Shooter_TalonMotor2_ID = 7;
+    public static final boolean Shooter_TalonMotor1_Invert = false;
+    public static final boolean Shooter_TalonMotor2_Invert = false;
+    public static final double Shooter_Speed = .8;
+    public static final int Shooter_TalonAdjusterMotor_ID = 8;
+    public static final boolean Shooter_TalonAdjusterMotor_Invert = false;
     public static final int Shooter_Adjuster_MaxPosition = UNKNOWN_VALUE;
     public static final int Shooter_Adjuster_MinPosition = 0;
-    public static final double Shooter_Adjuster_Speed = 0;
+    public static final double Shooter_Adjuster_Speed = .5;
     
     /**
      * Configuration for the ball lift
@@ -100,8 +105,11 @@ public class RobotMap {
      *      will run to move a ball up to make room for another ball.
      *      This time will be rounded down to a multiple of 20 miliseconds
      */
-    public static int Lift_SparkMotor_ID = UNKNOWN_VALUE;
-    public static double Lift_MotorSpeed = 0;
+    public static int Lift_TalonMotor1_ID = 9;
+    public static int Lift_TalonMotor2_ID = 10;    
+    public static boolean Lift_TalonMotor1_Invert = false;
+    public static boolean Lift_TalonMotor2_Invert = false;
+    public static double Lift_MotorSpeed = .3;
     public static int Lift_IndexTimeMilliSeconds = 40;
 
     /**
@@ -118,9 +126,12 @@ public class RobotMap {
      * Climber_Speed is the value between -1.0 and 1.0 that the
      * the talon motors will spin at 
      */
-    public static int Climber_TalonMotor1_ID = UNKNOWN_VALUE;
-    public static int Climber_TalonMotor2_ID = UNKNOWN_VALUE;
-    public static int Climber_MotorSpeed = 0;
+    public static int Climber_TalonMotor1_ID = 11;
+    public static int Climber_TalonMotor2_ID = 12;
+    public static boolean Climber_TalonMotor1_Invert = false;
+    public static boolean Climber_TalonMotor2_Invert = false;
+    public static double Climber_MotorSpeedUp = .5;
+    public static double Climber_MotorSpeedDown = .5;
 
     /**
      * Configuration for the spinner.  The spinner consists of
@@ -139,6 +150,7 @@ public class RobotMap {
     public static final int Spinner_Pneumatic_Forward_Solenoid_ID = 1;
     public static final int Spinner_Pneumatic_Reverse_Solenoid_ID = 2;
     public static final int Spinner_TargetColorTransitions = 7;
+
     /**
      * 
      * This section contains constants to define the drive motors

@@ -15,7 +15,6 @@ import frc.robot.commands.SpinnerExtendCmd;
 import frc.robot.commands.SpinnerRetractCmd;
 import frc.robot.commands.SpinnerSpinCmd;
 import frc.robot.commands.SpinnerSpinReverseCmd;
-import frc.robot.commands.IntakeSpinCmd;
 import frc.robot.commands.IntakeDeployCmd;
 import frc.robot.commands.LiftIndexCmd;
 import frc.robot.commands.LiftRunCmd;

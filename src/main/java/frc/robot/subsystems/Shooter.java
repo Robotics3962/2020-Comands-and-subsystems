@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -36,8 +37,8 @@ public class Shooter extends SubsystemBase {
      * and the adjuster
      */
     private TalonSRX  adjusterMotor = null;
-    private Spark wheelMotor1 = null;
-    private Spark wheelMotor2 = null;
+    private WPI_TalonSRX motor1;
+    private WPI_TalonSRX motor2;
     private SpeedControllerGroup wheelMotors = null;
 
     /**
@@ -46,6 +47,7 @@ public class Shooter extends SubsystemBase {
      */
     private MotorStates wheelState = MotorStates.STOPPED;
     private double wheelSpeed = 0;
+
     /**
      * This variable holds the initial encoder position
      * we use this to normalize the position so we can
@@ -53,23 +55,40 @@ public class Shooter extends SubsystemBase {
      */
     private int initialEncoderPosition = 0;
 
+    private void DiffConfigTalons(WPI_TalonSRX talon){
+        //Tells the talon that the max output that it can give is between 1 and -1 which would mean full forward and full backward.
+        //There is no allowance currently for anything in between
+        talon.configPeakOutputForward(1,0);
+        talon.configPeakOutputReverse(-1,0);
+    
+        //Tells the talon that it should current limit itself so that we don't blow a 40amp breaker.
+        talon.configPeakCurrentLimit(40,0);
+        talon.enableCurrentLimit(true);
+        talon.configContinuousCurrentLimit(40,0);
+        //The max output current is 40Amps for .25 of a second
+        talon.configPeakCurrentDuration(250, 0);
+    
+        //Tells the talon that is should only appy 12 volts or less to the motor.
+        talon.configVoltageCompSaturation(12,0);
+    }
+
     public Shooter(){
 
         //initialize the spark motors driving the
         // flywheel
-        wheelMotor1 = new Spark(RobotMap.Shooter_SparkMotor1_ID);
-        wheelMotor1.enableDeadbandElimination(true);
-        wheelMotor2 = new Spark(RobotMap.Shooter_SparkMotor2_ID);
-        wheelMotor2.enableDeadbandElimination(true);
+        motor1 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor1_ID);
+        motor2 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor2_ID);
+        wheelMotors = new SpeedControllerGroup(motor1, motor2);
+        motor1.setInverted(RobotMap.Shooter_TalonMotor1_Invert); 
+        motor2.setInverted(RobotMap.Shooter_TalonMotor2_Invert); 
 
-        // now make a speed controller group so we can control
-        // them at the same time
-        wheelMotors = new SpeedControllerGroup(wheelMotor1, wheelMotor2);
+        DiffConfigTalons(motor1);
+        DiffConfigTalons(motor2);
 
         /**
          * set up the talon with the encoder
          */
-        adjusterMotor = new TalonSRX(RobotMap.Shooter_Talon_Motor_ID);
+        adjusterMotor = new TalonSRX(RobotMap.Shooter_TalonAdjusterMotor_ID);
 
         //Tells the talon that the max output that it can give is between 1 and -1 which would mean full forward and full backward.
         //There is no allowance currently for anything in between
@@ -88,12 +107,12 @@ public class Shooter extends SubsystemBase {
 
         /**
          * invert the direction if necessary
-         * talon.setInverted(false);
+         * talon.setInverted(RobotMap.Shooter_TalonAdjusterMotor_Invert);
          * 
          * read the encoder and set the initial position
          * can't do this through wpi lib though
          * 
-         * some into here:
+         * some info here:
          * https://www.chiefdelphi.com/t/using-encoder-with-talon-srx/145483/7
          * 
          */
@@ -105,8 +124,15 @@ public class Shooter extends SubsystemBase {
         wheelSpeed = spinSpeed;
     }
 
+    public void spinShooterReverse(double spinSpeed){
+        wheelMotors.set(-spinSpeed);
+        wheelState = MotorStates.RUNNING;
+        wheelSpeed = -spinSpeed;
+    }
+
     public void stopShooter(){
         wheelMotors.set(0);
+        wheelMotors.stopMotor();
         wheelState = MotorStates.STOPPED;
         wheelSpeed = 0;
     }

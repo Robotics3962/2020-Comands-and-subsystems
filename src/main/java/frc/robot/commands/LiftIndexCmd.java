@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -17,26 +18,26 @@ public class LiftIndexCmd extends CommandBase {
    * Command to shif the balls one position up in the lift
    */
 
-  private final int callCountToIndexLift = RobotMap.Lift_IndexTimeMilliSeconds/20;
-  private int remainingCalls;
+  private final int runMotorTime = RobotMap.Lift_IndexTimeMilliSeconds;
+  private double endTime;
+
   /**
    * Creates a new LiftIndexCmd.
    */
   public LiftIndexCmd() {
     addRequirements(Robot.liftSubsystem);
-    remainingCalls = callCountToIndexLift;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    endTime = Timer.getFPGATimestamp() + runMotorTime;
     Robot.liftSubsystem.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    remainingCalls--;
   }
 
   // Called once the command ends or is interrupted.
@@ -48,10 +49,10 @@ public class LiftIndexCmd extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (remainingCalls > 0){
+    double currTime = Timer.getFPGATimestamp();
+    if (currTime < endTime){
       return false;
     }
-
     return true;
   }
 }

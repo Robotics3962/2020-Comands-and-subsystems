@@ -3,8 +3,12 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -46,6 +50,8 @@ public class Shooter extends SubsystemBase {
      * components
      */
     private MotorStates wheelState = MotorStates.STOPPED;
+    private MotorStates adjusterState = MotorStates.STOPPED;
+
     private double wheelSpeed = 0;
 
     /**
@@ -55,23 +61,6 @@ public class Shooter extends SubsystemBase {
      */
     private int initialEncoderPosition = 0;
 
-    private void DiffConfigTalons(WPI_TalonSRX talon){
-        //Tells the talon that the max output that it can give is between 1 and -1 which would mean full forward and full backward.
-        //There is no allowance currently for anything in between
-        talon.configPeakOutputForward(1,0);
-        talon.configPeakOutputReverse(-1,0);
-    
-        //Tells the talon that it should current limit itself so that we don't blow a 40amp breaker.
-        talon.configPeakCurrentLimit(40,0);
-        talon.enableCurrentLimit(true);
-        talon.configContinuousCurrentLimit(40,0);
-        //The max output current is 40Amps for .25 of a second
-        talon.configPeakCurrentDuration(250, 0);
-    
-        //Tells the talon that is should only appy 12 volts or less to the motor.
-        talon.configVoltageCompSaturation(12,0);
-    }
-
     public Shooter(){
 
         //initialize the spark motors driving the
@@ -79,37 +68,34 @@ public class Shooter extends SubsystemBase {
         motor1 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor1_ID);
         motor2 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor2_ID);
         wheelMotors = new SpeedControllerGroup(motor1, motor2);
+        motor1.setNeutralMode(NeutralMode.Brake);
+        motor2.setNeutralMode(NeutralMode.Brake);
         motor1.setInverted(RobotMap.Shooter_TalonMotor1_Invert); 
         motor2.setInverted(RobotMap.Shooter_TalonMotor2_Invert); 
 
-        DiffConfigTalons(motor1);
-        DiffConfigTalons(motor2);
+        Util.configTalon(motor1);
+        Util.configTalon(motor2);
 
         /**
          * set up the talon with the encoder
          */
         adjusterMotor = new TalonSRX(RobotMap.Shooter_TalonAdjusterMotor_ID);
 
-        //Tells the talon that the max output that it can give is between 1 and -1 which would mean full forward and full backward.
-        //There is no allowance currently for anything in between
-        adjusterMotor.configPeakOutputForward(1,0);
-        adjusterMotor.configPeakOutputReverse(-1,0);
-    
-        //Tells the talon that it should current limit itself so that we don't blow a 40amp breaker.
-        adjusterMotor.configPeakCurrentLimit(40,0);
-        adjusterMotor.enableCurrentLimit(true);
-        adjusterMotor.configContinuousCurrentLimit(40,0);
-        //The max output current is 40Amps for .25 of a second
-        adjusterMotor.configPeakCurrentDuration(250, 0);
-    
-        //Tells the talon that is should only appy 12 volts or less to the motor.
-        adjusterMotor.configVoltageCompSaturation(12,0);
+        Util.configTalonSRX(adjusterMotor);
+        adjusterMotor.setInverted(RobotMap.Shooter_TalonAdjusterMotor_Invert);
+
+        /**
+         * configure limit switches
+         */
+        /* Configured forward and reverse limit switch of Talon to be from a feedback connector and be normally open */
+        motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+        motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 
         /**
          * invert the direction if necessary
          * talon.setInverted(RobotMap.Shooter_TalonAdjusterMotor_Invert);
          * 
-         * read the encoder and set the initial position
+         * make sure the encode is going the same direction as the motor
          * can't do this through wpi lib though
          * 
          * some info here:
@@ -119,6 +105,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void spinShooter(double spinSpeed){
+        wheelSpeed = spinSpeed;
         wheelMotors.set(spinSpeed);
         wheelState = MotorStates.RUNNING;
         wheelSpeed = spinSpeed;
@@ -147,5 +134,35 @@ public class Shooter extends SubsystemBase {
 
     public int getAdjusterPosition(){
         return 0; //read encoder
+    }
+
+    
+    public boolean atUpperLimit(){
+        boolean upperLimitSwitchState = false;
+
+        // read state of limit switch
+        // if elevated or retracted, stop the motor
+        upperLimitSwitchState =  adjusterMotor.getSensorCollection().isFwdLimitSwitchClosed();
+        
+
+        return upperLimitSwitchState;
+    }
+
+    public boolean atLowerLimit(){
+        boolean lowerLimitSwitchState = false;
+
+        // read state of limit switch
+        // if elevated or retracted, stop the motor
+        lowerLimitSwitchState =  adjusterMotor.getSensorCollection().isRevLimitSwitchClosed();
+
+        return lowerLimitSwitchState;
+    }
+    
+    @Override
+    public void periodic(){
+        if (atUpperLimit() || atLowerLimit()){
+            adjusterMotor.set(TalonSRXControlMode.PercentOutput, 0);
+        }
+
     }
 }

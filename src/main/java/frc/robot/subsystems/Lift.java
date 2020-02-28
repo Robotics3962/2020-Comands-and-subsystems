@@ -34,23 +34,6 @@ public class Lift extends SubsystemBase {
     private WPI_TalonSRX motor2;
     private SpeedControllerGroup motors = null;
 
-    private void DiffConfigTalons(WPI_TalonSRX talon){
-        //Tells the talon that the max output that it can give is between 1 and -1 which would mean full forward and full backward.
-        //There is no allowance currently for anything in between
-        talon.configPeakOutputForward(1,0);
-        talon.configPeakOutputReverse(-1,0);
-    
-        //Tells the talon that it should current limit itself so that we don't blow a 40amp breaker.
-        talon.configPeakCurrentLimit(40,0);
-        talon.enableCurrentLimit(true);
-        talon.configContinuousCurrentLimit(40,0);
-        //The max output current is 40Amps for .25 of a second
-        talon.configPeakCurrentDuration(250, 0);
-    
-        //Tells the talon that is should only appy 12 volts or less to the motor.
-        talon.configVoltageCompSaturation(12,0);
-    }
-    
     public Lift(){
 
         // initialize the motor
@@ -60,8 +43,8 @@ public class Lift extends SubsystemBase {
         motor1.setInverted(RobotMap.Lift_TalonMotor1_Invert); 
         motor2.setInverted(RobotMap.Lift_TalonMotor2_Invert); 
 
-        DiffConfigTalons(motor1);
-        DiffConfigTalons(motor2);
+        Util.configTalon(motor1);
+        Util.configTalon(motor2);
     }
 
     public void start(){

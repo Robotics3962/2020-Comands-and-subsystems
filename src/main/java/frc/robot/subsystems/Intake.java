@@ -52,29 +52,12 @@ public class Intake extends SubsystemBase {
     private WPI_TalonSRX motor;
     private DoubleSolenoid solenoid;
 
-    private void DiffConfigTalons(WPI_TalonSRX talon){
-        //Tells the talon that the max output that it can give is between 1 and -1 which would mean full forward and full backward.
-        //There is no allowance currently for anything in between
-        talon.configPeakOutputForward(1,0);
-        talon.configPeakOutputReverse(-1,0);
-
-        //Tells the talon that it should current limit itself so that we don't blow a 40amp breaker.
-        talon.configPeakCurrentLimit(40,0);
-        talon.enableCurrentLimit(true);
-        talon.configContinuousCurrentLimit(40,0);
-        //The max output current is 40Amps for .25 of a second
-        talon.configPeakCurrentDuration(250, 0);
-
-        //Tells the talon that is should only appy 12 volts or less to the motor.
-        talon.configVoltageCompSaturation(12,0);
-    }  
-      
     public Intake(){
 
         // initialize the motor
 		motor = new WPI_TalonSRX(RobotMap.Intake_TalonMotor_Id);
         motor.setInverted(RobotMap.Intake_TalonMotor_Invert); 
-        DiffConfigTalons(motor);
+        Util.configTalon(motor);
 
         // initialize the solenoid
         solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Intake_Pneumatic_Forward_Solenoid_ID);

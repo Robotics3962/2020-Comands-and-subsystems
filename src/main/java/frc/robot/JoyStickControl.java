@@ -9,27 +9,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static edu.wpi.first.wpilibj.XboxController.Button;
-import frc.robot.commands.SpinnerGetSensorColorCmd;
-import frc.robot.commands.SpinnerMove1TransitionCmd;
-import frc.robot.commands.SpinnerExtendCmd;
-import frc.robot.commands.SpinnerRetractCmd;
-import frc.robot.commands.SpinnerSpinCmd;
-import frc.robot.commands.SpinnerSpinReverseCmd;
-import frc.robot.commands.IntakeDeployCmd;
-import frc.robot.commands.LiftIndexCmd;
-import frc.robot.commands.LiftRunCmd;
-import frc.robot.commands.ShooterShootCmd;
-import frc.robot.commands.DriveMoveDistanceCmd;
-import frc.robot.commands.DriveMoveDistancePIDCmd;
-//import frc.robot.commands.SpinnerMove1TransitionCmd;
-import frc.robot.commands.DriveResetGyroCmd;
-import frc.robot.commands.DriveRotatePIDCmd;
-import frc.robot.commands.DriveSeekLimelightTargetCmd;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DemoAutonomousCmdGroup;
-import frc.robot.commands.DriveFaceLimelightTargetCmd;
-import frc.robot.commands.SpinnerSeekColorCmd;
-import frc.robot.commands.SpinnerRotate3xFindColorCmd;
+import frc.robot.commands.*;
 
 public class JoyStickControl {
   // get both drive and operational joysticks

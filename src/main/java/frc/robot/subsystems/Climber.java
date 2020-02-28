@@ -139,6 +139,13 @@ public class Climber extends SubsystemBase {
         motorState = MotorStates.RUNNING;
     }
 
+    public void stop(){
+        currCommand = Commands.NONE;
+        motors.set(0);
+        motors.stopMotor();
+        motorState = MotorStates.STOPPED;
+    }
+
     public boolean isMoving(){
         boolean elevated = isElevated();
         boolean retracted = isRetracted();

@@ -15,17 +15,18 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-public class DriveFaceLimelightTargetCmd extends CommandBase {
+public class DriveDistLimelightTargetCmd extends CommandBase {
   boolean done = false;
   double timeStabilized;
   int msgCount = 0;
   int hasNotMovedCounter = 0;
-  double prevAngle;
+  double prevDist;
+  private double target = 20;
 
   /**
    * Creates a new DriveFaceLimelightCmd.
    */
-  public DriveFaceLimelightTargetCmd() {
+  public DriveDistLimelightTargetCmd() {
     addRequirements(Robot.robotDrive);
   }
 
@@ -34,7 +35,7 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
   public void initialize() {
     msgCount = 0;
     hasNotMovedCounter = 0;
-    prevAngle = Robot.robotDrive.readGyro();
+    prevDist = Robot.robotDrive.readGyro();
     timeStabilized = Timer.getFPGATimestamp() + RobotMap.Drive_Auto_StabilizedTime;
 
     double targetAcquired = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
@@ -44,7 +45,7 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
     else {
       done = false;
       double speed = calculateSpeed();
-      Robot.robotDrive.setSpeedAndRotation(speed, 0);
+      Robot.robotDrive.setSpeedAndRotation(0, speed);
     }
   }
 
@@ -59,7 +60,7 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
 
 
     if (!done){
-      Robot.robotDrive.setSpeedAndRotation(speed, 0);
+      Robot.robotDrive.setSpeedAndRotation(0, speed);
     }
   }
 
@@ -74,9 +75,9 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
   public boolean isFinished() {
 
     if(!done){
-      double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+      double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       
-      if ((tx > -RobotMap.Drive_Limelight_Search_Tolerance) && (tx < RobotMap.Drive_Limelight_Search_Tolerance)){
+      if ((ty > -RobotMap.Drive_Limelight_Search_Tolerance) && (ty < RobotMap.Drive_Limelight_Search_Tolerance)){
        
         hasNotMovedCounter = 0;
 
@@ -99,21 +100,21 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
         double currTime = Timer.getFPGATimestamp();
         if (currTime > timeStabilized){
           done = true;
-          System.out.println("Isfinsihed(DriveFace):::::::::::::: Dones");
+          System.out.println("Isfinsihed(DriveDist):::::::::::::: Dones");
         }
       }
       else {
         timeStabilized = Timer.getFPGATimestamp() + RobotMap.Drive_Auto_StabilizedTime;
 
-        if (prevAngle == tx) {
+        if (prevDist == ty) {
           hasNotMovedCounter++;
 
           if (hasNotMovedCounter > RobotMap.Drive_Limelight_NoProgressCnt) {
-            done = true;
+            //done = true;
           }         
         }
         else {
-          prevAngle = tx;
+          prevDist = ty;
         }
       }
     }
@@ -121,16 +122,16 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
   }
 
   public double calculateSpeed(){
-    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-    double error = 0-tx;
+    double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    double error = target-ty;
     double speed = error * RobotMap.Drive_Auto_Distance_Pval;
     double adjustedSpeed = limit(speed);
-    SmartDashboard.putNumber("Tx", tx);
-    SmartDashboard.putNumber("tx Error", error);
-    SmartDashboard.putNumber("adjusted speed", adjustedSpeed);
+    SmartDashboard.putNumber("Ty", ty);
+    SmartDashboard.putNumber("tY Error", error);
+    SmartDashboard.putNumber("ty adjusted speed", adjustedSpeed);
 
     if ((msgCount++ % 10) == 0){
-      System.out.println("error:"+error+" tx:"+tx+" adjustedSpeed:"+adjustedSpeed + " norprog:" + hasNotMovedCounter);
+      System.out.println("error:"+error+" ty:"+ty+" adjustedSpeed:"+adjustedSpeed + " norprog:" + hasNotMovedCounter);
     }
 
     return adjustedSpeed;
@@ -138,19 +139,19 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
 
   private double limit(double value){
     if (value <= 0){
-      if (value >= -RobotMap.Drive_Auto_Angle_MinSpeed){
-        value = -RobotMap.Drive_Auto_Angle_MinSpeed;
+      if (value >= -RobotMap.Drive_Auto_Distance_MinSpeed){
+        value = -RobotMap.Drive_Auto_Distance_MinSpeed;
       } 
-      else if (value < -RobotMap.Drive_Auto_Angle_MaxSpeed) {
-        value = -RobotMap.Drive_Auto_Angle_MaxSpeed;
+      else if (value < -RobotMap.Drive_Auto_Distance_MaxSpeed) {
+        value = -RobotMap.Drive_Auto_Distance_MaxSpeed;
       }
     }
     else{
-      if (value <= RobotMap.Drive_Auto_Angle_MinSpeed){
-        value = RobotMap.Drive_Auto_Angle_MinSpeed;
+      if (value <= RobotMap.Drive_Auto_Distance_MinSpeed){
+        value = RobotMap.Drive_Auto_Distance_MinSpeed;
       }
-      else if (value > RobotMap.Drive_Auto_Angle_MaxSpeed) {
-        value = RobotMap.Drive_Auto_Angle_MaxSpeed;
+      else if (value > RobotMap.Drive_Auto_Distance_MaxSpeed) {
+        value = RobotMap.Drive_Auto_Distance_MaxSpeed;
       }
     }
     return value;

@@ -176,7 +176,7 @@ public class RobotMap {
     public static final double Drive_LimeLight_Search_RotateSpeed = 0.45;
     public static final double Drive_Auto_StabilizedTime = 1.0;
     public static final double Drive_Limelight_Search_Tolerance = 0.5;
-    public static final int Drive_Limelight_NoProgressCnt = 5;
+    public static final int Drive_Limelight_NoProgressCnt = 10;
 
     /**
      * These scale factors are used to scale the values from the

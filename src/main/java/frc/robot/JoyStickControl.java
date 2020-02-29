@@ -59,6 +59,7 @@ public class JoyStickControl {
 
     driveButtonA.whenPressed(new DriveFaceLimelightTargetCmd());
     driveButtonB.whenPressed(new DriveSeekLimelightTargetCmd());
+    driveButtonX.whenPressed(new DriveDistLimelightTargetCmd());
   }
     
   public double getLeftThrottle() {

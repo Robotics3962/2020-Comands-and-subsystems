@@ -9,12 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class DriveFaceLimelightTargetCmd extends CommandBase {
   boolean done = false;
   double rotateDirection = 1;
+  double timeStabilized;
 
   /**
    * Creates a new DriveFaceLimelightCmd.
@@ -26,6 +28,8 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timeStabilized = Timer.getFPGATimestamp() + RobotMap.Drive_Auto_StabilizedTime;
+
     double targetAcquired = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     if (targetAcquired != 1){
       done = true;
@@ -74,8 +78,30 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
       double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       
       if ((tx > -.5) && (tx < .5)){
-        done = true;
 
+        /**
+         * We need to know when we converged in the target range.
+         * To do this we need to stay in the target range for a 
+         * set period of time.  This avoids the case where the robot
+         * is just passing through the target range and not stopping
+         * in it.
+         * 
+         * To accomplish this we keep track of the furthest time in the future
+         * that we would need to stay in the target area for.
+         * 
+         * If we are in the target area we check to see if the
+         * time stabilized is in the past.  If it is, we are done.
+         * 
+         * If we are not in the target area, we bump out the time we can 
+         * be stabilized to even further in the future.
+         */
+        double currTime = Timer.getFPGATimestamp();
+        if (currTime > timeStabilized){
+          done = true;
+        }
+      }
+      else {
+        timeStabilized = Timer.getFPGATimestamp() + RobotMap.Drive_Auto_StabilizedTime;
       }
     }
     return done;

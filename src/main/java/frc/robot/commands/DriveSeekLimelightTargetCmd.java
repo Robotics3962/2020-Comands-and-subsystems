@@ -39,8 +39,10 @@ public class DriveSeekLimelightTargetCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double speed = RobotMap.Drive_LimeLight_Search_RotateSpeed;
+    //Robot.robotDrive.setTankDriveSpeed(-speed, speed);
     Robot.robotDrive.setSpeedAndRotation(RobotMap.Drive_LimeLight_Search_RotateSpeed, 0);
-    System.out.println("Searching for target");
+    //System.out.println("Searching for target");
   }
 
   // Called once the command ends or is interrupted.
@@ -68,7 +70,7 @@ public class DriveSeekLimelightTargetCmd extends CommandBase {
     }
 
     SmartDashboard.putBoolean("LimeLight targeted", limelightFoundTarget);
-    System.out.println("is finished:");
+    //System.out.println("is finished:");
     return done;
   }
 }

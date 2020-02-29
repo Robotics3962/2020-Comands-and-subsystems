@@ -44,18 +44,21 @@ public class JoyStickControl {
     JoystickButton opButtonBack = new JoystickButton(operationJoyStick, Button.kBack.value);
     JoystickButton opButtonStart = new JoystickButton(operationJoyStick, Button.kStart.value);
 
-    opButtonLS.whileHeld(new ClimberElevateCmd());
-    opButtonRS.whileHeld(new ClimberRectractCmd());
-    opButtonStart.whenPressed(new IntakeDeployCmd());
-    opButtonBack.whenPressed(new IntakeRetractCmd());
-    opButtonA.whileHeld(new IntakeSpinCmd());
-    opButtonB.whileHeld(new ShooterShootCmd());
-    opButtonX.whileHeld(new LiftRunCmd());
-    opButtonY.whileHeld(new LiftRunReverseCmd());
+    //opButtonLS.whileHeld(new ClimberElevateCmd());
+    //opButtonRS.whileHeld(new ClimberRectractCmd());
+    //opButtonStart.whenPressed(new IntakeDeployCmd());
+    //opButtonBack.whenPressed(new IntakeRetractCmd());
+    //opButtonA.whileHeld(new IntakeSpinCmd());
+    //opButtonB.whileHeld(new ShooterShootCmd());
+    //opButtonX.whileHeld(new LiftRunCmd());
+    //opButtonY.whileHeld(new LiftRunReverseCmd());
 
-    driveButtonA.whileHeld(new SpinnerSpinCmd());
-    driveButtonB.whileHeld(new SpinnerSpinReverseCmd());
-    driveButtonX.whenPressed(new SpinnerRotate3xFindColorCmd("Blue"));
+    //driveButtonA.whileHeld(new SpinnerSpinCmd());
+    //driveButtonB.whileHeld(new SpinnerSpinReverseCmd());
+    //driveButtonX.whenPressed(new SpinnerRotate3xFindColorCmd("Blue"));
+
+    driveButtonA.whenPressed(new DriveFaceLimelightTargetCmd());
+    driveButtonB.whenPressed(new DriveSeekLimelightTargetCmd());
   }
     
   public double getLeftThrottle() {

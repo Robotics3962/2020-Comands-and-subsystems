@@ -168,13 +168,15 @@ public class RobotMap {
     public static final double Drive_Auto_Distance_MaxSpeed = 0.4;
     public static final double Drive_Auto_Distance_DeadZone = Drive_Auto_CountsPerInch * 3; 
     public static final double Drive_Auto_Angle_DeadZone = 1;
-    public static final double Drive_Auto_Angle_MinSpeed = 0.15;
+    public static final double Drive_Auto_Angle_MinSpeed = 0.3;
     public static final double Drive_Auto_Angle_MaxSpeed = 0.5;
     public static final double Drive_Auto_Angle_Pval = 0.25;
     public static final double Drive_Auto_Angle_Ival = 0.0;
     public static final double Drive_Auto_Angle_Dval = 0.0;
     public static final double Drive_LimeLight_Search_RotateSpeed = 0.45;
     public static final double Drive_Auto_StabilizedTime = 1.0;
+    public static final double Drive_Limelight_Search_Tolerance = 0.5;
+    public static final int Drive_Limelight_NoProgressCnt = 5;
 
     /**
      * These scale factors are used to scale the values from the

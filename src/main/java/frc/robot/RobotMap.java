@@ -164,8 +164,8 @@ public class RobotMap {
     public static final double Drive_Auto_Distance_Ival = 0.0;
     public static final double Drive_Auto_Distance_Dval = 0.0;
     public static final double Drive_Auto_CountsPerInch = 218;
-    public static final double Drive_Auto_Distance_MinSpeed = 0.25;
-    public static final double Drive_Auto_Distance_MaxSpeed = 0.4;
+    public static final double Drive_Auto_Distance_MinSpeed = 0.15;
+    public static final double Drive_Auto_Distance_MaxSpeed = 0.6;
     public static final double Drive_Auto_Distance_DeadZone = Drive_Auto_CountsPerInch * 3; 
     public static final double Drive_Auto_Angle_DeadZone = 1;
     public static final double Drive_Auto_Angle_MinSpeed = 0.3;

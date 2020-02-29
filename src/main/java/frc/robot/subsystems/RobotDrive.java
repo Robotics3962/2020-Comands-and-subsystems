@@ -157,4 +157,14 @@ public class RobotDrive extends SubsystemBase {
   public void resetGyro(){
     gyro.reset();
   }
+
+  /**
+   * 
+   * @param ts
+   * @return currently needs updated
+   */
+  public double normalizeSkew(double ts){
+
+    return ts;
+  }
 }

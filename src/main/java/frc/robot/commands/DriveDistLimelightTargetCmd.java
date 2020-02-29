@@ -45,7 +45,8 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
     else {
       done = false;
       double speed = calculateSpeed();
-      Robot.robotDrive.setSpeedAndRotation(0, speed);
+      //Robot.robotDrive.setSpeedAndRotation(0, speed);
+      Robot.robotDrive.setTankDriveSpeed(speed, speed);
     }
   }
 

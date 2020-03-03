@@ -159,6 +159,16 @@ public class Climber extends SubsystemBase {
 
         return lowerLimitSwitchState;
     }
+    
+    public void up(){
+        motors.set(RobotMap.Climber_MotorSpeedUp);
+        motorState = MotorStates.RUNNING;
+    }
+
+    public void down() {
+        motors.set(RobotMap.Climber_MotorSpeedDown);
+        motorState = MotorStates.RUNNING;
+    }
 
     @Override
     public void periodic(){

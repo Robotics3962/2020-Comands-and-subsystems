@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.DriveDefaultCmd;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotDrive extends SubsystemBase {
@@ -126,17 +127,7 @@ public class RobotDrive extends SubsystemBase {
 
   @Override
   public void periodic(){
-
     dumpEncoderValues();
-
-    // if we are in manual mode, allow the robot to be controlled
-    // with the joystick
-    if(driveMode == DriveModes.MANUAL){
-      MoveWithJoystick();
-    }
-    else{
-
-    }
   }
 
   public void dumpEncoderValues(){
@@ -166,5 +157,11 @@ public class RobotDrive extends SubsystemBase {
   public double normalizeSkew(double ts){
 
     return ts;
+  }
+
+  public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new DriveDefaultCmd());
   }
 }

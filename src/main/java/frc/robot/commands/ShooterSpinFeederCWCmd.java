@@ -8,18 +8,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 
-public class DriveMoveCmd extends CommandBase {
+public class ShooterSpinFeederCWCmd extends CommandBase {
   /**
-   * Creates a new DriveMoveCmd.
+   * Creates a new ShooterSpinFeederCWCmd.
    */
-  public DriveMoveCmd() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ShooterSpinFeederCWCmd() {
+    addRequirements(Robot.shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+      Robot.shooterSubsystem.spinFeedMotorCW();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,6 +32,7 @@ public class DriveMoveCmd extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.shooterSubsystem.stopFeedMotor();
   }
 
   // Returns true when the command should end.

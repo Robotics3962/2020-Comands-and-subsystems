@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Spark;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -44,15 +45,16 @@ public class Shooter extends SubsystemBase {
     private WPI_TalonSRX motor1;
     private WPI_TalonSRX motor2;
     private SpeedControllerGroup wheelMotors = null;
-
+    
     /**
      * These variables hold the state of the
      * components
      */
-    private MotorStates wheelState = MotorStates.STOPPED;
+    private MotorStates flyWheelState = MotorStates.STOPPED;
     private MotorStates adjusterState = MotorStates.STOPPED;
+    private MotorStates feederWheelState = MotorStates.STOPPED;
 
-    private double wheelSpeed = 0;
+    private double flyWheelSpeed = 0;
 
     /**
      * This variable holds the initial encoder position
@@ -62,34 +64,6 @@ public class Shooter extends SubsystemBase {
     private int initialEncoderPosition = 0;
 
     public Shooter(){
-
-        //initialize the spark motors driving the
-        // flywheel
-        motor1 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor1_ID);
-        motor2 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor2_ID);
-        wheelMotors = new SpeedControllerGroup(motor1, motor2);
-        motor1.setNeutralMode(NeutralMode.Brake);
-        motor2.setNeutralMode(NeutralMode.Brake);
-        motor1.setInverted(RobotMap.Shooter_TalonMotor1_Invert); 
-        motor2.setInverted(RobotMap.Shooter_TalonMotor2_Invert); 
-
-        Util.configTalon(motor1);
-        Util.configTalon(motor2);
-
-        /**
-         * set up the talon with the encoder
-         */
-        //adjusterMotor = new TalonSRX(RobotMap.Shooter_TalonAdjusterMotor_ID);
-
-        //Util.configTalonSRX(adjusterMotor);
-        //adjusterMotor.setInverted(RobotMap.Shooter_TalonAdjusterMotor_Invert);
-
-        /**
-         * configure limit switches
-         */
-        /* Configured forward and reverse limit switch of Talon to be from a feedback connector and be normally open */
-        motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-        motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 
         /**
          * invert the direction if necessary
@@ -102,70 +76,60 @@ public class Shooter extends SubsystemBase {
          * https://www.chiefdelphi.com/t/using-encoder-with-talon-srx/145483/7
          * 
          */
+
+        /**
+         * initialize the talon motors driving the
+         * flywheel
+         */ 
+        motor1 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor1_ID);
+        motor2 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor2_ID);
+        wheelMotors = new SpeedControllerGroup(motor1, motor2);
+        motor1.setNeutralMode(NeutralMode.Brake);
+        motor2.setNeutralMode(NeutralMode.Brake);
+        motor1.setInverted(RobotMap.Shooter_TalonMotor1_Invert); 
+        motor2.setInverted(RobotMap.Shooter_TalonMotor2_Invert); 
+
+        Util.configTalon(motor1);
+        Util.configTalon(motor2);
+
+        feederMotor = new Spark(RobotMap.Shooter_SparkFeederMotor_ID);
+        feederMotor.enableDeadbandElimination(true);
+
     }
 
     public void spinShooter(double spinSpeed){
-        wheelSpeed = spinSpeed;
+        flyWheelSpeed = spinSpeed;
         wheelMotors.set(spinSpeed);
-        wheelState = MotorStates.RUNNING;
-        wheelSpeed = spinSpeed;
+        flyWheelState = MotorStates.RUNNING;
+        flyWheelSpeed = spinSpeed;
     }
 
     public void spinShooterReverse(double spinSpeed){
         wheelMotors.set(-spinSpeed);
-        wheelState = MotorStates.RUNNING;
-        wheelSpeed = -spinSpeed;
+        flyWheelState = MotorStates.RUNNING;
+        flyWheelSpeed = -spinSpeed;
     }
 
     public void stopShooter(){
         wheelMotors.set(0);
         wheelMotors.stopMotor();
-        wheelState = MotorStates.STOPPED;
-        wheelSpeed = 0;
+        flyWheelState = MotorStates.STOPPED;
+        flyWheelSpeed = 0;
     }
 
-    public void initAdjuster(){
-
+    public void spinFeedMotorCW(){
+        feederMotor.set(RobotMap.Shooter_FeederMotor_Speed);
+        feederWheelState = MotorStates.RUNNING;
     }
 
-    public void setAdjusterPosition(int position){
-
+    public void spinFeedMotorCCW(){
+        feederMotor.set(-RobotMap.Shooter_FeederMotor_Speed);
+        feederWheelState = MotorStates.RUNNING;
     }
 
-    public int getAdjusterPosition(){
-        return 0; //read encoder
-    }
-
-    
-    public boolean atUpperLimit(){
-        boolean upperLimitSwitchState = false;
-
-        // read state of limit switch
-        // if elevated or retracted, stop the motor
-        //upperLimitSwitchState =  adjusterMotor.getSensorCollection().isFwdLimitSwitchClosed();
-        
-
-        return upperLimitSwitchState;
-    }
-
-    public boolean atLowerLimit(){
-        boolean lowerLimitSwitchState = false;
-
-        // read state of limit switch
-        // if elevated or retracted, stop the motor
-        //lowerLimitSwitchState =  adjusterMotor.getSensorCollection().isRevLimitSwitchClosed();
-
-        return lowerLimitSwitchState;
-    }
-    
-    @Override
-    public void periodic(){
-
-        /*
-        *USed for talons
-        if (atUpperLimit() || atLowerLimit()){
-            //adjusterMotor.set(TalonSRXControlMode.PercentOutput, 0);
-        }
-        */
+    public void stopFeedMotor(){
+        feederMotor.set(0);
+        feederMotor.stopMotor();
+        feederWheelState = MotorStates.STOPPED;
     }
 }

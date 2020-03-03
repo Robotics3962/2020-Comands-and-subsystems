@@ -8,24 +8,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
-public class IntakeSpinTimedCmd extends CommandBase {
-  double endSpinTime;
+public class ShooterSpinFeederCCWCmd extends CommandBase {
   /**
-   * Creates a new IntakeSpinCmd.
+   * Creates a new ShooterSpinFeedMotorCCWCmd.
    */
-  public IntakeSpinTimedCmd(double timeToSpinMs) {
-    addRequirements(Robot.intakeSubsystem);
+  public ShooterSpinFeederCCWCmd() {
+    addRequirements(Robot.shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    endSpinTime = Timer.getFPGATimestamp() + RobotMap.Intake_Spin_TimeMs;
-    Robot.intakeSubsystem.start();
+    Robot.shooterSubsystem.spinFeedMotorCCW();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,18 +32,12 @@ public class IntakeSpinTimedCmd extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.intakeSubsystem.stop();
+    Robot.shooterSubsystem.stopFeedMotor();
   }
-
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double currTime = Timer.getFPGATimestamp();
-    if (currTime < endSpinTime) {
-        return false;
-    }
-    
-    return true;
+    return false;
   }
 }

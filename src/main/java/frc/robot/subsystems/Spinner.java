@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import java.util.HashMap;
@@ -19,28 +18,21 @@ public class Spinner extends SubsystemBase {
      * 
      */
 
-    /**
-     * used to keep track of if spinner is deployed
-     */
-    private enum SolenoidStates { UNKNOWN, EXTENDED, RETRACTED};
-
      /**
      * used to keep track of current state
      */
     private enum MotorStates {STOPPED, RUNNING};
 
     /**
-     * declare variables tracking current state of intake
+     * declare variables tracking current state of the spinner
      * and initialize them
      */
     private MotorStates motorState = MotorStates.STOPPED;
-    private SolenoidStates solenoidState = SolenoidStates.UNKNOWN;
 
     /**
      * these are the controllers for the motors 
      */
     private Spark motor;
-    private DoubleSolenoid solenoid;
 
     /**
      * used to map color under Control Panel sensor to color under
@@ -250,28 +242,6 @@ public class Spinner extends SubsystemBase {
 
     public boolean isSpinning(){
         return (motorState == MotorStates.RUNNING);
-    }
-
-    /**
-     * these function control the pneumatics to extend
-     * the arm
-     */
-    public void extend(){
-        //solenoid.set(DoubleSolenoid.Value.kForward);
-        solenoidState = SolenoidStates.EXTENDED;
-    }
-
-    public boolean isExtended(){
-        return (solenoidState == SolenoidStates.EXTENDED);
-    }
-
-    public void retract(){
-        //solenoid.set(DoubleSolenoid.Value.kReverse);
-        solenoidState = SolenoidStates.RETRACTED;
-    }
-
-    public boolean isRetracted(){
-        return (solenoidState == SolenoidStates.RETRACTED);
     }
     
     /**

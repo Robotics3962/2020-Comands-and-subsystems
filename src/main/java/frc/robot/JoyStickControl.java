@@ -44,23 +44,17 @@ public class JoyStickControl {
     JoystickButton opButtonBack = new JoystickButton(operationJoyStick, Button.kBack.value);
     JoystickButton opButtonStart = new JoystickButton(operationJoyStick, Button.kStart.value);
 
+    driveButtonX.whileHeld(new ShooterSpinFeederCWCmd());
+    driveButtonY.whileHeld(new ShooterSpinFeederCCWCmd());
+
     opButtonLS.whileHeld(new ShooterStartCmd());
     opButtonRS.whileHeld(new ShooterStopCmd());
-    opButtonStart.whenPressed(new IntakeDeployCmd());
     opButtonBack.whenPressed(new IntakeRetractCmd());
+    opButtonStart.whenPressed(new IntakeDeployCmd());
     opButtonA.whileHeld(new IntakeSpinCmd());
     opButtonB.whenPressed(new IntakeNeutralCmd());
-    //opButtonB.whileHeld(new ShooterShootCmd());
     opButtonX.whileHeld(new LiftRunCmd());
     opButtonY.whileHeld(new LiftRunReverseCmd());
-
-    //driveButtonA.whileHeld(new SpinnerSpinCmd());
-    //driveButtonB.whileHeld(new SpinnerSpinReverseCmd());
-    //driveButtonX.whenPressed(new SpinnerRotate3xFindColorCmd("Blue"));
-
-    //driveButtonA.whenPressed(new DriveFaceLimelightTargetCmd());
-    //driveButtonB.whenPressed(new DriveSeekLimelightTargetCmd());
-    //driveButtonX.whenPressed(new DriveDistLimelightTargetCmd());
   }
     
   public double getLeftThrottle() {

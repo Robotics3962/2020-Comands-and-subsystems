@@ -10,18 +10,18 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class IntakeSpinCmd extends CommandBase {
+public class ShooterSpinFeederCCWCmd extends CommandBase {
   /**
-   * Creates a new IntakeSpinCmd.
+   * Creates a new ShooterSpinFeedMotorCCWCmd.
    */
-  public IntakeSpinCmd() {
-    addRequirements(Robot.intakeSubsystem);
+  public ShooterSpinFeederCCWCmd() {
+    addRequirements(Robot.shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.intakeSubsystem.start();
+    Robot.shooterSubsystem.spinFeedMotorCCW();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,7 +32,7 @@ public class IntakeSpinCmd extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.intakeSubsystem.stop();
+    Robot.shooterSubsystem.stopFeedMotor();
   }
 
   // Returns true when the command should end.

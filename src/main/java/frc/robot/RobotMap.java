@@ -37,18 +37,20 @@ public class RobotMap {
      * Configuration for the shooter
      * 
      */
-    public static final int Shooter_TalonMotor1_ID = 7;
+    public static final int Shooter_TalonMotor1_ID = 7;//which is top, which is bot?
     public static final int Shooter_TalonMotor2_ID = 8;
     public static final boolean Shooter_TalonMotor1_Invert = false;
     public static final boolean Shooter_TalonMotor2_Invert = false; // could be true, not sure
     public static final double Shooter_Speed = .8;
-    public static final int Shooter_SparkFeederMotor_ID = 4;
+    public static final int Shooter_SparkFeederMotor_ID = 3;//orig 4
     public static final double Shooter_FeederMotor_Speed = .5;
     
     /**
      * Configuration for the ball lift
      */
-    public static int Lift_SparkMotor_ID = 2;
+    public static int Lift_SparkMotor_ID = 2;//wrong assignment
+    public static int Lift_SRXMotor_ID1 = 6;
+    public static int Lift_SRXMotor_ID2 = 5;
     public static boolean Lift_TalonMotor1_Invert = false;
     public static boolean Lift_TalonMotor2_Invert = false;
     public static double Lift_MotorSpeed = .6;
@@ -72,7 +74,7 @@ public class RobotMap {
      * Configuration for the spinner.  The spinner consists of
      * a color sensor a single action pneumatic solenoid 
      */
-    public static final int Spinner_SparkMotor_ID = 1;
+    public static final int Spinner_SparkMotor_ID = 1;//correct assignment
     public static final double Spinner_MotorSpeed = 0.15;
     public static final double Spinner_SlowMotorSpeed = 0.1;
     public static final int Spinner_TargetColorTransitions = 7;

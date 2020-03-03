@@ -79,10 +79,10 @@ public class Shooter extends SubsystemBase {
         /**
          * set up the talon with the encoder
          */
-        adjusterMotor = new TalonSRX(RobotMap.Shooter_TalonAdjusterMotor_ID);
+        //adjusterMotor = new TalonSRX(RobotMap.Shooter_TalonAdjusterMotor_ID);
 
-        Util.configTalonSRX(adjusterMotor);
-        adjusterMotor.setInverted(RobotMap.Shooter_TalonAdjusterMotor_Invert);
+        //Util.configTalonSRX(adjusterMotor);
+        //adjusterMotor.setInverted(RobotMap.Shooter_TalonAdjusterMotor_Invert);
 
         /**
          * configure limit switches
@@ -142,7 +142,7 @@ public class Shooter extends SubsystemBase {
 
         // read state of limit switch
         // if elevated or retracted, stop the motor
-        upperLimitSwitchState =  adjusterMotor.getSensorCollection().isFwdLimitSwitchClosed();
+        //upperLimitSwitchState =  adjusterMotor.getSensorCollection().isFwdLimitSwitchClosed();
         
 
         return upperLimitSwitchState;
@@ -153,7 +153,7 @@ public class Shooter extends SubsystemBase {
 
         // read state of limit switch
         // if elevated or retracted, stop the motor
-        lowerLimitSwitchState =  adjusterMotor.getSensorCollection().isRevLimitSwitchClosed();
+        //lowerLimitSwitchState =  adjusterMotor.getSensorCollection().isRevLimitSwitchClosed();
 
         return lowerLimitSwitchState;
     }
@@ -161,7 +161,7 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic(){
         if (atUpperLimit() || atLowerLimit()){
-            adjusterMotor.set(TalonSRXControlMode.PercentOutput, 0);
+            //adjusterMotor.set(TalonSRXControlMode.PercentOutput, 0);
         }
 
     }

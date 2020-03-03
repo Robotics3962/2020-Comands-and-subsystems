@@ -21,24 +21,29 @@ public class IntakeSpinCmd extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("intakecmd --init");
+
     Robot.intakeSubsystem.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+//    System.out.println("intakecmd --exec");
     Robot.intakeSubsystem.start();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("intakecmd --end");
     Robot.intakeSubsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+  //  System.out.println("intakecmd --isfinished");
     return false;
   }
 }

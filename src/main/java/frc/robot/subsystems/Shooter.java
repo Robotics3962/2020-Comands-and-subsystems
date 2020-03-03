@@ -79,10 +79,10 @@ public class Shooter extends SubsystemBase {
         /**
          * set up the talon with the encoder
          */
-        feederMotor = new Spark(RobotMap.Shooter_SparkAdjusterMotor_ID);
+        //adjusterMotor = new TalonSRX(RobotMap.Shooter_TalonAdjusterMotor_ID);
 
-        feederMotor.enableDeadbandElimination(true);
-        feederMotor.setInverted(RobotMap.Shooter_SparkAdjusterMotor_Invert);
+        //Util.configTalonSRX(adjusterMotor);
+        //adjusterMotor.setInverted(RobotMap.Shooter_TalonAdjusterMotor_Invert);
 
         /**
          * configure limit switches
@@ -142,10 +142,7 @@ public class Shooter extends SubsystemBase {
 
         // read state of limit switch
         // if elevated or retracted, stop the motor
-        /**
-         * plug limit switch directly, Spark motor doesnt have necessary methods to get info from motor
-         */
-        upperLimitSwitchState =  false;//feederMotor;//.getSensorCollection().isFwdLimitSwitchClosed();
+        //upperLimitSwitchState =  adjusterMotor.getSensorCollection().isFwdLimitSwitchClosed();
         
 
         return upperLimitSwitchState;
@@ -156,10 +153,7 @@ public class Shooter extends SubsystemBase {
 
         // read state of limit switch
         // if elevated or retracted, stop the motor
-        /**
-         * Need to grab fromm the limit switch, Spark motor lacks mehtods for the commented out section on next line
-         */
-        lowerLimitSwitchState =  false; //::::::::::::::feederMotor.getSensorCollection().isRevLimitSwitchClosed();
+        //lowerLimitSwitchState =  adjusterMotor.getSensorCollection().isRevLimitSwitchClosed();
 
         return lowerLimitSwitchState;
     }
@@ -170,7 +164,7 @@ public class Shooter extends SubsystemBase {
         /*
         *USed for talons
         if (atUpperLimit() || atLowerLimit()){
-            feederMotor.set(TalonSRXControlMode.PercentOutput, 0);
+            //adjusterMotor.set(TalonSRXControlMode.PercentOutput, 0);
         }
         */
     }

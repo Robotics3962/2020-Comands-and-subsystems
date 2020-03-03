@@ -197,13 +197,14 @@ public class Spinner extends SubsystemBase {
         colorMatcher.addColorMatch(detectorRedColor);
         colorMatcher.addColorMatch(detectorYellowColor);
         colorMatcher.setConfidenceThreshold((0.80));
+
         // initialize the motor
 		motor = new Spark(RobotMap.Spinner_SparkMotor_ID);
         motor.enableDeadbandElimination(true);
         speed = RobotMap.Spinner_MotorSpeed;
 
         // initialize the solenoid
-        solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Spinner_Pneumatic_Forward_Solenoid_ID, RobotMap.Spinner_Pneumatic_Reverse_Solenoid_ID);
+        //solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Spinner_Pneumatic_Forward_Solenoid_ID, RobotMap.Spinner_Pneumatic_Reverse_Solenoid_ID);
 
         colorNameMap = new HashMap<Color, String>();
         colorNameMap.put(detectorCyanColor, "Blue");
@@ -256,7 +257,7 @@ public class Spinner extends SubsystemBase {
      * the arm
      */
     public void extend(){
-        solenoid.set(DoubleSolenoid.Value.kForward);
+        //solenoid.set(DoubleSolenoid.Value.kForward);
         solenoidState = SolenoidStates.EXTENDED;
     }
 
@@ -265,7 +266,7 @@ public class Spinner extends SubsystemBase {
     }
 
     public void retract(){
-        solenoid.set(DoubleSolenoid.Value.kReverse);
+        //solenoid.set(DoubleSolenoid.Value.kReverse);
         solenoidState = SolenoidStates.RETRACTED;
     }
 

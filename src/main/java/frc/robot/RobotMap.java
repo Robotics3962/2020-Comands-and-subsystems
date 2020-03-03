@@ -45,10 +45,10 @@ public class RobotMap {
      */
 
     public static final double Intake_Motor_Speed = .5;
-    public static final int Intake_TalonMotor_Id = 5;
+    public static final int Intake_SparkMotor_ID = 0;
     public static final boolean Intake_TalonMotor_Invert = false;
-    public static final int Intake_Pneumatic_Forward_Solenoid_ID = 4;
-    public static final int Intake_Pneumatic_Reverse_Solenoid_ID = 5;
+    public static final int Intake_Pneumatic_Forward_Solenoid_ID = 0;
+    public static final int Intake_Pneumatic_Reverse_Solenoid_ID = 1;
     public static final double Intake_Spin_TimeMs = .25;
 
     /**
@@ -81,10 +81,10 @@ public class RobotMap {
      * NOTE: the motor to move the adjuster needs to have limit switches wired into the
      *      talon so that we do not break the adjuster
      */
-    public static final int Shooter_TalonMotor1_ID = 6;
-    public static final int Shooter_TalonMotor2_ID = 7;
+    public static final int Shooter_TalonMotor1_ID = 7;
+    public static final int Shooter_TalonMotor2_ID = 8;
     public static final boolean Shooter_TalonMotor1_Invert = false;
-    public static final boolean Shooter_TalonMotor2_Invert = false;
+    public static final boolean Shooter_TalonMotor2_Invert = true;
     public static final double Shooter_Speed = .8;
     public static final int Shooter_TalonAdjusterMotor_ID = 8;
     public static final boolean Shooter_TalonAdjusterMotor_Invert = false;
@@ -105,11 +105,10 @@ public class RobotMap {
      *      will run to move a ball up to make room for another ball.
      *      This time will be rounded down to a multiple of 20 miliseconds
      */
-    public static int Lift_TalonMotor1_ID = 9;
-    public static int Lift_TalonMotor2_ID = 10;    
+    public static int Lift_SparkMotor_ID = 2;
     public static boolean Lift_TalonMotor1_Invert = false;
     public static boolean Lift_TalonMotor2_Invert = false;
-    public static double Lift_MotorSpeed = .3;
+    public static double Lift_MotorSpeed = .6;
     public static int Lift_IndexTimeMilliSeconds = 40;
 
     /**
@@ -147,8 +146,8 @@ public class RobotMap {
     public static final int Spinner_SparkMotor_ID = 1;
     public static final double Spinner_MotorSpeed = 0.15;
     public static final double Spinner_SlowMotorSpeed = 0.1;
-    public static final int Spinner_Pneumatic_Forward_Solenoid_ID = 1;
-    public static final int Spinner_Pneumatic_Reverse_Solenoid_ID = 2;
+    public static final int Spinner_Pneumatic_Forward_Solenoid_ID = 2;
+    public static final int Spinner_Pneumatic_Reverse_Solenoid_ID = 3;
     public static final int Spinner_TargetColorTransitions = 7;
 
     /**
@@ -156,16 +155,21 @@ public class RobotMap {
      * This section contains constants to define the drive motors
      * 
      */
-    public static final int Drive_TalonLeftFront_ID = 2;
-    public static final int Drive_TalonLeftRear_ID  = 3;
-    public static final int Drive_TalonRightFront_ID = 4;
-    public static final int Drive_TalonRightRear_ID = 1;
+    // use these ids for ghetto bot
+    //public static final int Drive_TalonLeftFront_ID = 2;
+    //public static final int Drive_TalonLeftRear_ID  = 3;
+    //public static final int Drive_TalonRightFront_ID = 4;
+    //public static final int Drive_TalonRightRear_ID = 1;
+    public static final int Drive_TalonLeftFront_ID = 3;
+    public static final int Drive_TalonLeftRear_ID  = 4;
+    public static final int Drive_TalonRightFront_ID = 1;
+    public static final int Drive_TalonRightRear_ID = 2;
     public static final double Drive_Auto_Distance_Pval = 0.18;//0.1
     public static final double Drive_Auto_Distance_Ival = 0.0;
     public static final double Drive_Auto_Distance_Dval = 0.0;
     public static final double Drive_Auto_CountsPerInch = 218;
-    public static final double Drive_Auto_Distance_MinSpeed = 0.25;
-    public static final double Drive_Auto_Distance_MaxSpeed = 0.4;
+    public static final double Drive_Auto_Distance_MinSpeed = 0.15;
+    public static final double Drive_Auto_Distance_MaxSpeed = 0.6;
     public static final double Drive_Auto_Distance_DeadZone = Drive_Auto_CountsPerInch * 3; 
     public static final double Drive_Auto_Angle_DeadZone = 1;
     public static final double Drive_Auto_Angle_MinSpeed = 0.3;

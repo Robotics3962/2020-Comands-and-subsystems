@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -49,18 +50,17 @@ public class Intake extends SubsystemBase {
      * these are the controllers for the motors and the
      * pneumatics
      */
-    private WPI_TalonSRX motor;
+    private Spark motor;
     private DoubleSolenoid solenoid;
 
     public Intake(){
 
         // initialize the motor
-		motor = new WPI_TalonSRX(RobotMap.Intake_TalonMotor_Id);
-        motor.setInverted(RobotMap.Intake_TalonMotor_Invert); 
-        Util.configTalon(motor);
+		motor = new Spark(RobotMap.Intake_SparkMotor_ID);
+        motor.enableDeadbandElimination(true);
 
         // initialize the solenoid
-        solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Intake_Pneumatic_Forward_Solenoid_ID);
+        solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Intake_Pneumatic_Forward_Solenoid_ID, RobotMap.Intake_Pneumatic_Reverse_Solenoid_ID);
     }
 
     public void lower(){
@@ -73,6 +73,9 @@ public class Intake extends SubsystemBase {
         intakePosition = IntakePositions.UP;
     }
 
+    public void neutral(){
+        solenoid.set(DoubleSolenoid.Value.kOff);
+    }
     public boolean armUp(){
         return (intakePosition == IntakePositions.UP);
     }
@@ -82,11 +85,13 @@ public class Intake extends SubsystemBase {
     }
 
     public void start(){
+        System.out.println("sysintake--start");
         motor.set(speed);
         motorState = MotorStates.RUNNING;
     }
 
     public void stop(){
+        System.out.println("sysintake--stop");
         motor.set(0);
         motor.stopMotor();
         motorState = MotorStates.STOPPED;

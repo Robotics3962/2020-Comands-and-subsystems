@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.RobotMap;
@@ -30,30 +31,23 @@ public class Lift extends SubsystemBase {
     /**
      * these are the controllers for the motors 
      */
-    private WPI_TalonSRX motor1;
-    private WPI_TalonSRX motor2;
-    private SpeedControllerGroup motors = null;
+    private Spark motor;
 
     public Lift(){
 
         // initialize the motor
-        motor1 = new WPI_TalonSRX(RobotMap.Lift_TalonMotor1_ID);
-        motor2 = new WPI_TalonSRX(RobotMap.Lift_TalonMotor2_ID);
-        motors = new SpeedControllerGroup(motor1, motor2);
-        motor1.setInverted(RobotMap.Lift_TalonMotor1_Invert); 
-        motor2.setInverted(RobotMap.Lift_TalonMotor2_Invert); 
+        motor = new Spark(RobotMap.Lift_SparkMotor_ID);
+        motor.enableDeadbandElimination(true);
 
-        Util.configTalon(motor1);
-        Util.configTalon(motor2);
     }
 
     public void start(){
-        motors.set(speed);
+        motor.set(speed);
         motorState = MotorStates.RUNNING;
     }
 
     public void stop(){
-        motors.set(0);
+        motor.set(0);
         motorState = MotorStates.STOPPED;
     }
 
@@ -62,7 +56,7 @@ public class Lift extends SubsystemBase {
     }
 
     public void reverse(){
-        motors.set(-speed);
+        motor.set(-speed);
         motorState = MotorStates.RUNNING;
     }
 

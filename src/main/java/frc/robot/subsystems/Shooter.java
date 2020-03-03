@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
      * These are the controllers for the wheel
      * and the adjuster
      */
-    private TalonSRX  adjusterMotor = null;
+    private Spark feederMotor = null;
     private WPI_TalonSRX motor1;
     private WPI_TalonSRX motor2;
     private SpeedControllerGroup wheelMotors = null;
@@ -79,10 +79,10 @@ public class Shooter extends SubsystemBase {
         /**
          * set up the talon with the encoder
          */
-        adjusterMotor = new TalonSRX(RobotMap.Shooter_TalonAdjusterMotor_ID);
+        feederMotor = new Spark(RobotMap.Shooter_SparkAdjusterMotor_ID);
 
-        Util.configTalonSRX(adjusterMotor);
-        adjusterMotor.setInverted(RobotMap.Shooter_TalonAdjusterMotor_Invert);
+        feederMotor.enableDeadbandElimination(true);
+        feederMotor.setInverted(RobotMap.Shooter_SparkAdjusterMotor_Invert);
 
         /**
          * configure limit switches
@@ -142,7 +142,10 @@ public class Shooter extends SubsystemBase {
 
         // read state of limit switch
         // if elevated or retracted, stop the motor
-        upperLimitSwitchState =  adjusterMotor.getSensorCollection().isFwdLimitSwitchClosed();
+        /**
+         * plug limit switch directly, Spark motor doesnt have necessary methods to get info from motor
+         */
+        upperLimitSwitchState =  false;//feederMotor;//.getSensorCollection().isFwdLimitSwitchClosed();
         
 
         return upperLimitSwitchState;
@@ -153,16 +156,22 @@ public class Shooter extends SubsystemBase {
 
         // read state of limit switch
         // if elevated or retracted, stop the motor
-        lowerLimitSwitchState =  adjusterMotor.getSensorCollection().isRevLimitSwitchClosed();
+        /**
+         * Need to grab fromm the limit switch, Spark motor lacks mehtods for the commented out section on next line
+         */
+        lowerLimitSwitchState =  false; //::::::::::::::feederMotor.getSensorCollection().isRevLimitSwitchClosed();
 
         return lowerLimitSwitchState;
     }
     
     @Override
     public void periodic(){
-        if (atUpperLimit() || atLowerLimit()){
-            adjusterMotor.set(TalonSRXControlMode.PercentOutput, 0);
-        }
 
+        /*
+        *USed for talons
+        if (atUpperLimit() || atLowerLimit()){
+            feederMotor.set(TalonSRXControlMode.PercentOutput, 0);
+        }
+        */
     }
 }

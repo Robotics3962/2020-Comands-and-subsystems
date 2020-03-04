@@ -46,6 +46,8 @@ public class JoyStickControl {
 
     driveButtonX.whileHeld(new ShooterSpinFeederCWCmd());
     driveButtonY.whileHeld(new ShooterSpinFeederCCWCmd());
+    driveButtonA.whileHeld(new ClimberDownCmd());
+    driveButtonB.whileHeld(new ClimberUpCmd());
 
     opButtonLS.whileHeld(new ShooterStartCmd());
     opButtonRS.whileHeld(new ShooterStopCmd());

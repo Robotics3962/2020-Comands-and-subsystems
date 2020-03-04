@@ -45,16 +45,12 @@ public class RobotMap {
      */
 
     public static final double Intake_Motor_Speed = .5;
-    public static final int Intake_TalonMotor_Id = 5;
-    public static final boolean Intake_TalonMotor_Invert = false;
-    public static final int Intake_Pneumatic_Forward_Solenoid_ID = 4;
-    public static final int Intake_Pneumatic_Reverse_Solenoid_ID = 5;
+    public static final int Intake_SparkMotor_ID = 0;
+    public static final boolean Intake_SparkMotor_Invert = false;
+    public static final int Intake_Pneumatic_Forward_Solenoid_ID = 0;
+    public static final int Intake_Pneumatic_Reverse_Solenoid_ID = 1;
     public static final double Intake_Spin_TimeMs = .25;
-    public static final int Intake_SparkMotor_ID = UNKNOWN_VALUE;
-    public static final int Lift_SparkMotor_ID = UNKNOWN_VALUE;
-    public static final int Shooter_SparkFeederMotor_ID = UNKNOWN_VALUE;
-    public static final int Shooter_FeederMotor_Speed = UNKNOWN_VALUE;
-    
+
     /**
      * Configuration for the shooter
      * 
@@ -85,16 +81,14 @@ public class RobotMap {
      * NOTE: the motor to move the adjuster needs to have limit switches wired into the
      *      talon so that we do not break the adjuster
      */
-    public static final int Shooter_TalonMotor1_ID = 6;
-    public static final int Shooter_TalonMotor2_ID = 7;
+    public static final int Shooter_TalonMotor1_ID = 7;
+    public static final int Shooter_TalonMotor2_ID = 8;
     public static final boolean Shooter_TalonMotor1_Invert = false;
     public static final boolean Shooter_TalonMotor2_Invert = false;
-    public static final double Shooter_Speed = .8;
-    public static final int Shooter_SparkAdjusterMotor_ID = 8;
-    public static final boolean Shooter_SparkAdjusterMotor_Invert = false;
-    public static final int Shooter_Adjuster_MaxPosition = UNKNOWN_VALUE;
-    public static final int Shooter_Adjuster_MinPosition = 0;
-    public static final double Shooter_Adjuster_Speed = .5;
+    public static final double Shooter_Speed = 0.5;
+    public static final int Shooter_SparkFeederMotor_ID = 4;
+    public static final boolean Shooter_SparkFeederMotor_Invert = false;
+    public static final double Shooter_FeederMotor_Speed = 0.5;
     
     /**
      * Configuration for the ball lift
@@ -107,14 +101,11 @@ public class RobotMap {
      * 
      * Lifs_IndexTimeMilliseconds is the amount of time the lift motor
      *      will run to move a ball up to make room for another ball.
-     *      This time will be rounded down to a multiple of 20 miliseconds
      */
-    public static int Lift_TalonMotor1_ID = 9;
-    public static int Lift_TalonMotor2_ID = 10;    
-    public static boolean Lift_TalonMotor1_Invert = false;
-    public static boolean Lift_TalonMotor2_Invert = false;
-    public static double Lift_MotorSpeed = .3;
-    public static int Lift_IndexTimeMilliSeconds = 40;
+    public static final int Lift_SparkMotor_ID = 2;
+    public static final boolean Lift_Motor1_Invert = false;
+    public static final double Lift_MotorSpeed = .6;
+    public static final double  Lift_IndexTimeMilliSeconds = 0.25;
 
     /**
      * configuration for the climber.  The climber needs limit switches
@@ -130,12 +121,12 @@ public class RobotMap {
      * Climber_Speed is the value between -1.0 and 1.0 that the
      * the talon motors will spin at 
      */
-    public static int Climber_TalonMotor1_ID = 11;
-    public static int Climber_TalonMotor2_ID = 12;
+    public static int Climber_TalonMotor1_ID = 5;
+    public static int Climber_TalonMotor2_ID = 6;
     public static boolean Climber_TalonMotor1_Invert = false;
     public static boolean Climber_TalonMotor2_Invert = false;
     public static double Climber_MotorSpeedUp = .5;
-    public static double Climber_MotorSpeedDown = .5;
+    public static double Climber_MotorSpeedDown = .25;
 
     /**
      * Configuration for the spinner.  The spinner consists of
@@ -151,8 +142,6 @@ public class RobotMap {
     public static final int Spinner_SparkMotor_ID = 1;
     public static final double Spinner_MotorSpeed = 0.15;
     public static final double Spinner_SlowMotorSpeed = 0.1;
-    public static final int Spinner_Pneumatic_Forward_Solenoid_ID = 1;
-    public static final int Spinner_Pneumatic_Reverse_Solenoid_ID = 2;
     public static final int Spinner_TargetColorTransitions = 7;
 
     /**
@@ -160,15 +149,20 @@ public class RobotMap {
      * This section contains constants to define the drive motors
      * 
      */
-    public static final int Drive_TalonLeftFront_ID = 2;
-    public static final int Drive_TalonLeftRear_ID  = 3;
-    public static final int Drive_TalonRightFront_ID = 4;
-    public static final int Drive_TalonRightRear_ID = 1;
+    // use these ids for ghetto bot
+    //public static final int Drive_TalonLeftFront_ID = 2;
+    //public static final int Drive_TalonLeftRear_ID  = 3;
+    //public static final int Drive_TalonRightFront_ID = 4;
+    //public static final int Drive_TalonRightRear_ID = 1;
+    public static final int Drive_TalonLeftFront_ID = 3;
+    public static final int Drive_TalonLeftRear_ID  = 4;
+    public static final int Drive_TalonRightFront_ID = 1;
+    public static final int Drive_TalonRightRear_ID = 2;
     public static final double Drive_Auto_Distance_Pval = 0.18;//0.1
     public static final double Drive_Auto_Distance_Ival = 0.0;
     public static final double Drive_Auto_Distance_Dval = 0.0;
     public static final double Drive_Auto_CountsPerInch = 218;
-    public static final double Drive_Auto_Distance_MinSpeed = 0.3;
+    public static final double Drive_Auto_Distance_MinSpeed = 0.15;
     public static final double Drive_Auto_Distance_MaxSpeed = 0.6;
     public static final double Drive_Auto_Distance_DeadZone = Drive_Auto_CountsPerInch * 3; 
     public static final double Drive_Auto_Angle_DeadZone = 1;

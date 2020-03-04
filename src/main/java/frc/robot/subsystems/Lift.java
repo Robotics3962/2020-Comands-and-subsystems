@@ -34,6 +34,9 @@ public class Lift extends SubsystemBase {
     private Spark motor;
 
     public Lift(){
+        if (RobotMap.Lift_Motor1_Invert){
+            speed = speed * -1;
+        }
 
         // initialize the motor
         motor = new Spark(RobotMap.Lift_SparkMotor_ID);
@@ -70,6 +73,5 @@ public class Lift extends SubsystemBase {
 
     @Override
     public void periodic(){
-        
     }
 }

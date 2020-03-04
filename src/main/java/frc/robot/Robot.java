@@ -61,13 +61,13 @@ public class Robot extends TimedRobot {
      * not exist yet.  it will cause all kinds of errors
      * (which is intentional)
      */
+    climberSubsystem = new Climber();
     shooterSubsystem = new Shooter();
     intakeSubsystem = new Intake();
     liftSubsystem = new Lift();
     spinnerSubsystem = new Spinner();
     robotDrive = new RobotDrive();
     joystickControl = new JoyStickControl();
-    climberSubsystem = new Climber();
   }
 
   /**

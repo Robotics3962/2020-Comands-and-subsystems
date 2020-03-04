@@ -54,6 +54,9 @@ public class Intake extends SubsystemBase {
     private DoubleSolenoid solenoid;
 
     public Intake(){
+        if (RobotMap.Intake_SparkMotor_Invert){
+            speed = speed * -1;
+        }
 
         // initialize the motor
 		motor = new Spark(RobotMap.Intake_SparkMotor_ID);

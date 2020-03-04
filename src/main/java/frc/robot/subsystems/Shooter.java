@@ -84,16 +84,18 @@ public class Shooter extends SubsystemBase {
         motor1 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor1_ID);
         motor2 = new WPI_TalonSRX(RobotMap.Shooter_TalonMotor2_ID);
         wheelMotors = new SpeedControllerGroup(motor1, motor2);
-        motor1.setNeutralMode(NeutralMode.Brake);
-        motor2.setNeutralMode(NeutralMode.Brake);
+        motor1.setNeutralMode(NeutralMode.Coast);
+        motor2.setNeutralMode(NeutralMode.Coast);
         motor1.setInverted(RobotMap.Shooter_TalonMotor1_Invert); 
         motor2.setInverted(RobotMap.Shooter_TalonMotor2_Invert); 
 
         Util.configTalon(motor1);
         Util.configTalon(motor2);
 
-        feederMotor = new Spark(RobotMap.Shooter_SparkFeederMotor_ID);
-        feederMotor.enableDeadbandElimination(true);
+        if (RobotMap.Shooter_UseFeederMotor){
+            feederMotor = new Spark(RobotMap.Shooter_SparkFeederMotor_ID);
+            feederMotor.enableDeadbandElimination(true);
+        }
 
     }
 
@@ -118,18 +120,33 @@ public class Shooter extends SubsystemBase {
     }
 
     public void spinFeedMotorCW(){
-        feederMotor.set(RobotMap.Shooter_FeederMotor_Speed);
+        double speed = RobotMap.Shooter_FeederMotor_Speed;
+        if (RobotMap.Shooter_SparkFeederMotor_Invert){
+            speed = speed * -1;
+        }
+
+        if (RobotMap.Shooter_UseFeederMotor){
+            feederMotor.set(speed);
+        }
         feederWheelState = MotorStates.RUNNING;
     }
 
     public void spinFeedMotorCCW(){
-        feederMotor.set(-RobotMap.Shooter_FeederMotor_Speed);
+        double speed = -RobotMap.Shooter_FeederMotor_Speed;
+        if (RobotMap.Shooter_SparkFeederMotor_Invert){
+            speed = speed * -1;
+        }
+        if (RobotMap.Shooter_UseFeederMotor){
+            feederMotor.set(speed);
+        }
         feederWheelState = MotorStates.RUNNING;
     }
 
     public void stopFeedMotor(){
-        feederMotor.set(0);
-        feederMotor.stopMotor();
+        if (RobotMap.Shooter_UseFeederMotor){
+            feederMotor.set(0);
+            feederMotor.stopMotor();
+        }
         feederWheelState = MotorStates.STOPPED;
     }
 }

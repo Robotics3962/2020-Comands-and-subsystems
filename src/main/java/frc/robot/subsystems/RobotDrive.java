@@ -128,6 +128,7 @@ public class RobotDrive extends SubsystemBase {
   @Override
   public void periodic(){
     dumpEncoderValues();
+    MoveWithJoystick();
   }
 
   public void dumpEncoderValues(){

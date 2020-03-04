@@ -89,7 +89,8 @@ public class RobotMap {
     public static final int Shooter_SparkFeederMotor_ID = 4;
     public static final boolean Shooter_SparkFeederMotor_Invert = false;
     public static final double Shooter_FeederMotor_Speed = 0.5;
-    
+    public static final boolean Shooter_UseFeederMotor = false;
+
     /**
      * Configuration for the ball lift
      * 

@@ -92,8 +92,10 @@ public class Shooter extends SubsystemBase {
         Util.configTalon(motor1);
         Util.configTalon(motor2);
 
-        feederMotor = new Spark(RobotMap.Shooter_SparkFeederMotor_ID);
-        feederMotor.enableDeadbandElimination(true);
+        if (RobotMap.Shooter_UseFeederMotor){
+            feederMotor = new Spark(RobotMap.Shooter_SparkFeederMotor_ID);
+            feederMotor.enableDeadbandElimination(true);
+        }
 
     }
 
@@ -122,7 +124,10 @@ public class Shooter extends SubsystemBase {
         if (RobotMap.Shooter_SparkFeederMotor_Invert){
             speed = speed * -1;
         }
-        feederMotor.set(speed);
+
+        if (RobotMap.Shooter_UseFeederMotor){
+            feederMotor.set(speed);
+        }
         feederWheelState = MotorStates.RUNNING;
     }
 
@@ -131,13 +136,17 @@ public class Shooter extends SubsystemBase {
         if (RobotMap.Shooter_SparkFeederMotor_Invert){
             speed = speed * -1;
         }
-        feederMotor.set(speed);
+        if (RobotMap.Shooter_UseFeederMotor){
+            feederMotor.set(speed);
+        }
         feederWheelState = MotorStates.RUNNING;
     }
 
     public void stopFeedMotor(){
-        feederMotor.set(0);
-        feederMotor.stopMotor();
+        if (RobotMap.Shooter_UseFeederMotor){
+            feederMotor.set(0);
+            feederMotor.stopMotor();
+        }
         feederWheelState = MotorStates.STOPPED;
     }
 }

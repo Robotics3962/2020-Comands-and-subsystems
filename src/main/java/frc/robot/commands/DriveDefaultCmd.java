@@ -16,7 +16,7 @@ public class DriveDefaultCmd extends CommandBase {
    * Creates a new DriveDefaultCmd.
    */
   public DriveDefaultCmd() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Robot.robotDrive);
   }
 
   // Called when the command is initially scheduled.

@@ -85,7 +85,7 @@ public class RobotMap {
     public static final int Shooter_TalonMotor2_ID = 8;
     public static final boolean Shooter_TalonMotor1_Invert = false;
     public static final boolean Shooter_TalonMotor2_Invert = false;
-    public static final double Shooter_Speed = 0.5;
+    public static final double Shooter_Speed = 1;
     public static final int Shooter_SparkFeederMotor_ID = 4;
     public static final boolean Shooter_SparkFeederMotor_Invert = false;
     public static final double Shooter_FeederMotor_Speed = 0.5;
@@ -126,8 +126,8 @@ public class RobotMap {
     public static int Climber_TalonMotor2_ID = 6;
     public static boolean Climber_TalonMotor1_Invert = false;
     public static boolean Climber_TalonMotor2_Invert = false;
-    public static double Climber_MotorSpeedUp = .5;
-    public static double Climber_MotorSpeedDown = .25;
+    public static double Climber_MotorSpeedUp = .4;
+    public static double Climber_MotorSpeedDown = -.25;
 
     /**
      * Configuration for the spinner.  The spinner consists of

@@ -87,7 +87,7 @@ public class Shooter extends SubsystemBase {
         motor1.setNeutralMode(NeutralMode.Coast);
         motor2.setNeutralMode(NeutralMode.Coast);
         motor1.setInverted(RobotMap.Shooter_TalonMotor1_Invert); 
-        motor2.setInverted(RobotMap.Shooter_TalonMotor2_Invert); 
+        motor2.setInverted(true);//RobotMap.Shooter_TalonMotor2_Invert); 
 
         Util.configTalon(motor1);
         Util.configTalon(motor2);

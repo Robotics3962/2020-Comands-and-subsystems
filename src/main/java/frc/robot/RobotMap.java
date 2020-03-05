@@ -84,12 +84,14 @@ public class RobotMap {
     public static final int Shooter_TalonMotor1_ID = 7;
     public static final int Shooter_TalonMotor2_ID = 8;
     public static final boolean Shooter_TalonMotor1_Invert = false;
-    public static final boolean Shooter_TalonMotor2_Invert = false;
-    public static final double Shooter_Speed = 1;
+    public static final boolean Shooter_TalonMotor2_Invert = true;
+    public static final double Shooter_Speed = 1.0;
     public static final int Shooter_SparkFeederMotor_ID = 4;
     public static final boolean Shooter_SparkFeederMotor_Invert = false;
     public static final double Shooter_FeederMotor_Speed = 0.5;
     public static final boolean Shooter_UseFeederMotor = false;
+    public static final int Shooter_hexEncoder_ID = UNKNOWN_VALUE; 
+
 
     /**
      * Configuration for the ball lift

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveDefaultCmd;
@@ -45,6 +46,8 @@ public class RobotDrive extends SubsystemBase {
 
     leftMotors = new SpeedControllerGroup(leftFrontTalonSRX, leftRearTalonSRX);
     rightMotors = new SpeedControllerGroup(rightFrontTalonSRX, rightRearTalonSRX);
+
+    Encoder hexShaft_Encoder = new Encoder(0,1,false);
 
     // tells the left side that is should be inverted so that we drive straight with
     // each side having positive motor values.

@@ -23,12 +23,14 @@ public class ShooterShootCmd extends CommandBase {
   @Override
   public void initialize() {
     Robot.shooterSubsystem.spinShooter(RobotMap.Shooter_Speed);
+    Robot.shooterSubsystem.displayEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     Robot.shooterSubsystem.spinShooter(RobotMap.Shooter_Speed);
+    Robot.shooterSubsystem.updaterEncoderRate();
   }
 
   // Called once the command ends or is interrupted.

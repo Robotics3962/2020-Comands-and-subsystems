@@ -81,7 +81,7 @@ public class RobotMap {
      * NOTE: the motor to move the adjuster needs to have limit switches wired into the
      *      talon so that we do not break the adjuster
      */
-    public static final int Shooter_TalonMotor1_ID = 7;
+    public static final int Shooter_TalonMotor1_ID = 7;//which is top, which is bot?
     public static final int Shooter_TalonMotor2_ID = 8;
     public static final boolean Shooter_TalonMotor1_Invert = false;
     public static final boolean Shooter_TalonMotor2_Invert = true;
@@ -142,7 +142,7 @@ public class RobotMap {
      * Spinner_MotorSpeed is a value between -1.0 and 1.0 which
      * is the speed the spinner motor runs at
      */
-    public static final int Spinner_SparkMotor_ID = 1;
+    public static final int Spinner_SparkMotor_ID = 1;//correct assignment
     public static final double Spinner_MotorSpeed = 0.15;
     public static final double Spinner_SlowMotorSpeed = 0.1;
     public static final int Spinner_TargetColorTransitions = 7;

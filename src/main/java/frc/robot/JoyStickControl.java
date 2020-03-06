@@ -44,10 +44,14 @@ public class JoyStickControl {
     JoystickButton opButtonBack = new JoystickButton(operationJoyStick, Button.kBack.value);
     JoystickButton opButtonStart = new JoystickButton(operationJoyStick, Button.kStart.value);
 
+    driveButtonA.whileHeld(new ClimberElevateCmd());
+    driveButtonB.whileHeld(new ClimberDownCmd());
+
     driveButtonX.whileHeld(new ShooterSpinFeederCWCmd());
     driveButtonY.whileHeld(new ShooterSpinFeederCCWCmd());
     driveButtonA.whileHeld(new ClimberUpCmd());
     driveButtonB.whileHeld(new ClimberDownCmd());
+    //driveButtonBack.whileHeld()
 
     opButtonLS.whileHeld(new ShooterStartCmd());
     opButtonRS.whileHeld(new ShooterStopCmd());

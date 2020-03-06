@@ -19,6 +19,7 @@ public class ShooterStartCmd extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.shooterSubsystem.displayEncoder();
     Robot.shooterSubsystem.spinShooter(RobotMap.Shooter_Speed);
   }
 }

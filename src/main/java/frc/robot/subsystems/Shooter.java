@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
+
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Spark;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -9,10 +11,14 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+
 
 public class Shooter extends SubsystemBase {
 
@@ -62,7 +68,15 @@ public class Shooter extends SubsystemBase {
      * move to predetermined offsets
      */
     private int initialEncoderPosition = 0;
+    Encoder hexShaft_Encoder = new Encoder(0,1,false);
 
+    /**
+     * These variables check the DIOs of the Through Bore Encoder(shooter)
+     */
+    DigitalInput input1 = new DigitalInput(0);
+    DigitalInput input2 = new DigitalInput(1);
+    DigitalInput input3 = new DigitalInput(2);
+    DigitalInput input4 = new DigitalInput(3);
     public Shooter(){
 
         /**
@@ -87,10 +101,10 @@ public class Shooter extends SubsystemBase {
         motor1.setNeutralMode(NeutralMode.Coast);
         motor2.setNeutralMode(NeutralMode.Coast);
         motor1.setInverted(RobotMap.Shooter_TalonMotor1_Invert); 
-        motor2.setInverted(RobotMap.Shooter_TalonMotor2_Invert); 
-
+        motor2.setInverted(RobotMap.Shooter_TalonMotor2_Invert);
         Util.configTalon(motor1);
         Util.configTalon(motor2);
+
 
         if (RobotMap.Shooter_UseFeederMotor){
             feederMotor = new Spark(RobotMap.Shooter_SparkFeederMotor_ID);
@@ -148,5 +162,14 @@ public class Shooter extends SubsystemBase {
             feederMotor.stopMotor();
         }
         feederWheelState = MotorStates.STOPPED;
+    }
+
+    public void displayEncoder () {
+        SmartDashboard.putNumber("hex encoder value", hexShaft_Encoder.getRate());
+
+    }
+
+    public void updaterEncoderRate () {
+        hexShaft_Encoder.getRate();
     }
 }

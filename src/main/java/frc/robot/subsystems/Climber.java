@@ -146,6 +146,12 @@ public class Climber extends SubsystemBase {
         // if elevated or retracted, stop the motor
         upperLimitSwitchState =  motor1.getSensorCollection().isFwdLimitSwitchClosed();
         
+        if(upperLimitSwitchState == true) {
+            motor1.stopMotor();
+            motor2.stopMotor();
+        } else {
+            //DO NOTHING
+        }
 
         return upperLimitSwitchState;
     }
@@ -156,6 +162,13 @@ public class Climber extends SubsystemBase {
         // read state of limit switch
         // if elevated or retracted, stop the motor
         lowerLimitSwitchState =  motor1.getSensorCollection().isRevLimitSwitchClosed();
+
+        if(lowerLimitSwitchState == true) {
+            motor1.stopMotor();
+            motor2.stopMotor();
+        } else {
+            // DO NOTHING
+        }
 
         return lowerLimitSwitchState;
     }

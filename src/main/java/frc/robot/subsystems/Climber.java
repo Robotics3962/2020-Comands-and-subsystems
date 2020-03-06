@@ -97,8 +97,8 @@ public class Climber extends SubsystemBase {
 
         motor1.setNeutralMode(NeutralMode.Coast);//brake
         motor2.setNeutralMode(NeutralMode.Coast);//brake
-        motor1.setInverted(true); //RobotMap.Climber_TalonMotor1_Invert); 
-        motor2.setInverted(false); //RobotMap.Climber_TalonMotor2_Invert); 
+        motor1.setInverted(RobotMap.Climber_TalonMotor1_Invert); 
+        motor2.setInverted(RobotMap.Climber_TalonMotor2_Invert); 
         Util.configTalon(motor1);
         Util.configTalon(motor2);
 

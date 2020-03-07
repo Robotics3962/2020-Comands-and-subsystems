@@ -171,6 +171,7 @@ public class Shooter extends SubsystemBase {
 
     public void displayEncoder () {
         SmartDashboard.putNumber("hex encoder value", hexShaft_Encoder.getRate());
+        SmartDashboard.putNumber("hex encoder d/p", hexShaft_Encoder.getDistancePerPulse();
     }
 
     public void updaterEncoderRate () {

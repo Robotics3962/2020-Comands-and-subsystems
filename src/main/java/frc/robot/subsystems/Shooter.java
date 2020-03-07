@@ -115,7 +115,7 @@ public class Shooter extends SubsystemBase {
         }
 
         hexShaft_Encoder = new Encoder(RobotMap.Shooter_EncoderDIO_Port1, RobotMap.Shooter_EncoderDIO_Port2, true, CounterBase.EncodingType.k4X);
-
+        hexShaft_Encoder.setDistancePerPulse(1);
     }
 
     public void spinShooter(double spinSpeed){
@@ -171,7 +171,7 @@ public class Shooter extends SubsystemBase {
 
     public void displayEncoder () {
         SmartDashboard.putNumber("hex encoder value", hexShaft_Encoder.getRate());
-        SmartDashboard.putNumber("hex encoder d/p", hexShaft_Encoder.getDistancePerPulse();
+        SmartDashboard.putNumber("hex encoder d/p", hexShaft_Encoder.getDistancePerPulse());
     }
 
     public void updaterEncoderRate () {

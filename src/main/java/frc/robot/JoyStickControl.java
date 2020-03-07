@@ -52,7 +52,8 @@ public class JoyStickControl {
     driveButtonB.whileHeld(new ClimberDownCmd());
     //driveButtonBack.whileHeld()
 
-    opButtonLS.whileHeld(new ShooterStartCmd());
+    opButtonLS.whileHeld(new ShooterShootCmd());
+    //opButtonLS.whileHeld(new ShooterStartCmd());
     opButtonRS.whileHeld(new ShooterStopCmd());
     opButtonBack.whenPressed(new IntakeRetractCmd());
     opButtonStart.whenPressed(new IntakeDeployCmd());

@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -68,15 +69,17 @@ public class Shooter extends SubsystemBase {
      * move to predetermined offsets
      */
     private int initialEncoderPosition = 0;
-    Encoder hexShaft_Encoder = new Encoder(0,1,false);
 
     /**
      * These variables check the DIOs of the Through Bore Encoder(shooter)
      */
-    DigitalInput input1 = new DigitalInput(0);
-    DigitalInput input2 = new DigitalInput(1);
-    DigitalInput input3 = new DigitalInput(2);
-    DigitalInput input4 = new DigitalInput(3);
+    //DigitalInput input1 = new DigitalInput(0);
+    //DigitalInput input2 = new DigitalInput(1);
+    //DigitalInput input3 = new DigitalInput(2);
+    //DigitalInput input4 = new DigitalInput(3);
+
+    Encoder hexShaft_Encoder = null;//(input2,input3,false);
+
     public Shooter(){
 
         /**
@@ -111,6 +114,8 @@ public class Shooter extends SubsystemBase {
             feederMotor.enableDeadbandElimination(true);
         }
 
+        hexShaft_Encoder = new Encoder(RobotMap.Shooter_EncoderDIO_Port1, RobotMap.Shooter_EncoderDIO_Port2, true, CounterBase.EncodingType.k4X);
+        hexShaft_Encoder.setDistancePerPulse(1);
     }
 
     public void spinShooter(double spinSpeed){
@@ -166,10 +171,15 @@ public class Shooter extends SubsystemBase {
 
     public void displayEncoder () {
         SmartDashboard.putNumber("hex encoder value", hexShaft_Encoder.getRate());
-
+        SmartDashboard.putNumber("hex encoder d/p", hexShaft_Encoder.getDistancePerPulse());
     }
 
     public void updaterEncoderRate () {
         hexShaft_Encoder.getRate();
+    }
+
+    @Override
+    public void periodic(){
+        displayEncoder();
     }
 }

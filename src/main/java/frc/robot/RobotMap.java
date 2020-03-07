@@ -44,7 +44,7 @@ public class RobotMap {
      *      the pushes the solenoid reverse is wired into 
      */
 
-    public static final double Intake_Motor_Speed = .5;
+    public static final double Intake_Motor_Speed = .7;
     public static final int Intake_SparkMotor_ID = 0;
     public static final boolean Intake_SparkMotor_Invert = false;
     public static final int Intake_Pneumatic_Forward_Solenoid_ID = 0;
@@ -86,12 +86,13 @@ public class RobotMap {
     public static final boolean Shooter_TalonMotor1_Invert = false;
     public static final boolean Shooter_TalonMotor2_Invert = true;
     public static final double Shooter_Speed = 1.0;
-    public static final int Shooter_SparkFeederMotor_ID = 4;
+    public static final double Shooter_TimeForFlyWheelToSpinUp = 2.5;
+    public static final int Shooter_SparkFeederMotor_ID = 3;//4
     public static final boolean Shooter_SparkFeederMotor_Invert = false;
     public static final double Shooter_FeederMotor_Speed = 0.5;
-    public static final boolean Shooter_UseFeederMotor = false;
-    public static final int Shooter_hexEncoder_ID = UNKNOWN_VALUE; 
-
+    public static final boolean Shooter_UseFeederMotor = true;
+    public static final int Shooter_EncoderDIO_Port1 = 0;
+    public static final int Shooter_EncoderDIO_Port2 = 1;
 
     /**
      * Configuration for the ball lift
@@ -105,7 +106,7 @@ public class RobotMap {
      * Lifs_IndexTimeMilliseconds is the amount of time the lift motor
      *      will run to move a ball up to make room for another ball.
      */
-    public static final int Lift_SparkMotor_ID = 2;
+    public static final int Lift_SparkMotor_ID = 2;////mech calls this uptake
     public static final boolean Lift_Motor1_Invert = false;
     public static final double Lift_MotorSpeed = .6;
     public static final double  Lift_IndexTimeMilliSeconds = 0.25;
@@ -142,7 +143,7 @@ public class RobotMap {
      * Spinner_MotorSpeed is a value between -1.0 and 1.0 which
      * is the speed the spinner motor runs at
      */
-    public static final int Spinner_SparkMotor_ID = 1;//correct assignment
+    public static final int Spinner_SparkMotor_ID = 1;//correct assignment, mech calls wheel
     public static final double Spinner_MotorSpeed = 0.15;
     public static final double Spinner_SlowMotorSpeed = 0.1;
     public static final int Spinner_TargetColorTransitions = 7;

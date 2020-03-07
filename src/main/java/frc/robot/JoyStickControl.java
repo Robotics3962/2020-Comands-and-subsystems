@@ -46,7 +46,6 @@ public class JoyStickControl {
 
     driveButtonA.whileHeld(new ClimberElevateCmd());
     driveButtonB.whileHeld(new ClimberDownCmd());
-
     driveButtonX.whileHeld(new ShooterSpinFeederCWCmd());
     driveButtonY.whileHeld(new ShooterSpinFeederCCWCmd());
     driveButtonA.whileHeld(new ClimberUpCmd());
@@ -59,8 +58,8 @@ public class JoyStickControl {
     opButtonStart.whenPressed(new IntakeDeployCmd());
     opButtonA.whileHeld(new IntakeSpinCmd());
     opButtonB.whenPressed(new IntakeNeutralCmd());
-    opButtonX.whileHeld(new LiftRunCmd());
-    opButtonY.whileHeld(new LiftRunReverseCmd());
+    opButtonX.whileHeld(new LiftRunCmd());//mech calls this uptake
+    opButtonY.whileHeld(new LiftRunReverseCmd());//mech calls this uptake
   }
     
   public double getLeftThrottle() {

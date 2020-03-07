@@ -47,7 +47,6 @@ public class RobotDrive extends SubsystemBase {
     leftMotors = new SpeedControllerGroup(leftFrontTalonSRX, leftRearTalonSRX);
     rightMotors = new SpeedControllerGroup(rightFrontTalonSRX, rightRearTalonSRX);
 
-    Encoder hexShaft_Encoder = new Encoder(0,1,false);
 
     // tells the left side that is should be inverted so that we drive straight with
     // each side having positive motor values.

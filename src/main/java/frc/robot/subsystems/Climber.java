@@ -7,6 +7,8 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.ClimberJoyStickControlCmd;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class Climber extends SubsystemBase {
@@ -109,6 +111,13 @@ public class Climber extends SubsystemBase {
         motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
         motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 
+        /**
+         * set the default command to move the elevator with the joystick
+         */
+        if(RobotMap.Climber_JoystickControlEnabled){
+            setDefaultCommand(new ClimberJoyStickControlCmd());
+        }
+
         /*
         Needs Tested:
         */
@@ -198,13 +207,23 @@ public class Climber extends SubsystemBase {
         motorState = MotorStates.RUNNING;
     }
 
+    public void moveWithJoystick(){
+        double rawSpeed = Robot.joystickControl.getOperationY();
+        setSpeedScaled(rawSpeed);
+    }
+
+    public void setSpeedScaled(double speed){
+        double newSpeed = speed * RobotMap.Climber_SpeedScaleFactor;
+        setSpeed(newSpeed);
+    }
+
+    public void setSpeed(double speed){
+        motors.set(speed);
+    }
+
     @Override
     public void periodic(){
         updateDashboard();
-
-        if (! isMoving()){
-            motors.stopMotor();
-        }
     }
 
     public void dumpState(){

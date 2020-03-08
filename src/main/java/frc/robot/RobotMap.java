@@ -131,6 +131,8 @@ public class RobotMap {
     public static boolean Climber_TalonMotor2_Invert = false;
     public static double Climber_MotorSpeedUp = .4;
     public static double Climber_MotorSpeedDown = -.25;
+    public static double Climber_SpeedScaleFactor = .6;
+    public static boolean Climber_JoystickControlEnabled = true;
 
     /**
      * Configuration for the spinner.  The spinner consists of

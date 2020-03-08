@@ -39,7 +39,6 @@ public class ClimberRectractCmd extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean finished = Robot.climberSubsystem.isRetracted();
-    return finished;
+    return false;
   }
 }

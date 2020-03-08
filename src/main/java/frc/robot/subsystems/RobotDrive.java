@@ -67,9 +67,6 @@ public class RobotDrive extends SubsystemBase {
 
     // configure the encoders
     leftRearTalonSRX.setSensorPhase(true);
-
-    // indicate what we want command we want to control the robot
-    initDefaultCommand();
   }
 
   public void setTankDriveSpeed( double speedLeft, double speedRight){
@@ -167,8 +164,6 @@ public class RobotDrive extends SubsystemBase {
   }
 
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
     setDefaultCommand(new DriveDefaultCmd());
   }
 }

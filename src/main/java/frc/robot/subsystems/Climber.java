@@ -111,13 +111,6 @@ public class Climber extends SubsystemBase {
         motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
         motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 
-        /**
-         * set the default command to move the elevator with the joystick
-         */
-        if(RobotMap.Climber_JoystickControlEnabled){
-            setDefaultCommand(new ClimberJoyStickControlCmd());
-        }
-
         /*
         Needs Tested:
         */
@@ -235,5 +228,15 @@ public class Climber extends SubsystemBase {
         SmartDashboard.putBoolean("Climber-topLimitSw", isElevated());
         SmartDashboard.putBoolean("Climber-bottomLimitSw", isRetracted());
 
+    }
+
+    public void initDefaultCommand(){
+        /**
+         * set the default command to move the elevator with the joystick
+         */
+        if(RobotMap.Climber_JoystickControlEnabled){
+            setDefaultCommand(new ClimberJoyStickControlCmd());
+        }
+  
     }
 }

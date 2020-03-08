@@ -22,6 +22,8 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
   int hasNotMovedCounter = 0;
   double prevDist;
   private double target = 20;
+  private double minTargetRange = target - RobotMap.Drive_Limelight_Search_Tolerance;
+  private double maxTargetRange = target + RobotMap.Drive_Limelight_Search_Tolerance;
 
   /**
    * Creates a new DriveFaceLimelightCmd.
@@ -45,7 +47,6 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
     else {
       done = false;
       double speed = calculateSpeed();
-      //Robot.robotDrive.setSpeedAndRotation(0, speed);
       Robot.robotDrive.setTankDriveSpeed(speed, speed);
     }
   }
@@ -54,12 +55,7 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
   @Override
   public void execute() {
   
-    double speed = calculateSpeed();
-    
-
-    //System.out.println(speed); 
-
-
+  double speed = calculateSpeed();
     if (!done){
       Robot.robotDrive.setSpeedAndRotation(0, speed);
     }
@@ -78,7 +74,7 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
     if(!done){
       double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       
-      if ((ty > -RobotMap.Drive_Limelight_Search_Tolerance) && (ty < RobotMap.Drive_Limelight_Search_Tolerance)){
+      if ((ty > minTargetRange) && (ty < maxTargetRange)){
        
         hasNotMovedCounter = 0;
 

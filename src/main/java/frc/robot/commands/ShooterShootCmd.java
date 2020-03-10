@@ -61,6 +61,11 @@ public class ShooterShootCmd extends CommandBase {
         break;
     }
     Robot.shooterSubsystem.updaterEncoderRate();
+
+
+    //spinfeeder
+    //feederspunup
+    //
   }
 
   // Called once the command ends or is interrupted.

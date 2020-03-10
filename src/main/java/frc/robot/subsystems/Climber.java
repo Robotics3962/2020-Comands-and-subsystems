@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Climber extends SubsystemBase {
     /**
@@ -83,6 +84,9 @@ public class Climber extends SubsystemBase {
     private WPI_TalonSRX motor1;
     private WPI_TalonSRX motor2;
     private SpeedControllerGroup motors;
+    public DigitalInput topLimit = new DigitalInput(RobotMap.limitSwitch_DIO_Port3);
+
+    boolean upperLimitSwitchState;
     
     public Climber(){
 
@@ -106,8 +110,8 @@ public class Climber extends SubsystemBase {
          * configure limit switches
          */
         /* Configured forward and reverse limit switch of Talon to be from a feedback connector and be normally open */
-        motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-        motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+        // motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+        //motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     }
 
     public void elevate(){
@@ -140,12 +144,11 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean isElevated(){
-        boolean upperLimitSwitchState = false;
 
-        // read state of limit switch
-        // if elevated or retracted, stop the motor
-        upperLimitSwitchState =  motor1.getSensorCollection().isFwdLimitSwitchClosed();
+        System.out.println(!topLimit.get());
         
+        upperLimitSwitchState = !getUpperLimit();
+
         if(upperLimitSwitchState == true) {
             motor1.stopMotor();
             motor2.stopMotor();
@@ -202,4 +205,9 @@ public class Climber extends SubsystemBase {
         SmartDashboard.putBoolean("Climber-bottomLimitSw", isRetracted());
 
     }
+
+    public boolean getUpperLimit() {
+
+        return topLimit.get();
+    } 
 }

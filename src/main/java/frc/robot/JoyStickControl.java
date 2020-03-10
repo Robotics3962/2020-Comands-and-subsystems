@@ -52,9 +52,11 @@ public class JoyStickControl {
     driveButtonB.whileHeld(new ClimberDownCmd());
     //driveButtonBack.whileHeld()
 
+    // this command will spin up the shooter motor then 
+    // spin up the feeder motor
     opButtonLS.whileHeld(new ShooterShootCmd());
     //opButtonLS.whileHeld(new ShooterStartCmd());
-    opButtonRS.whileHeld(new ShooterStopCmd());
+    //opButtonRS.whileHeld(new ShooterStopCmd());
     opButtonBack.whenPressed(new IntakeRetractCmd());
     opButtonStart.whenPressed(new IntakeDeployCmd());
     opButtonA.whileHeld(new IntakeSpinCmd());

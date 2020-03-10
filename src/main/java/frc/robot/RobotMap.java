@@ -46,7 +46,7 @@ public class RobotMap {
 
     public static final double Intake_Motor_Speed = .7;
     public static final int Intake_SparkMotor_ID = 0;
-    public static final boolean Intake_SparkMotor_Invert = false;
+    public static final boolean Intake_SparkMotor_Invert = true;
     public static final int Intake_Pneumatic_Forward_Solenoid_ID = 0;
     public static final int Intake_Pneumatic_Reverse_Solenoid_ID = 1;
     public static final double Intake_Spin_TimeMs = .25;
@@ -93,6 +93,8 @@ public class RobotMap {
     public static final boolean Shooter_UseFeederMotor = true;
     public static final int Shooter_EncoderDIO_Port1 = 0;
     public static final int Shooter_EncoderDIO_Port2 = 1;
+
+    public static final int limitSwitch_DIO_Port3 = 2;
 
     /**
      * Configuration for the ball lift

@@ -44,23 +44,25 @@ public class JoyStickControl {
     JoystickButton opButtonBack = new JoystickButton(operationJoyStick, Button.kBack.value);
     JoystickButton opButtonStart = new JoystickButton(operationJoyStick, Button.kStart.value);
 
-    driveButtonA.whileHeld(new ClimberElevateCmd());
-    driveButtonB.whileHeld(new ClimberDownCmd());
-    driveButtonX.whileHeld(new ShooterSpinFeederCWCmd());
-    driveButtonY.whileHeld(new ShooterSpinFeederCCWCmd());
-    driveButtonA.whileHeld(new ClimberUpCmd());
-    driveButtonB.whileHeld(new ClimberDownCmd());
+    //driveButtonA.whileHeld(new ClimberElevateCmd());
+    //driveButtonB.whileHeld(new ClimberDownCmd());
+    //driveButtonX.whileHeld(new ShooterSpinFeederCWCmd());
+    //driveButtonY.whileHeld(new ShooterSpinFeederCCWCmd());
+    //driveButtonA.whileHeld(new ClimberUpCmd());
+    //driveButtonB.whileHeld(new ClimberDownCmd());
     //driveButtonBack.whileHeld()
 
-    opButtonLS.whileHeld(new ShooterShootCmd());
-    //opButtonLS.whileHeld(new ShooterStartCmd());
-    opButtonRS.whileHeld(new ShooterStopCmd());
-    opButtonBack.whenPressed(new IntakeRetractCmd());
-    opButtonStart.whenPressed(new IntakeDeployCmd());
-    opButtonA.whileHeld(new IntakeSpinCmd());
-    opButtonB.whenPressed(new IntakeNeutralCmd());
-    opButtonX.whileHeld(new LiftRunCmd());//mech calls this uptake
-    opButtonY.whileHeld(new LiftRunReverseCmd());//mech calls this uptake
+    //opButtonLS.whileHeld(new ShooterShootCmd());
+    //opButtonRS.whileHeld(new ShooterStopCmd());
+    //opButtonBack.whenPressed(new IntakeRetractCmd());
+    //opButtonStart.whenPressed(new IntakeDeployCmd());
+    //opButtonA.whileHeld(new IntakeSpinCmd());
+    //opButtonB.whenPressed(new IntakeNeutralCmd());
+    //opButtonX.whileHeld(new LiftRunCmd());//mech calls this uptake
+    //opButtonY.whileHeld(new LiftRunReverseCmd());//mech calls this uptake
+    driveButtonX.whenPressed(new DriveFaceLimelightTargetCmd());
+    driveButtonY.whenPressed(new DriveSeekLimelightTargetCmd());
+    driveButtonA.whenPressed(new DriveDistLimelightTargetCmd());
   }
     
   public double getLeftThrottle() {

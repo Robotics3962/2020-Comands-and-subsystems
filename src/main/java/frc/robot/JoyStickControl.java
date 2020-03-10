@@ -53,14 +53,16 @@ public class JoyStickControl {
     //driveButtonBack.whileHeld()
 
     opButtonLS.whileHeld(new ShooterShootCmd());
-    //opButtonLS.whileHeld(new ShooterStartCmd());
-    opButtonRS.whileHeld(new ShooterStopCmd());
+    //opButtonRS.whileHeld(new ShooterStopCmd());
     opButtonBack.whenPressed(new IntakeRetractCmd());
     opButtonStart.whenPressed(new IntakeDeployCmd());
     opButtonA.whileHeld(new IntakeSpinCmd());
     opButtonB.whenPressed(new IntakeNeutralCmd());
-    opButtonX.whileHeld(new LiftRunCmd());//mech calls this uptake
-    opButtonY.whileHeld(new LiftRunReverseCmd());//mech calls this uptake
+    //opButtonX.whileHeld(new LiftRunCmd());//mech calls this uptake
+    //opButtonY.whileHeld(new LiftRunReverseCmd());//mech calls this uptake
+    driveButtonX.whenPressed(new DriveFaceLimelightTargetCmd());
+    driveButtonY.whenPressed(new DriveSeekLimelightTargetCmd());
+    driveButtonA.whenPressed(new DriveDistLimelightTargetCmd());
   }
     
   public double getLeftThrottle() {

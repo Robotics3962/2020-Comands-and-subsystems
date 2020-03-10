@@ -61,7 +61,7 @@ public class Intake extends SubsystemBase {
         // initialize the motor
 		motor = new Spark(RobotMap.Intake_SparkMotor_ID);
         motor.enableDeadbandElimination(true);
-
+        motor.setInverted(true);
         // initialize the solenoid
         solenoid = new DoubleSolenoid(RobotMap.Pneumatic_Module_ID, RobotMap.Intake_Pneumatic_Forward_Solenoid_ID, RobotMap.Intake_Pneumatic_Reverse_Solenoid_ID);
     }

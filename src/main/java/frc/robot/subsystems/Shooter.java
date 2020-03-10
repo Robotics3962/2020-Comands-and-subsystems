@@ -63,12 +63,9 @@ public class Shooter extends SubsystemBase {
     /**
      * These variables check the DIOs of the Through Bore Encoder(shooter)
      */
-    //DigitalInput input1 = new DigitalInput(0);
-    //DigitalInput input2 = new DigitalInput(1);
-    //DigitalInput input3 = new DigitalInput(2);
-    //DigitalInput input4 = new DigitalInput(3);
+   
 
-    Encoder hexShaft_Encoder = null;//(input2,input3,false);
+    Encoder hexShaft_Encoder = new Encoder(RobotMap.Shooter_EncoderDIO_Port1, RobotMap.Shooter_EncoderDIO_Port2, true, CounterBase.EncodingType.k4X);
 
     public Shooter(){
 
@@ -104,8 +101,7 @@ public class Shooter extends SubsystemBase {
             feederMotor.enableDeadbandElimination(true);
         }
 
-        hexShaft_Encoder = new Encoder(RobotMap.Shooter_EncoderDIO_Port1, RobotMap.Shooter_EncoderDIO_Port2, true, CounterBase.EncodingType.k4X);
-        hexShaft_Encoder.setDistancePerPulse(1);
+        hexShaft_Encoder.setDistancePerPulse(1);//1.0/360.0);
     }
 
     public void spinShooter(double spinSpeed){

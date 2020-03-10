@@ -39,6 +39,8 @@ public class ClimberElevateCmd extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    boolean finished = (Robot.climberSubsystem.isElevated());
+
+    return finished;
   }
 }

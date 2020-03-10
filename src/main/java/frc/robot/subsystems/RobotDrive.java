@@ -128,8 +128,7 @@ public class RobotDrive extends SubsystemBase {
   @Override
   public void periodic(){
     dumpEncoderValues();
-    // this is handled by the default command
-    //MoveWithJoystick();
+    MoveWithJoystick();
   }
 
   public void dumpEncoderValues(){
@@ -162,6 +161,8 @@ public class RobotDrive extends SubsystemBase {
   }
 
   public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
     setDefaultCommand(new DriveDefaultCmd());
   }
 }

@@ -46,7 +46,7 @@ public class RobotMap {
 
     public static final double Intake_Motor_Speed = .7;
     public static final int Intake_SparkMotor_ID = 0;
-    public static final boolean Intake_SparkMotor_Invert = false;
+    public static final boolean Intake_SparkMotor_Invert = true;
     public static final int Intake_Pneumatic_Forward_Solenoid_ID = 0;
     public static final int Intake_Pneumatic_Reverse_Solenoid_ID = 1;
     public static final double Intake_Spin_TimeMs = .25;
@@ -96,6 +96,8 @@ public class RobotMap {
     public static final int Shooter_EncoderDIO_Port1 = 0;
     public static final int Shooter_EncoderDIO_Port2 = 1;
 
+    public static final int limitSwitch_DIO_Port3 = 2;
+
     /**
      * Configuration for the ball lift
      * 
@@ -129,12 +131,10 @@ public class RobotMap {
      */
     public static int Climber_TalonMotor1_ID = 5;
     public static int Climber_TalonMotor2_ID = 6;
-    public static boolean Climber_TalonMotor1_Invert = true;
+    public static boolean Climber_TalonMotor1_Invert = false;
     public static boolean Climber_TalonMotor2_Invert = false;
     public static double Climber_MotorSpeedUp = .4;
     public static double Climber_MotorSpeedDown = -.25;
-    public static double Climber_SpeedScaleFactor = .6;
-    public static boolean Climber_JoystickControlEnabled = true;
 
     /**
      * Configuration for the spinner.  The spinner consists of
@@ -166,17 +166,17 @@ public class RobotMap {
     public static final int Drive_TalonLeftRear_ID  = 4;
     public static final int Drive_TalonRightFront_ID = 1;
     public static final int Drive_TalonRightRear_ID = 2;
-    public static final double Drive_Auto_Distance_Pval = .8;
+    public static final double Drive_Auto_Distance_Pval = 0.18;//0.1
     public static final double Drive_Auto_Distance_Ival = 0.0;
     public static final double Drive_Auto_Distance_Dval = 0.0;
     public static final double Drive_Auto_CountsPerInch = 218;
-    public static final double Drive_Auto_Distance_MinSpeed = 0.22;
+    public static final double Drive_Auto_Distance_MinSpeed = 0.15;
     public static final double Drive_Auto_Distance_MaxSpeed = 0.6;
     public static final double Drive_Auto_Distance_DeadZone = Drive_Auto_CountsPerInch * 3; 
     public static final double Drive_Auto_Angle_DeadZone = 1;
     public static final double Drive_Auto_Angle_MinSpeed = 0.3;
     public static final double Drive_Auto_Angle_MaxSpeed = 0.5;
-    public static final double Drive_Auto_Angle_Pval = 0.20;
+    public static final double Drive_Auto_Angle_Pval = 0.25;
     public static final double Drive_Auto_Angle_Ival = 0.0;
     public static final double Drive_Auto_Angle_Dval = 0.0;
     public static final double Drive_LimeLight_Search_RotateSpeed = 0.45;

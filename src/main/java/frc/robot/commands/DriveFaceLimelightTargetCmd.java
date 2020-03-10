@@ -123,7 +123,7 @@ public class DriveFaceLimelightTargetCmd extends CommandBase {
   public double calculateSpeed(){
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     double error = 0-tx;
-    double speed = error * RobotMap.Drive_Auto_Angle_Pval;
+    double speed = error * RobotMap.Drive_Auto_Distance_Pval;
     double adjustedSpeed = limit(speed);
     SmartDashboard.putNumber("Tx", tx);
     SmartDashboard.putNumber("tx Error", error);

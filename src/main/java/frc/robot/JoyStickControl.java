@@ -70,12 +70,8 @@ public class JoyStickControl {
 	}	
 
 	public double getRightRotation() {
-    return driveJoystick.getRawAxis(4);
-  }
-
-  public double getOperationY(){
-    return operationJoyStick.getY();
-  }
+        return driveJoystick.getRawAxis(4);
+    }
 
   public static boolean deadManSwitch() {
     boolean active = false;

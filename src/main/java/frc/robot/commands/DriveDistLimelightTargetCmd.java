@@ -21,12 +21,7 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
   int msgCount = 0;
   int hasNotMovedCounter = 0;
   double prevDist;
-  double currSpeed;
-  private double target = 9.0;
-  private double minTargetRange = target - .20;
-  private double maxTargetRange = target + .20;
-  //private double minTargetRange = target - RobotMap.Drive_Limelight_Search_Tolerance;
-  //private double maxTargetRange = target + RobotMap.Drive_Limelight_Search_Tolerance;
+  private double target = 20;
 
   /**
    * Creates a new DriveFaceLimelightCmd.
@@ -49,8 +44,9 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
     }
     else {
       done = false;
-      currSpeed = calculateSpeed();
-      Robot.robotDrive.setSpeedAndRotation(0, currSpeed);
+      double speed = calculateSpeed();
+      //Robot.robotDrive.setSpeedAndRotation(0, speed);
+      Robot.robotDrive.setTankDriveSpeed(speed, speed);
     }
   }
 
@@ -58,9 +54,14 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
   @Override
   public void execute() {
   
-  currSpeed = calculateSpeed();
+    double speed = calculateSpeed();
+    
+
+    //System.out.println(speed); 
+
+
     if (!done){
-      Robot.robotDrive.setSpeedAndRotation(0, currSpeed);
+      Robot.robotDrive.setSpeedAndRotation(0, speed);
     }
   }
 
@@ -76,9 +77,8 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
 
     if(!done){
       double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-
-      // handle the case where are in the target range
-      if ((ty > minTargetRange) && (ty < maxTargetRange)){
+      
+      if ((ty > -RobotMap.Drive_Limelight_Search_Tolerance) && (ty < RobotMap.Drive_Limelight_Search_Tolerance)){
        
         hasNotMovedCounter = 0;
 
@@ -101,15 +101,13 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
         double currTime = Timer.getFPGATimestamp();
         if (currTime > timeStabilized){
           done = true;
-          System.out.println("Isfinished(DriveDist):::::::::::::: Dones");
+          System.out.println("Isfinsihed(DriveDist):::::::::::::: Dones");
         }
       }
       else {
         timeStabilized = Timer.getFPGATimestamp() + RobotMap.Drive_Auto_StabilizedTime;
 
-        double minRange = ty - .25;
-        double maxRange = ty + .25;
-        if ((prevDist >= minRange) && (prevDist <= maxRange)) {
+        if (prevDist == ty) {
           hasNotMovedCounter++;
 
           if (hasNotMovedCounter > RobotMap.Drive_Limelight_NoProgressCnt) {
@@ -129,10 +127,13 @@ public class DriveDistLimelightTargetCmd extends CommandBase {
     double error = target-ty;
     double speed = error * RobotMap.Drive_Auto_Distance_Pval;
     double adjustedSpeed = limit(speed);
-
     SmartDashboard.putNumber("Ty", ty);
     SmartDashboard.putNumber("tY Error", error);
     SmartDashboard.putNumber("ty adjusted speed", adjustedSpeed);
+
+    if ((msgCount++ % 10) == 0){
+      System.out.println("error:"+error+" ty:"+ty+" adjustedSpeed:"+adjustedSpeed + " norprog:" + hasNotMovedCounter);
+    }
 
     return adjustedSpeed;
   }

@@ -62,13 +62,11 @@ public class Robot extends TimedRobot {
      * (which is intentional)
      */
     climberSubsystem = new Climber();
-    climberSubsystem.initDefaultCommand();
     shooterSubsystem = new Shooter();
     intakeSubsystem = new Intake();
     liftSubsystem = new Lift();
     spinnerSubsystem = new Spinner();
     robotDrive = new RobotDrive();
-    robotDrive.initDefaultCommand();
     joystickControl = new JoyStickControl();
   }
 

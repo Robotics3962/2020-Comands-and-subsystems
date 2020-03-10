@@ -87,6 +87,8 @@ public class RobotMap {
     public static final boolean Shooter_TalonMotor2_Invert = true;
     public static final double Shooter_Speed = 1.0;
     public static final double Shooter_TimeForFlyWheelToSpinUp = 2.5;
+    public static final double Shooter_TimeForFeederToSpinUp = 0.5;
+    public static final double Shooter_TimeToShootAllBalls = 10;
     public static final int Shooter_SparkFeederMotor_ID = 3;//4
     public static final boolean Shooter_SparkFeederMotor_Invert = false;
     public static final double Shooter_FeederMotor_Speed = 0.5;
